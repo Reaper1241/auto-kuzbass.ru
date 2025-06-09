@@ -1,0 +1,155 @@
+.base-input,
+.base-textarea {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 100%;
+
+    .alert {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        font-size: var(--small-size);
+        color: var(--red);
+        border-radius: 4px !important;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--red);
+    }
+}
+
+.form-input {
+    height: 100%;
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 4px;
+    padding: 15px;
+    transition: 0.3s;
+    background: white;
+}
+
+.base-textarea {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.base-submit {
+    background: var(--main-color);
+    padding: 15px;
+    border-radius: var(--border-small-radius);
+    color: white;
+    font-weight: bold;
+    width: 100%;
+    height: 100%;
+}
+
+.taxi__banner,
+.express__banner {
+    .base-input {
+        .form-input {
+            background: transparent;
+            color: white;
+
+            &::placeholder {
+                color: white;
+            }
+
+            &::placeholder-shown {
+                color: white;
+            }
+        }
+    }
+
+
+}
+
+.taxi__banner {
+    .base-button.base-submit {
+        background: var(--yellow);
+        border-color: var(--yellow);
+        color: var(--main-black);
+    }
+}
+
+.base-form {
+    width: 100%;
+    background: transparent;
+    display: grid;
+    row-gap: 10px;
+    grid-auto-flow: row;
+}
+
+.base-form.small {
+    .form-title {
+        font-size: var(--big-size);
+        grid-column-start: 1;
+        grid-column-end: 3;
+        color: var(--main-black);
+    }
+}
+
+.base-form.banner__form {
+    max-width: 500px;
+
+    .form-input {
+        background: white;
+        border: 1px solid #D4D4D4;
+        border-radius: var(--border-small-radius);
+    }
+
+    .base-button {
+        border-radius: var(--border-small-radius);
+        background: var(--main-color);
+        border: 1px solid var(--main-color);
+    }
+}
+
+.base-form.form-comp {
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.base-form.burger {
+    .form-title {
+        font-size: var(--medium-size);
+    }
+}
+
+.base-form.callback__form {
+    min-width: 300px;
+
+    .base-input {
+        .form-input {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+
+            &::placeholder {
+                color: white;
+            }
+        }
+    }
+
+    .form__check {
+        background: transparent;
+
+        .form__check-label {
+            color: white;
+
+            .radio__img {
+                border-color: white;
+            }
+
+            .checked {
+                &::before {
+                    color: white;
+                }
+            }
+        }
+    }
+}

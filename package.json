@@ -1,0 +1,47 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@nuxt/eslint": "^0.5.5",
+    "@nuxt/image": "^1.8.1",
+    "@pinia/nuxt": "0.11.0",
+    "axios": "^1.7.2",
+    "domhandler": "^5.0.3",
+    "dompurify": "^3.2.4",
+    "h3": "^1.12.0",
+    "htmlparser2": "^10.0.0",
+    "jsdom": "^26.0.0",
+    "maska": "^3.0.0",
+    "nuxt": "^3.15.0",
+    "nuxt-storage": "^1.2.2",
+    "pdfobject": "^2.3.0",
+    "pinia": "3.0.2",
+    "pinia-plugin-persistedstate": "4.2.0",
+    "react-pdf": "^9.1.1",
+    "sharp": "^0.33.5",
+    "vue": "latest",
+    "vue3-carousel": "^0.3.3",
+    "vue3-carousel-nuxt": "^1.1.2",
+    "yandex-metrika-module-nuxt3": "^1.5.3"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.2.0",
+    "@types/jsdom": "^21.1.7",
+    "@vueuse/core": "^10.11.0",
+    "@vueuse/nuxt": "^10.11.0",
+    "nuxt-anchorscroll": "^1.0.3",
+    "sass": "^1.77.8"
+  }
+}

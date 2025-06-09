@@ -1,0 +1,687 @@
+<script setup>
+import { useNewStore } from '/stores/NewStore.js';
+const newStore = useNewStore();
+
+import { useAppStore } from '/stores/AppStore.js';
+const appStore = useAppStore();
+
+import { useRoute } from 'vue-router';
+const $route = useRoute();
+
+const colors = ref(newStore.model.colored_galleries)
+
+const currentMod = computed(() => findMod(newStore.modification, newStore.model.modifications))
+const modList = computed(() => newStore.model.modifications?.filter((mod) => mod.car_complectations.length))
+
+newStore.modification = modList.value?.[0]?.id
+
+const selectedCar = ref({
+    mod: modList.value?.[0],
+    comp: modList.value?.[0]?.car_complectations?.[0]
+});
+
+const currentModel = computed(() => newStore.model)
+
+const tradeSwitch = ref(true)
+const creditSwitch = ref(true)
+const salonSwitch = ref(true)
+
+const tradeSale = computed(() => currentModel.value.sale * appStore.tradeCalcPercent)
+const creditSale = computed(() => currentModel.value.sale * appStore.creditCalcPercent)
+const salonSale = computed(() => currentModel.value.sale * appStore.salonCalcPercent)
+
+const totalSale = computed(() => {
+    let total = 0;
+    if (tradeSwitch.value) total += tradeSale.value
+    if (creditSwitch.value) total += creditSale.value
+    if (salonSwitch.value) total += salonSale.value
+    newStore.modelSale = total
+    return total
+})
+const car = computed(() => {
+    return ({
+        price: selectedCar.value.comp.price,
+        sale: newStore.model.sale,
+        model: $route.params.model,
+        brand: $route.params.brand,
+        modification: selectedCar.value.mod.modification,
+        complectation: selectedCar.value.comp.complectation,
+        images: [{ url: '/images/modalModelDefault.webp' }],
+    })
+})
+const loading = ref(true);
+onMounted(() => {
+    loading.value = false
+})
+const show = ref(0);
+</script>
+
+<template>
+    <section class="model__card section">
+        <div class="container">
+            <div class="section__header">
+                <BasePageTitle />
+            </div>
+            <div class="model__container">
+                <div class="complectations-calculator">
+                    <div class="model__top">
+                        <p class="model__price-text">Цена:</p>
+                        <div class="model__row-price">
+                            <del class="model__price" v-if="newStore.model.sale">
+                                от
+                                {{ makeSpaces(newStore.model.min_price + newStore.model.sale) }}
+                                ₽
+                            </del>
+                            <p class="model__diff">
+                                от
+                                {{ makeSpaces(newStore.model.min_price) }}
+                                ₽
+                            </p>
+                        </div>
+                        <p class="model__credit">
+                            Платеж в месяц от:
+                            <span>
+                                {{ makeSpaces(appStore.calcMonthPriceModel(0, newStore.model.min_price)) }} руб/мес.
+                            </span>
+                        </p>
+                        <div class="complectations-calculator__item trade" :class="{ 'active': tradeSwitch }">
+                            <div clas="complectations-calculator__switch">
+                                <div class="switch">
+                                    <input type="checkbox" id="switch" :checked="tradeSwitch"
+                                        @change="tradeSwitch = !tradeSwitch" />  
+                                    <label for="switch"></label>
+                                </div>
+                            </div>
+                            <div class="complectations-calculator__text" :class="{ 'active': tradeSwitch }">
+                                <span class="text">Trade-In</span>
+                                <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
+                            </div>
+                        </div>
+                        <div class="complectations-calculator__item credit" :class="{ 'active': creditSwitch }">
+                            <div clas="complectations-calculator__switch">
+                                <div class="switch">
+                                    <input type="checkbox" id="credit" :checked="creditSwitch"
+                                        @change="creditSwitch = !creditSwitch" />
+                                    <label for="credit"></label>
+                                </div>
+                            </div>
+                            <div class="complectations-calculator__text" :class="{ 'active': creditSwitch }">
+                                <span class="text">Кредит</span>
+                                <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
+                            </div>
+                        </div>
+                        <div class="complectations-calculator__item salon" :class="{ 'active': salonSwitch }">
+                            <div clas="complectations-calculator__switch">
+                                <div class="switch">
+                                    <input type="checkbox" id="salon" :checked="salonSwitch"
+                                        @change="salonSwitch = !salonSwitch" />
+                                    <label for="salon"></label>
+                                </div>
+                            </div>
+                            <div class="complectations-calculator__text" :class="{ 'active': salonSwitch }">
+                                <span class="text">FINANCE</span>
+                                <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
+                            </div>
+                        </div>
+                        <div class="complectations-calculator__total"
+                            :class="{ 'activeTotal': tradeSwitch || creditSwitch || salonSwitch }">
+                            <div class="complectations-calculator__text-max">
+                                <span class="text">Максимальная выгода при покупке до {{ getNextMonday() }}</span>
+                                <span class="complectations-calculator__money">
+                                    {{ makeSpaces(totalSale) }} ₽
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+                <div class="model__left">
+                    <div class="model__garantee">
+                        <p v-if="
+                            newStore.model.warranty_year &&
+                            newStore.model.warranty_km != 0
+                        ">
+                            Гарантия:
+                                {{ newStore.model.warranty_year }} /
+                                {{ newStore.model.warranty_km }}
+                        </p>
+                        <p v-else>
+                            Гарантия:
+                            5 лет / 100 000 км
+                        </p>
+                    </div>
+                    <div class="model__img-block">
+                        <div class="model__img" v-for="(item, index) in newStore.model.colored_galleries"
+                            :key="item.color_id" v-show="show === index">
+                            <NuxtImg :src="`${item.url}`"
+                                :alt="`Баннер ${newStore.model.brand} ${newStore.model.model}`" height="240"
+                                format="webp" quality="80" placeholder="/images/spinner.svg" />
+                        </div>
+                        <div class="model__main-icons">
+                            <div class="view__col">
+                                <div class="view__row" v-if="currentMod.max_speed">
+                                    <img src="/svg/speedometer1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.max_speed }}
+                                        км/ч<br />
+                                        <span>скорость</span>
+                                    </p>
+                                </div>
+                                <div class="view__row" v-if="currentMod.power">
+                                    <img src="/svg/speed1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.power }}
+                                        л.с.<br />
+                                        <span>мощность</span>
+                                    </p>
+                                </div>
+                                <div class="view__row" v-if="currentMod.from_0_to_100">
+                                    <img src="/svg/car-engine1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.from_0_to_100 }}
+                                        сек.<br />
+                                        <span>разгон</span>
+                                    </p>
+                                </div>
+                                <div class="view__row" v-if="currentMod.consumption_combine">
+                                    <img src="/svg/gasoline-pump1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.consumption_combine }}
+                                        л./100 км<br />
+                                        <span>расход</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="model__main-color">
+                        <div class="color__bar">
+                            <div class="color__bar-item" v-for="(item, index) in newStore.model.colored_galleries"
+                                :key="item.color_id" :style="item.color.hex_plus?.lenght > 1
+                                    ? `background: linear-gradient(90deg, ${item.color.hex} 50%, ${item.color.hex_plus} 50%);`
+                                    : `background: ${item.color.hex};`
+                                    " @click="show = index, newStore.color = index"></div>
+                        </div>
+                        <p class="car__name-color" v-for="(item, index) in newStore.model.colored_galleries"
+                            :key="item.color_id" v-show="show === index">
+                            Цвет: {{ item.color.color }}
+                        </p>
+                    </div>
+                </div>
+                <div class="model__right">
+                    <ul class="model__card-list">
+                        <li>Бонус при Trade-In до 250 000 ₽</li>
+                        <li>Без первого взноса</li>
+                        <li>Гарантия 3 года или 100 000 км</li>
+                        <li>Процентная ставка от 4,9%</li>
+                        <li>Кредит сроком до 8 лет</li>
+                        <li>Рассрочка 0%</li>
+                    </ul>
+                    
+                </div>
+                <!-- <div class="model__buttons">
+                    <BaseButtonModal :car="car" :btn-label="'Обменять в Trade-In'" :app-type="8"
+                            :modal-title="`Обменять по Trade-In ${newStore.model.brand} ${newStore.model.model}`"
+                            :btn-class="`trade model-card`" />
+                    <BaseButtonModal :car="car" :btn-label="'Купить в кредит'" :app-type="2"
+                            :modal-title="`Купить в кредит ${newStore.model.brand} ${newStore.model.model}`"
+                            :btn-class="`credit model-card`" />
+                </div> -->
+            </div>
+        </div>
+    </section>
+</template>
+<style lang="scss" scoped>
+.model__top{
+    @media screen and (max-width: 1075px) {
+        position: absolute;
+        width: 92%;
+        top: 540px;
+        left: 30px;   
+    }
+    @media screen and (max-width: 767px) {
+        position: relative;
+        width: auto;
+        top: 0;
+        left: 0;
+    }
+}
+.complectations-calculator{
+    @media screen and (max-width: 1075px) {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+.complectations-calculator__item{
+    align-items: center;
+    display: flex;
+    border: 1px solid var(--main-color);
+    padding: 10px 15px;
+    border-radius: 20px;
+    gap: 10px;
+    margin-top: 10px;
+}
+.complectations-calculator__switch{
+    display: flex;
+}
+.complectations-calculator__text{
+    display: flex;
+    justify-content: space-between !important;
+    width: 100%;
+    align-items: center;
+    .money{
+        color: var(--main-color);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+    }
+}
+.complectations-calculator__text-max{
+    display: flex;
+    margin: 10px 0;
+    flex-direction: column;
+    font-weight: 700;
+}
+.complectations-calculator__money{
+    color: var(--main-color);
+    font-weight: 700;
+}
+.model__card {
+    position: relative;
+    margin-top: 0;
+    padding: 0;
+    .model__container {
+        position: relative;
+        display: flex;
+        -webkit-box-pack: justify;
+        justify-content: space-evenly;
+        gap: 30px;
+        @media screen and (max-width: 1075px){
+            margin-bottom: 400px;
+        }
+        @media screen and (max-width: 767px) {
+            flex-direction: column;
+            margin-bottom: 0px;
+            gap: 0;
+        }
+        .model__left {
+            .model__garantee {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                padding-left: 44px;
+                font-weight: 300;
+                max-width: 165px;
+                font-size: 12px;
+                margin-bottom: 10px;
+                background-color: #0091B9;
+                border-radius: 15px;
+                padding: 10px;
+                color: #fff;
+                white-space: nowrap;
+                & span {
+                    color: #fff;
+                }
+            }
+            .model__img-block {
+                position: relative;
+                display: flex;
+                align-items: flex-end;
+                gap: 20px 36px;
+                margin-bottom: 5px;
+                margin-top: 0px;
+                @media screen and (max-width: 1199px) {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    margin-top: 0;
+                    margin-bottom: 20px;
+                }
+                @media screen and (max-width: 767px) {
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 10px;
+                }
+                @media screen and (max-width: 425px) {
+                    flex-direction: column;
+                }
+                .model__img {
+                    max-width: 575px;
+                    width: auto;
+                    height: 245px;
+                    @media screen and (max-width: 767px) {
+                        max-width: 100%;
+                        height: auto;
+                        max-height: 300px;
+                    }
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                    }
+                }
+                .model__main-icons {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    @media screen and (max-width: 1199px) {
+                        flex-direction: row;
+                    }
+                    @media screen and (max-width: 767px) {
+                        flex-direction: column;
+                    }
+                    @media screen and (max-width: 425px) {
+                        flex-direction: row;
+                        justify-content: space-evenly;
+                        width: calc(100% + 40px);
+                        padding: 10px;
+                        background: #fff;
+                        color: var(--bg-light);
+                        margin-left: -20px;
+                        margin-right: -0px;
+                    }
+                    @media screen and (max-width: 375px) {
+                        width: calc(100% + 20px);
+                        margin-left: -10px;
+                        margin-right: -10px;
+                    }
+                    .model__main-icon {
+                        text-align: center;
+                        min-width: max-content;
+                        .model__icon-img {
+                            width: 32px;
+                            height: 32px;
+                            object-fit: contain;
+                            filter: brightness(0) saturate(100%) invert(12%) sepia(98%) saturate(7497%) hue-rotate(357deg) brightness(101%) contrast(112%);
+                            @media screen and (max-width: 425px) {
+                                display: none;
+                            }
+                        }
+                        .model__img-mob {
+                            display: none;
+
+                            @media screen and (max-width: 425px) {
+                                display: inline-block;
+                            }
+                        }
+                        p {
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+            .model__main-color {
+                margin-bottom: 22px;
+                .car__name-color {
+                    margin-top: 15px;
+                }
+                .color__bar {
+                    position: relative;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    max-width: 310px;
+                    @media screen and (max-width: 440px) {
+                        max-width: 100%;
+                    }
+                    .color__bar-item {
+                        width: 30px;
+                        height: 30px;
+                        cursor: pointer;
+                        border-radius: 33px;
+                        border: 1px solid #000;
+                    }
+                }
+            }
+        }
+
+        .model__right {
+            margin-top: 50px;
+            @media screen and (max-width: 767px) {
+                display: flex;
+                flex-direction: column-reverse;
+                gap: 15px;
+                margin-top:0px
+            }
+            @media screen and (max-width: 570px) {
+                gap: 10px;
+            }
+            @media screen and (max-width: 375px) {
+                flex-direction: column;
+            }
+            .model__card-list {
+                position: relative;
+                z-index: 1;
+                border: 1px solid var(--main-color);
+                border-radius: 4px;
+                padding: 25px 15px;
+                padding-right: 0;
+                display: grid;
+                grid-template-columns: repeat(1, 1fr);
+                gap: 15px 32px;
+                margin-bottom: 30px;
+                width: max-content;
+                @media screen and (max-width: 1199px) {
+                    padding: 15px;
+                    padding-right: 0;
+                    gap: 15px;
+                }
+                @media screen and (max-width: 1023px) {
+                    grid-template-columns: repeat(1, 1fr);
+                    border-radius: 10px;
+                    padding: 15px;
+                    gap: 10px;
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+                @media screen and (max-width: 767px) {
+                    margin-bottom: 0;
+                    margin-top: 10px;
+                    gap: 5px;
+                }
+                @media screen and (max-width: 375px) {
+                    display: none;
+                }
+                &::before {
+                    content: "";
+                    position: absolute;
+                    bottom: 5px;
+                    left: 0;
+                    z-index: -1;
+                    pointer-events: none;
+                    @media screen and (max-width: 1024px) {
+                        content: none;
+                    }
+                }
+                & li {
+                    position: relative;
+                    padding:0 28px;
+                    font-weight: 300;
+                    line-height: 22px;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        width: 18px;
+                        height: 1px;
+                        background: var(--main-color);
+                    }
+                }
+            }
+        }
+    }
+}
+.model__price-text {
+    position: relative;
+    z-index: 2;
+    font-weight: 500;
+    margin-bottom: 10px;
+    @media screen and (max-width: 767px) {
+        display: none;
+    }
+    @media screen and (max-width: 375px) {
+        display: block;
+        margin-bottom: 0;
+    }
+}
+.model__row-price {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px 19px;
+    .model__diff {
+        color: var(--main-color);
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 32px;
+        @media screen and (max-width: 425px) {
+            font-size: 22px;
+            line-height: 26px;
+        }
+    }
+    .model__price {
+        display: block;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #b9b9b9;
+        @media screen and (max-width: 425px) {
+            font-size: 16px;
+        }
+    }
+}
+.model__credit {
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 18px;
+    margin-top: 13px;
+    @media screen and (max-width: 425px) {
+        font-size: 14px;
+    }
+    @media screen and (max-width: 375px) {
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+    & span {
+        font-weight: 400;
+        color: var(--main-color);
+    }
+}
+.model__buttons {
+    display: flex;
+    gap: 25px;
+    width: 100%;
+    margin-top: 20px;
+    @media screen and (max-width: 1023px) {
+        gap: 15px;
+    }
+    @media screen and (max-width: 767px) {
+        margin-top: 0;
+        flex-direction: column;
+    }
+}
+.model__buttons {
+    .credit__button {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        height: 60px;
+        border-radius: 10px;
+        min-width: 155px;
+    }
+    .trade__button {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        height: 60px;
+        border-radius: 10px;
+        min-width: 215px;
+    }
+}
+.view__col {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;              
+    @media screen and (max-width: 1200px){
+        margin: 10px 0px;
+        display: grid;
+        gap:120px;
+        grid-template-columns: repeat(3, 1fr);
+    }
+    @media screen and (max-width: 1025px){
+        margin: 10px 0px;
+        display: grid;
+        gap: 80px;
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+    @media screen and (max-width: 1000px) {
+        margin: 10px 0px;
+        display: grid;
+        grid-template-columns: 1fr 2fr;    
+    }
+    @media screen and (max-width: 767px) {
+        gap: 10px;
+        display: flex;
+        margin: 10px 0;
+        flex-direction: column;
+    }
+    @media screen and (max-width: 425px){
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+        .view__row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            @media screen and (max-width: 1200px){
+                display: grid;
+                grid-template-columns: 3fr;
+            }
+            @media screen and (max-width: 767px) {
+                flex-direction: column;
+                color: black;
+                width: auto;
+                gap: 10px;
+            }
+
+            @media screen and (max-width: 425px) {
+                flex-direction: column;
+                color: black;
+                width: auto;
+                gap: 10px;
+            }
+            @media screen and (max-width: 375px) {
+                width: auto;
+            }
+            & img {
+                width: 40px;
+                height: 40px;
+                -o-object-fit: contain;
+                object-fit: contain;
+                fill: var(--main-color);
+            }
+            & p {
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 22px;
+                min-width: max-content;
+                @media screen and (max-width: 767px) {
+                    font-size: 18px;
+                    @media screen and (max-width: 425px) {
+                        font-size: 15px;
+                    }
+                }
+
+            & span {
+                font-weight: 500;
+                font-size: 12px;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+</style>
