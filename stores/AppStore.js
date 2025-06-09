@@ -189,7 +189,7 @@ export const useAppStore = defineStore("appStore", () => {
 
   /* Main App Data */
   const siteName = ref('Tumen-leks')
-  const siteUrl = ref('https://tumen-leks.ru')
+  const siteUrl = ref('https://tmn-auto.ru')
   const phone = ref('+7 (345) 258-30-00')
   const siteCity = ref('Тюмень')
   const address = ref('г. Тюмень , ул. Уездная, д. 2')

@@ -12,8 +12,8 @@ function callback(n) {
 </script>
 
 <template>
-    <Slider />
-    <!-- <BannerNB1/> -->
+    <!-- <Slider />? -->
+    <BannerNB1/>
     <Brands />
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentCarsData" />

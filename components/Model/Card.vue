@@ -314,7 +314,7 @@ const show = ref(0);
                 max-width: 165px;
                 font-size: 12px;
                 margin-bottom: 10px;
-                background-color: #0091B9;
+                background-color: #334C85;
                 border-radius: 15px;
                 padding: 10px;
                 color: #fff;

@@ -64,7 +64,7 @@ export default function postForm(data, appType, car, category) {
 
       send_form: 1,
       send_page: window.location.origin + window.location.pathname,
-      source: `https://tumen-leks.ru/`, // обязательно должен быть / на конце url
+      source: `https://tmn-auto.ru/`, // обязательно должен быть / на конце url
 
       referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
       entry: appStore.entry ? appStore.entry : null,
@@ -75,7 +75,7 @@ export default function postForm(data, appType, car, category) {
     }, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Domain': `https://tumen-leks.ru`,
+        'Domain': `https://tmn-auto.ru`,
       },
       withCredentials: true
     })
@@ -93,7 +93,7 @@ export default function postForm(data, appType, car, category) {
         appStore.formLoading = false
       })
 
-    navigateTo('/success-tumen-leks');
+    navigateTo('/success-tmn-auto');
   }
 }
 
@@ -135,7 +135,7 @@ export default function postForm(data, appType, car, category) {
 //       price: car?.price ? Number(car.price) : null,
 //       send_form: 1,
 //       send_page: window.location.href,
-//       source: 'https://tumen-leks.ru/',
+//       source: 'https://tmn-auto.ru/',
 //       referrer: document.referrer || window.location.href,
 //       entry: appStore.entry || null,
 //       ip: appStore.ip,
@@ -155,7 +155,7 @@ export default function postForm(data, appType, car, category) {
 //     const response = await axios.post(apiFormNew, postData, {
 //       headers: {
 //         'Content-Type': 'application/json',
-//         'Domain': 'tumen-leks.ru'
+//         'Domain': 'tmn-auto.ru'
 //       },
 //       withCredentials: true,
 //       timeout: 10000
@@ -166,7 +166,7 @@ export default function postForm(data, appType, car, category) {
 //     if (car) {
 //       yandexEcommercePurchase(appStore.orderId, car);
 //     }
-//     await navigateTo('/success-tumen-leks.ru');
+//     await navigateTo('/success-tmn-auto.ru');
     
 //   } catch (err) {
 //     console.error('Полная ошибка:', {

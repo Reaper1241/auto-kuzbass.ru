@@ -59,9 +59,9 @@ export default defineNuxtConfig({
         lang: 'ru'
       },
 
-      noscript: [
-        { children: `<div><img src="https://mc.yandex.ru/watch/102380642" style="position:absolute; left:-9999px;" alt="" /></div>` },
-      ],
+      // noscript: [
+      //   { children: `<div><img src="https://mc.yandex.ru/watch/102380642" style="position:absolute; left:-9999px;" alt="" /></div>` },
+      // ],
 
       script: [
         {
@@ -87,14 +87,14 @@ export default defineNuxtConfig({
   eslint: {
   },
 
-  yandexMetrika: {
-    id: '102380642',
-    clickmap: true,
-    trackLinks: true,
-    accurateTrackBounce: true,
-    webvisor: true,
-    ecommerce: true,
-  },
+  // yandexMetrika: {
+  //   id: '102380642',
+  //   clickmap: true,
+  //   trackLinks: true,
+  //   accurateTrackBounce: true,
+  //   webvisor: true,
+  //   ecommerce: true,
+  // },
 
   pinia: {
     storesDirs: ['./stores/**']

@@ -302,9 +302,9 @@ defineProps({
 }
 
 .trade {
-    background: #9F9F9F;
-    border-color: #9F9F9F;
-    color: white;
+    background: white;
+    border-color: var(--main-color);
+    color: var(--main-color);
     padding: 8px;
 }
 

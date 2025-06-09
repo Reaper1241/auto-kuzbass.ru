@@ -81,7 +81,7 @@ onMounted(() => {
             <input class="range-slider__input timelist range-slider__progress range-input" type="range" :min="min"
                 :max="max" list="timelist" :step="step" v-model="percentList" @change="percentListOutput"
                 :disabled="disabled"
-                :style="{ background: `linear-gradient(to right, #0091B9 ${percentList / max * 100}%, #0091B9 ${percentList / max * 100}%)` }" />
+                :style="{ background: `linear-gradient(to right, #334C85 ${percentList / max * 100}%, #334C85 ${percentList / max * 100}%)` }" />
 
             <ul id="timelist" class="datalist" :class="{ 'disabled': disabled }">
                 <li v-for="i in range" :key="i" :value="i" label="">
@@ -136,7 +136,7 @@ onMounted(() => {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #0091B9;
+    background: #334C85;
     cursor: pointer;
     border: none;
     margin-top: -7px; // чтобы выровнять по центру трека
@@ -146,7 +146,7 @@ onMounted(() => {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #0091B9;
+    background: #334C85;
     cursor: pointer;
     border: none;
 }
@@ -155,7 +155,7 @@ onMounted(() => {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #0091B9;
+    background: #334C85;
     cursor: pointer;
     border: none;
 }

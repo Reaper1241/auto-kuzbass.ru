@@ -16,7 +16,7 @@ for (let i = 0; i < pathArray.length; i++) {
             .replaceAll('politics', 'Политика конфиденциальности')
             .replaceAll('comparison', 'Сравнение')
             .replaceAll('favorites', 'Избранное')
-            .replaceAll('success-tumen-leks.ru', 'Успешная заявка')
+            .replaceAll('success-tmn-auto.ru', 'Успешная заявка')
             .replaceAll('thank', 'Успешная заявка')
             .replaceAll('cars', 'Каталог авто')
             .replaceAll('banks', 'Банки-партнеры')

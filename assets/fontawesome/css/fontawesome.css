@@ -3567,7 +3567,8 @@ readers do not read off random characters that represent icons */
   content: "\f588"; }
 
 .fa-phone::before {
-  content: "\f095"; }
+  content: "\f095";
+  color: var(--main-color); }
 
 .fa-calendar-xmark::before {
   content: "\f273"; }

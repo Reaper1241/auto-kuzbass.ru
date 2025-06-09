@@ -46,7 +46,7 @@ const options = computed(() => {
             <input class="range-slider__input timelist range-input" type="range" :min="min" :max="max" id="range"
                 list="timelist" :step="currentStep" v-model="percentList" @change="percentListOutput"
                 :disabled="props.disabled" :style="{
-                background: `linear-gradient(to right, #0091B9 ${((percentList - min) / (max - min)) * 100}%, #0091B9 ${((percentList - min) / (max - min)) * 100}%)`
+                background: `linear-gradient(to right, #334C85 ${((percentList - min) / (max - min)) * 100}%, #334C85 ${((percentList - min) / (max - min)) * 100}%)`
                 }" />
 
             <ul class="datalist" id="timelist" :class="{ 'disabled': props.disabled }">
@@ -101,7 +101,7 @@ const options = computed(() => {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: #0091B9;
+            background: #334C85;
             cursor: pointer;
             border: 2px solid white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -120,7 +120,7 @@ const options = computed(() => {
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: #0091B9;
+            background: #334C85;
             cursor: pointer;
             border: 2px solid white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

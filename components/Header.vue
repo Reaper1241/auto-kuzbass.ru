@@ -44,7 +44,7 @@ watch($route, () => showBurger.value = false)
             <div class="container">
                 <div class="header__content">
                     <div class="header__logo">
-                        <BaseLogo />
+                        <!-- <BaseLogo /> -->
                     </div>
 
                     <nav class="header__navbar">
@@ -121,7 +121,7 @@ watch($route, () => showBurger.value = false)
     z-index: 999;
     transition: all 0.7s ease;
     background: #DEDEDE;
-    color: #0091B9;
+    color: #334C85;
     width: 100%;
 
     @media screen and (max-width: 1000px) {

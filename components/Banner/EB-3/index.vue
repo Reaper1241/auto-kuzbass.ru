@@ -157,7 +157,7 @@ const appStore = useAppStore();
                     //     content: '✔';
                     //     position: absolute;
                     //     left: 0;
-                    //     color: #0091B9;
+                    //     color: #334C85;
                     // }
                 }
             }
@@ -221,7 +221,7 @@ const appStore = useAppStore();
 }
 
 .text__red{
-    color: #0091B9;
+    color: #334C85;
 }
 .express__text-ul{
     display: flex;

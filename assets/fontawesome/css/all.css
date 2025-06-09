@@ -4767,7 +4767,8 @@ readers do not read off random characters that represent icons */
   content: "\f621"; }
 
 .fa-phone-slash::before {
-  content: "\f3dd"; }
+  content: "\f3dd"; 
+}
 
 .fa-paint-roller::before {
   content: "\f5aa"; }

@@ -8,7 +8,7 @@
                 <div class="white-container">
                     <div class="callback__content">
                         <div class="callback__title">
-                            <h2>Есть вопросы по покупке автомобиля в автосалоне "Tumen-Leks"? </h2>
+                            <h2>Есть вопросы по покупке автомобиля в автосалоне "TMN Auto"? </h2>
                             <h3>Оставьте заявку - перезвоним в течение 15 минут и расскажем всё, что нужно знать! 
 Узнайте выгодные условия прямо сейчас!</h3>
                         </div>
@@ -102,7 +102,7 @@
                 top: 4px;
                 bottom: 4px;
                 width: 4px;
-                background-color: #0091B9; // Красная линия
+                background-color: #334C85; // Красная линия
                 border-radius: 2px;
             }
 
