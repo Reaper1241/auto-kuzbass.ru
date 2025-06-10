@@ -1,12 +1,17 @@
 <script setup>
 import { useRoute } from 'vue-router';
-
 import { useAppStore } from '/stores/AppStore.js';
 const appStore = useAppStore();
 
 const $route = useRoute();
 
 let showBurger = ref(false);
+const isOpen = ref(false);
+const currentModalTitle = ref("Оставьте заявку и мы перезвоним Вам!");
+const currentAppType = ref(6); // Тип заявки для телефона
+const isMobile = ref(false);
+const isWorkingHours = ref(true); // Добавлено для проверки рабочего времени
+
 function toggleBurger() {
     showBurger.value = !showBurger.value
 
@@ -18,6 +23,65 @@ function toggleBurger() {
 }
 
 const isScrolled = ref(false)
+
+// Проверка рабочего времени
+function checkWorkingHours() {
+  const now = new Date();
+  const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
+  const moscowTime = new Date(now.getTime() + moscowOffset);
+  const currentHour = moscowTime.getUTCHours();
+  isWorkingHours.value = currentHour >= 7 && currentHour < 19;
+}
+
+function modalShow() {
+  isOpen.value = true;
+  checkWorkingHours(); // Проверяем время перед открытием
+  
+  if (!isWorkingHours.value) {
+    currentModalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона TMN-auto";
+    currentAppType.value = 1;
+  } else {
+    currentModalTitle.value = "Оставьте заявку и мы перезвоним Вам в течение 30 минут!";
+    currentAppType.value = 6;
+  }
+  document.body.style.overflow = 'hidden';
+}
+
+function handlePhoneClick() {
+  if (isMobile.value) {
+    checkWorkingHours();
+    if (isWorkingHours.value) {
+      // На мобилке и рабочее время - стандартное поведение звонка
+      window.location.href = `tel:${appStore.phone.replace(/[^0-9+]/g, '')}`;
+    } else {
+      // На мобилке и нерабочее время - открываем модалку
+      modalShow();
+    }
+  } else {
+    // На десктопе - открываем модалку
+    modalShow();
+  }
+}
+
+function closeModal() {
+  isOpen.value = false;
+  document.body.style.overflow = 'auto';
+}
+
+onMounted(() => {
+  // Определяем мобильное устройство
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
+  // Проверяем время при загрузке
+  checkWorkingHours();
+  
+  // Проверяем время каждую минуту
+  setInterval(checkWorkingHours, 60000);
+  
+  window.addEventListener('scroll', () => {
+    isScrolled.value = window.scrollY > 50;
+  });
+});
 
 watch($route, () => showBurger.value = false)
 </script>
@@ -32,10 +96,15 @@ watch($route, () => showBurger.value = false)
                         {{ appStore.address }}
                     </div>
                     <div class="header__top-phone">
-                        <a :href="`tel:+${appStore?.clearPhone}`" class="header__top-phone-link">
+                        <!-- Для мобильных - звонок (если рабочее время), для десктопа - модалка -->
+                        <a v-if="isMobile && isWorkingHours" :href="`tel:${appStore.phone.replace(/[^0-9+]/g, '')}`" class="header__top-phone-link">
                             <img src="/svg/Vector5.svg" class="svg__logo" alt="" />
                             {{ appStore.phone }}
                         </a>
+                        <button v-else class="header__top-phone-link" @click="handlePhoneClick">
+                            <img src="/svg/Vector5.svg" class="svg__logo" alt="" />
+                            {{ appStore.phone }}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -56,9 +125,6 @@ watch($route, () => showBurger.value = false)
                                     <li class="dropdown-item">
                                         <NuxtLink to="/cars" class="dropdown-link">Все авто</NuxtLink>
                                     </li>
-                                    <!-- <li class="dropdown-item">
-                                        <NuxtLink to="/cars/china" class="dropdown-link">Китайские авто</NuxtLink>
-                                    </li> -->
                                     <li class="dropdown-item">
                                         <NuxtLink to="/cars/taxi" class="dropdown-link">Авто для такси</NuxtLink>
                                     </li>
@@ -80,17 +146,14 @@ watch($route, () => showBurger.value = false)
                     </nav>
 
                     <div class="header__block">
-                        <!-- <div class="header__button">
-                            <BaseButtonModal :btnLabel="'Позвоните мне'" :btnMobileIcon="`fa-solid fa-phone`"
-                                :btnIcon="`fa-solid fa-phone`"
-                                :modalTitle="`Закажите обратный звонок и наш специалсит перезвонит Вам в течение 15 минут!`"
-                                btnClass="header" :app-type="1" />
-                        </div> -->
                         <div class="header__call">
-                            <a :href="`tel:+${appStore?.clearPhone}`" class="header__call-link">
-                                <!-- <i class="fa-solid fa-phone"></i> -->
-                                <img src="/svg/Vector5.svg"  alt="" />
+                            <!-- Иконка телефона - на мобилке звонок (если рабочее время), на десктопе модалка -->
+                            <a v-if="isMobile && isWorkingHours" :href="`tel:${appStore.phone.replace(/[^0-9+]/g, '')}`" class="header__call-link">
+                                <img src="/svg/Vector5.svg" alt="" />
                             </a>
+                            <button v-else class="header__call-link" @click="handlePhoneClick">
+                                <img src="/svg/Vector5.svg" alt="" />
+                            </button>
                         </div>
                         <div class="header__menu mobile-menu" @click="toggleBurger()" :class="{ 'active': showBurger }">
                             <i class="fa-solid fa-bars"></i>
@@ -110,10 +173,103 @@ watch($route, () => showBurger.value = false)
                 </div>
             </div>
         </Teleport>
+
+        <!-- Модалка для телефона -->
+        <Teleport to="body">
+            <div v-if="isOpen" class="modal-overlay">
+                <div class="modal-content">
+                    <button class="modal-close" @click="closeModal">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <h3 class="modal-title">{{ currentModalTitle }}</h3>
+                    <FormSmall /> <!-- Ваш компонент формы -->
+                </div>
+            </div>
+        </Teleport>
     </header>
 </template>
 
 <style scoped lang="scss">
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.submit-btn {
+    background-color: var(--main-color);
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.submit-btn:hover {
+    background-color: #0052a3;
+}
 .header {
     position: sticky;
     top: 0;
@@ -121,7 +277,7 @@ watch($route, () => showBurger.value = false)
     z-index: 999;
     transition: all 0.7s ease;
     background: #DEDEDE;
-    color: #334C85;
+    color: #006400;
     width: 100%;
 
     @media screen and (max-width: 1000px) {
