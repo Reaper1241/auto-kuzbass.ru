@@ -2,7 +2,7 @@
 // export const apiNew = "https://api.autosalon-arena.ru/api/site/";
 // export const apiNew = "https://new-api.autosalon-arena.ru/index.php/";
 // export const apiNew = "http://new-api.autogaga.ru/index.php/";
-export const apiNew = "https://new-api.tumen-leks.ru/index.php/";
+export const apiNew = "https://new-api.tmn-auto.ru/index.php/";
 
 export const apiFormNew = "https://send-app.ru/new/plex";
 /* Api URL для фетчей */

@@ -190,9 +190,9 @@ export const useAppStore = defineStore("appStore", () => {
   /* Main App Data */
   const siteName = ref('Tmn-auto')
   const siteUrl = ref('https://tmn-auto.ru')
-  const phone = ref('+7 (345) 258-30-00')
+  const phone = ref('+7 (345 )257-97-09')
   const siteCity = ref('Тюмень')
-  const address = ref('г. Тюмень , ул. Уездная, д. 2')
+  const address = ref('Тюмень, ул. Московский тракт 321 стр 1')
   // const yandexMap = ref('')
 
   const clearPhone = computed(() => {

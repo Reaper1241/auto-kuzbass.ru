@@ -18,12 +18,12 @@ const isError = computed(() => !!error.value);
             <div class="footer__contacts"> 
               <p>
                 <i class="fa-solid fa-location-dot"></i>
-                <span class="footer__info-adress">г. Тюмень , ул. Уездная, д. 2</span>
+                <span class="footer__info-adress">Тюмень, ул. Московский тракт 321 стр 1</span>
               </p>
                 <p class="time">9:00–21:00 без выходных</p>
               <p>
                 <i class="fa-solid fa-phone"></i>
-                <span>+7 (345) 258-30-00</span>
+                <span>+7 (345 )257-97-09</span>
               </p>
               <p class="phone"><a href="#">Заказать обратный звонок</a></p>
             </div>

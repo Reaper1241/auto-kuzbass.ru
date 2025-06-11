@@ -12,7 +12,7 @@
                     </div>
 
                     <div class="express__benefits">
-                        <span>Ставка от 4.9%</span>
+                        <span>Ставка от 3.9%</span>
                         <span>Первый взнос 0%</span>
                     </div>
 
