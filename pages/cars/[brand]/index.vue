@@ -62,7 +62,7 @@ if (brand) {
         <NewModels />
         <BannerCB1 />
         <CarsListNew />
-        <ModalAFK />
+        <!-- <ModalAFK /> -->
         <SEO />
     </template>
 </template>

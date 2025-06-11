@@ -2,47 +2,90 @@
 import { useAppStore } from '/stores/AppStore.js';
 const appStore = useAppStore();
 
-const currentSlide = ref(0)
+const currentSlide = ref(0);
+const isOpen = ref(false);
+const modalTitle = ref("Оставьте заявку на LADA по госпрограмме");
+const isWorkingHours = ref(true); // Добавляем проверку рабочего времени
 
 const slides = ref([
     {
-        text: "Мощные, технологичные, экономичные во владении!",
-        title: "Покупайте кроссоверы GEELY!",
-        url: "/cars/geely/",
-        image: "images/slider/main1.webp",
+        text: "LADA по госпрограмме",
+        title: "Выгода 20% на весь модельный ряд",
+        image: "images/slider/image1.png",
+        isSpecial: true // Этот слайд будет открывать модалку
     },
     {
-        text: "LADA VESTA SW CROSS - современный, комфортный, наш. По специальной цене",
-        title: "Покоряйте родные просторы на надежном авто!",
-        url: "/cars/lada/vesta_sw_cross_new",
-        image: "images/slider/main2.webp",
+        text: "Выгода 20% на весь модельный ряд",
+        title: "Специальное предложение в «ТМН-Авто» Только до конца месяца!",
+        url: "/credit",
+        image: "images/slider/image2.png"
     },
     {
-        text: "Компактный и мощный, с багажником 1133 л.",
-        title: "HAVAL JOLION - ваш яркий городской помощник",
+        text: "Летняя распродажа!",
+        title: "Сезонные скидки до 30%",
         url: "/cars",
-        image: "images/slider/main3.webp",
+        image: "images/slider/image3.png"
     },
+]);
 
-],)
+// Проверка рабочего времени
+function checkWorkingHours() {
+  const now = new Date();
+  const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
+  const moscowTime = new Date(now.getTime() + moscowOffset);
+  const currentHour = moscowTime.getUTCHours();
+  isWorkingHours.value = currentHour >= 7 && currentHour < 19;
+}
 
-const loading = ref(true);
+const openModal = () => {
+  checkWorkingHours(); // Проверяем время перед открытием модалки
+  
+  if (!isWorkingHours.value) {
+    modalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона TMN-auto";
+  } else {
+    modalTitle.value = "Оставьте заявку на LADA по госпрограмме";
+  }
+  
+  isOpen.value = true;
+  document.body.style.overflow = 'hidden';
+};
+
+const closeModal = () => {
+  isOpen.value = false;
+  document.body.style.overflow = 'auto';
+};
+
+const handleSlideClick = (slide) => {
+  if (slide.isSpecial) {
+    openModal();
+  } else if (slide.url) {
+    navigateTo(slide.url);
+  }
+};
+
+function prev(e) {
+  e.stopPropagation(); // Останавливаем всплытие
+  currentSlide.value--
+  if (currentSlide.value < 0) {
+    currentSlide.value = slides.value.length - 1
+  }
+}
+
+function next(e) {
+  e.stopPropagation(); // Останавливаем всплытие
+  currentSlide.value++
+  if (currentSlide.value > slides.value.length - 1) {
+    currentSlide.value = 0
+  }
+}
+
 onMounted(() => {
-    loading.value = false
-})
-
-function prev() {
-    currentSlide.value--
-    if (currentSlide.value < 0) {
-        currentSlide.value = slides.value.length - 1
-    }
-}
-function next() {
-    currentSlide.value++
-    if (currentSlide.value > slides.value.length - 1) {
-        currentSlide.value = 0
-    }
-}
+  // Проверяем время при загрузке
+  checkWorkingHours();
+  
+  // Проверяем время каждую минуту
+  setInterval(checkWorkingHours, 60000);
+});
 </script>
 
 <template>
@@ -54,26 +97,93 @@ function next() {
                     <img class="slide__img" :src="slide.image" alt="car" />
                     <div class="slider__content">
                         <div class="carousel__item">
-                            <p class="slide__text">{{ slide.text }}</p>
+                            <p class="slide__text" @click.stop="handleSlideClick(slide)">
+                                {{ slide.text }}
+                            </p>
                             <h2 class="slide__title">{{ slide.title }}</h2>
-                            <NuxtLink :to="slide.url" class="slide__link">
+                            <NuxtLink 
+                              v-if="!slide.isSpecial" 
+                              :to="slide.url" 
+                              class="slide__link"
+                            >
                                 <p>Подробнее</p>
                             </NuxtLink>
+                            <button  
+                              v-else 
+                              class="slide__link" 
+                              @click.stop="openModal"
+                            >
+                                Подробнее
+                            </button>
                         </div>
                     </div>
                 </Slide>
 
                 <template #addons>
-                    <button class="carousel__prev" @click="prev"></button>
-                    <button class="carousel__next" @click="next"></button>
+                    <button class="carousel__prev" @click="prev($event)"></button>
+                    <button class="carousel__next" @click="next($event)"></button>
                     <Pagination />
                 </template>
             </Carousel>
         </div>
     </section>
+
+    <Teleport to="body">
+        <div v-if="isOpen" class="modal-overlay" @click.self="closeModal">
+            <div class="modal-content">
+                <button class="modal-close" @click="closeModal">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <h3 class="modal-title">{{ modalTitle }}</h3>
+                <FormSmall />
+            </div>
+        </div>
+    </Teleport>
 </template>
 
+
 <style scoped lang="scss">
+.carousel__prev,
+.carousel__next {
+  pointer-events: auto !important;
+  z-index: 10;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-title {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
 .main__slider {
     .home__slider {
         border-radius: var(--border-radius);
@@ -85,7 +195,10 @@ function next() {
         position: relative;
         z-index: 2;
         width: 100%;
-
+        height: 400px;
+        @media screen and (max-width: 768px) {
+            height: 400px;
+        }    
         &::before {
             content: "";
             position: absolute;
@@ -148,26 +261,30 @@ function next() {
 
                 .slide__title {
                     font-weight: 700;
-                    font-size: 36px;
+                    font-size: 22px;
                     line-height: 40px;
                     text-align: left;
                     margin-top: 10px;
                     margin-bottom: 20px;
+                    white-space: nowrap;
+                    @media screen and (max-width: 980px) {
+                        white-space: wrap;
+                    }
 
                     @media screen and (max-width: 768px) {
-                        font-size: 30px;
+                        font-size: 20px;
                         line-height: 36px;
                     }
 
                     @media screen and (max-width: 520px) {
-                        font-size: 24px;
+                        font-size: 18px;
                         line-height: 30px;
                     }
                 }
 
                 .slide__text {
                     font-weight: 400;
-                    font-size: 22px;
+                    font-size: 34px;
                     line-height: auto;
                     text-align: left;
 
@@ -189,7 +306,7 @@ function next() {
                     border-radius: 7px;
                     transition: all 0.3s ease;
                     margin-top: 0;
-
+                    color: white;
                     @media screen and (max-width: 520px) {
                         padding: 10px 15px;
                     }

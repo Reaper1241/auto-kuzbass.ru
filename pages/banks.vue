@@ -5,7 +5,7 @@
     <Banks />
     <!-- <BannerSB1 /> -->
     <BannerEB3 />
-    <ModalAFK />
+    <!-- <ModalAFK /> -->
     <SEO />
 </template>
 

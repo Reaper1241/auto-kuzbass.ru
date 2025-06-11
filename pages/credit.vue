@@ -6,7 +6,7 @@
     <Credit />
     <!-- <BannerSB1 /> -->
     <BannerCB1/>
-    <ModalAFK />
+    <!-- <ModalAFK /> -->
     <SEO />
 </template>
 

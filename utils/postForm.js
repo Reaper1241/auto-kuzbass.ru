@@ -69,7 +69,7 @@ export default function postForm(data, appType, car, category) {
       referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
       entry: appStore.entry ? appStore.entry : null,
       ip: appStore.ip,
-      dealer_id: 272,
+      dealer_id: 319,
 
       application_type_id: appType,
     }, {

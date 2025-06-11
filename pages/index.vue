@@ -12,15 +12,15 @@ function callback(n) {
 </script>
 
 <template>
-    <!-- <Slider />? -->
-    <BannerNB1/>
+    <Slider />
+    <!-- <BannerNB1/> -->
     <Brands />
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentCarsData" />
     <BannerEB3 />
     <CarsHot />
     <BannerCB1/>
-    <ModalAFK />
+    <!-- <ModalAFK /> -->
     <BasePageContent />
     <SEO />
 </template>

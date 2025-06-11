@@ -32,7 +32,7 @@ function callback(n) {
     <BannerEB3 />
     <ChinaModels />
 
-    <ModalAFK />
+    <!-- <ModalAFK /> -->
     <BasePageContent />
     <SEO />
 </template>

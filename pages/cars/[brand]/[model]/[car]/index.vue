@@ -85,7 +85,7 @@ console.log(`${apiNew}cars/car/${$route.params.car}`)
         <NewCarTabs />
         <CarsListNew />
         <BannerEB3 />
-        <ModalAFK />
+        <!-- <ModalAFK /> -->
         <SEO />
     </template>
 </template>

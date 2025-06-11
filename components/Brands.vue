@@ -118,7 +118,7 @@ const brands = computed(() => $route.name == 'china' ? appStore?.chinaBrands.bra
                 .brand__info {
                     display: flex;
                     align-items: center;
-                    gap: 15px;
+                    
                     text-align: start;
                     white-space: nowrap;
                     max-width: 160px;
@@ -130,7 +130,7 @@ const brands = computed(() => $route.name == 'china' ? appStore?.chinaBrands.bra
                         flex-direction: column;
                         justify-content: center;
                         align-items: center;
-                        gap: 5px;
+                        gap: 5px !important;
                         text-align: start;
                         
                     }
