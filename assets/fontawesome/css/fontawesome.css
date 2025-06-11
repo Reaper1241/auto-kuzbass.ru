@@ -1249,6 +1249,8 @@ readers do not read off random characters that represent icons */
 
 .fa-phone-square-alt::before {
   content: "\f87b"; }
+.fa-phone2-square-alt::before {
+  content: "\f87b"; }
 
 .fa-cart-plus::before {
   content: "\f217"; }
@@ -3569,7 +3571,9 @@ readers do not read off random characters that represent icons */
 .fa-phone::before {
   content: "\f095";
   color: var(--main-color); }
-
+.fa-phone2::before {
+  content: "\f095";
+  color: black; }
 .fa-calendar-xmark::before {
   content: "\f273"; }
 

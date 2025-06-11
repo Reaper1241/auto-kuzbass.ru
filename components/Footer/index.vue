@@ -14,7 +14,7 @@ const isError = computed(() => !!error.value);
         <section class="footer__top">
           <!-- СЛЕВА: Контакты -->
           <div class="footer__top-left">
-            <!-- <BaseLogo class='footer-logo'/> -->
+            <BaseLogo class='footer-logo'/>
             <div class="footer__contacts"> 
               <p>
                 <i class="fa-solid fa-location-dot"></i>

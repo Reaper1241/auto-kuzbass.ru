@@ -157,7 +157,12 @@ defineProps({
     border: 2px solid var(--main-color);
     color: var(--main-color);
 }
-
+.taxi-trade {
+    padding: 8px;
+    border-color: var(--main-black);
+    color: var(--main-black);
+    background: white;
+}
 .call {
     background: var(--main-color);
     border: 2px solid var(--main-color);

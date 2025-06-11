@@ -6,23 +6,23 @@
             <!-- <div class="callback__mob-img"></div> -->
             <div class='banner'>
                 <div class="banner__title">
-                    <h2 class="title"><span class="title-span"> Выгодный Трейд-Ин </span> Оценка вашего автомобиля за счет автосалона</h2>
+                    <h2 class="title"><span class="title-span"> Летняя распродажа! </span> Сезонные скидки до 30%</h2>
                 </div>
                 <NuxtLink to="/trade-in" class="banner__gift">
                     <!-- <img src="/svg/gift1.svg" class="svg__logo" alt="" /> -->
-                    <div class="gift__title"><p>Оценить свой автомобиль 
+                    <!-- <div class="gift__title"><p>Оценить свой автомобиль 
                     </p>
-                    </div>   
+                    </div>    -->
                 </NuxtLink>
             
                 <div class="banner__title-mob">
-                    <h2 class="title-mob"><span class="title-span-mob">Большой выбор Банков-партнеров </span> со ставкой от 4,9%</h2>
+                    <h2 class="title-mob"><span class="title-span-mob">Летняя распродажа! </span> Сезонные скидки до 30%</h2>
                 </div>
                 <NuxtLink to="/banks" class="banner__gift-mob">
                     <!-- <img src="/svg/gift1.svg" class="svg__logo" alt="" /> -->
-                    <div class="gift__title-mob"><p>Узнать подробнее 
+                    <!-- <div class="gift__title-mob"><p>Узнать подробнее 
                     </p>
-                    </div>   
+                    </div>    -->
                 </NuxtLink>
                 <!-- <div class="white-container">
                     <div class="callback__content">
@@ -57,21 +57,22 @@
     }
 
     .banner {
-        background: url(/images/frame51.png) no-repeat center;
+        background: url(/images/main.png) no-repeat center;
         background-size: cover;
 
         padding: 50px; // Отступы от краев баннера
         position: relative;
         max-width: 1400px; // Добавлено ограничение ширины
-        height: 270px;
+        height: 400px;
         margin: 0 auto;
         background-position: center 75%;
         @media screen and (max-width: 540px) {
             padding: 40px;
-            background: url(/images/frame51mob.png) no-repeat center;
+            background: url(/images/main.png) no-repeat center;
             border-radius: 0px;
-            background-position: center 55%;
-            background-size: 120%;
+            background-position: center 75%;
+            background-size: 170%;
+            max-height: 250px;
             // background-image: none;
             border-bottom: 1px solid var(--main-color);
             border-top: 1px solid var(--main-color);
@@ -280,9 +281,9 @@
 
 .title{
     color: white;
-    font-size: 26px;
+    font-size: 40px;
     font-weight: 300;
-    line-height: 50px;
+    line-height: 100px;
     @media screen and (max-width: 1250px) {
         font-size: 20px;
     }
@@ -304,17 +305,18 @@
         display: flex;
         flex-direction: column;
         width: 300px;
+        justify-content: center;
         color: white;
         font-weight: 300;
-        line-height: 30px;
-        font-size: 16px;
+        line-height: 50px;
+        font-size: 25px;
     }
 }
 .title-span-mob{
     display: none;
         @media screen and (max-width: 540px) {
         display: block;
-        font-size: 18px;
+        font-size: 30px;
         font-weight: 700;
         color: white;
         text-wrap: nowrap;
@@ -322,7 +324,7 @@
 }
 .title-span {
     display: block;
-    font-size: 35px;
+    font-size: 64px;
     font-weight: 700;
     @media screen and (max-width: 1250px) {
         font-size: 24px;

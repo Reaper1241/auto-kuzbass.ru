@@ -37,15 +37,20 @@
     }
 
     .banner {
-        background: url(/images/frame53.png) no-repeat center;
-        background-size: cover;
+        background: url(/images/banner.png) no-repeat 50% 50%;
+        background-size: 150%;
         border-radius: var(--border-radius);
         padding: 20px; // Отступы от краев баннера
         position: relative;
         max-width: 1400px; // Добавлено ограничение ширины
         margin: 0 auto;
+        @media screen and (max-width: 740px) {
+            background-size: 220%;
+            // background-image: none;
+        }
         @media screen and (max-width: 540px) {
             padding: 0;
+            background-size: 300%;
             // background-image: none;
         }
         

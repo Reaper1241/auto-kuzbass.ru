@@ -60,14 +60,14 @@ const appStore = useAppStore();
 }
 .section__body {
     position: relative;
-    background: url(/images/china__bg.webp) no-repeat center;
-    background-size: cover;
+    background: url(/images/banner2.png) no-repeat 3% 67%;
+    background-size: 130%;
     width: 100%;
     margin: 30px auto;
     color: var(--bg-light);
     border-radius: var(--border-radius);
     @media screen and (max-width: 768px) {
-        background: url(/images/china__bg.webp) no-repeat 55% 50%;
+        background: url(/images/banner2.png) no-repeat 55% 50%;
         background-size: cover; /* или используйте конкретный размер, например: */
         /* background-size: 150%; */ /* чтобы отдалить изображение */
     }

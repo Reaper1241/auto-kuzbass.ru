@@ -41,7 +41,7 @@ function modalShow() {
     currentModalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона TMN-auto";
     currentAppType.value = 1;
   } else {
-    currentModalTitle.value = "Оставьте заявку и мы перезвоним Вам в течение 30 минут!";
+    currentModalTitle.value = "Оставьте заявку и мы перезвоним вам в течение 30 минут!";
     currentAppType.value = 6;
   }
   document.body.style.overflow = 'hidden';
@@ -113,7 +113,7 @@ watch($route, () => showBurger.value = false)
             <div class="container">
                 <div class="header__content">
                     <div class="header__logo">
-                        <!-- <BaseLogo /> -->
+                        <BaseLogo />
                     </div>
 
                     <nav class="header__navbar">
@@ -268,7 +268,7 @@ watch($route, () => showBurger.value = false)
 }
 
 .submit-btn:hover {
-    background-color: #0052a3;
+    background-color: var(--main-color);
 }
 .header {
     position: sticky;
@@ -277,7 +277,7 @@ watch($route, () => showBurger.value = false)
     z-index: 999;
     transition: all 0.7s ease;
     background: #DEDEDE;
-    color: #006400;
+    color: var(--main-color);
     width: 100%;
 
     @media screen and (max-width: 1000px) {
