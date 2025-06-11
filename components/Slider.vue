@@ -237,7 +237,7 @@ onMounted(() => {
             padding: 50px 100px;
 
             @media screen and (max-width: 768px) {
-                padding: 50px 50px;
+                padding: 50px 20px;
             }
 
             .carousel__item {
@@ -277,7 +277,9 @@ onMounted(() => {
                     }
 
                     @media screen and (max-width: 520px) {
-                        font-size: 18px;
+                        font-size: 22px;
+                        position: absolute;
+                        top: 55px;
                         line-height: 30px;
                     }
                 }
@@ -289,9 +291,11 @@ onMounted(() => {
                     text-align: left;
 
                     @media screen and (max-width: 520px) {
-                        font-weight: 500;
-                        font-size: 17px;
+                        font-weight: 700;
+                        font-size: 30px;
                         line-height: 24px;
+                        position: absolute;
+                        top: 10px;
                     }
                 }
 
@@ -309,6 +313,9 @@ onMounted(() => {
                     color: white;
                     @media screen and (max-width: 520px) {
                         padding: 10px 15px;
+                        position: absolute;
+                        bottom: 10px;
+                        width: 100%;
                     }
 
                     @media screen and (max-width: 375px) {
