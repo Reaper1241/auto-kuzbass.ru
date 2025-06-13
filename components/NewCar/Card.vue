@@ -170,6 +170,10 @@ onMounted(() => {
 
 .car-card__wrapper{
 margin-top: 30px;
+margin-right: 5px;
+    @media screen and (max-width: 600px) {
+        margin-right: 15px;
+    }
 }
 
 .car-card {

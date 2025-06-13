@@ -206,7 +206,7 @@ const protectionOpen = ref(true)
 .buttons__show-list {
     display: flex;
     gap: 20px;
-    margin-left: 10px;
+    margin-left: 0px;
     margin-bottom: 40px;
     justify-content: center;
     @media screen and (max-width: 767px) {
