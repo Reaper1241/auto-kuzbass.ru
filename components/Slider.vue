@@ -106,14 +106,14 @@ onMounted(() => {
                               :to="slide.url" 
                               class="slide__link"
                             >
-                                <p>Подробнее</p>
+                                <p>Выбрать авто</p>
                             </NuxtLink>
                             <button  
                               v-else 
                               class="slide__link" 
                               @click.stop="openModal"
                             >
-                                Подробнее
+                                Оставить заявку
                             </button>
                         </div>
                     </div>

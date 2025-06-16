@@ -106,7 +106,7 @@ watch(() => creditStore.category, (currentData) => {
 
 <template>
     <form class="form__form-content" @submit.prevent="validateForm">
-
+        
         <div class="form__form-block">
             <div class="car__choice" type="button" @click="creditStore.modalShow()">
 

@@ -389,7 +389,7 @@ watch($route, () => showBurger.value = false)
                     box-shadow: 15px -15px 30px 0px rgba(230, 230, 230, 0.2), -15px 15px 30px 0px rgba(230, 230, 230, 0.2);
                     border-radius: 30px;
                     width: max-content;
-                    padding: 30px 28px;
+                    padding: 30px 28px 5px 28px;
                     pointer-events: none;
                     transition: all 0.3s ease;
 

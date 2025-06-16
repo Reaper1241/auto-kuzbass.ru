@@ -1,11 +1,44 @@
 <script setup>
 import { useAppStore } from '/stores/AppStore.js';
 import { useError } from 'nuxt/app';
+import { ref, computed, onMounted } from 'vue';
 
 const appStore = useAppStore();
 const error = useError();
 
 const isError = computed(() => !!error.value);
+const isWorkingHours = ref(true);
+
+// Проверка рабочего времени
+function checkWorkingHours() {
+  const now = new Date();
+  const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
+  const moscowTime = new Date(now.getTime() + moscowOffset);
+  const currentHour = moscowTime.getUTCHours();
+  isWorkingHours.value = currentHour >= 9 && currentHour < 21; // 9:00–21:00 как указано в футере
+}
+
+// Получаем правильный заголовок и тип в зависимости от времени
+const getModalConfig = () => {
+  checkWorkingHours();
+  
+  if (!isWorkingHours.value) {
+    return {
+      title: "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним вам в рабочее время! С уважением, команда Автосалона EKB-Prime",
+      type: 1
+    };
+  } else {
+    return {
+      title: "Оставьте заявку и мы перезвоним вам в течение 30 минут!",
+      type: 6
+    };
+  }
+};
+
+// Проверяем время при загрузке компонента
+onMounted(() => {
+  checkWorkingHours();
+});
 </script>
 
 <template>
@@ -18,12 +51,12 @@ const isError = computed(() => !!error.value);
             <div class="footer__contacts"> 
               <p>
                 <i class="fa-solid fa-location-dot"></i>
-                <span class="footer__info-adress">Тюмень, ул. Московский тракт 321 стр 1</span>
+                <span class="footer__info-adress">Екатеринбург</span>
               </p>
                 <p class="time">9:00–21:00 без выходных</p>
               <p>
                 <i class="fa-solid fa-phone"></i>
-                <span>+7 (345 )257-97-09</span>
+                <span>+7 (343) 343-23-68</span>
               </p>
               <p class="phone"><a href="#">Заказать обратный звонок</a></p>
             </div>
@@ -35,9 +68,6 @@ const isError = computed(() => !!error.value);
                 <li class="dropdown-item">
                     <NuxtLink to="/cars" class="dropdown-link">Каталог авто</NuxtLink>
                 </li>
-                <!-- <li class="dropdown-item">
-                    <NuxtLink to="/cars/china" class="dropdown-link">Китайские авто</NuxtLink>
-                </li> -->
                 <li class="dropdown-item">
                     <NuxtLink to="/cars/taxi" class="dropdown-link">Авто для такси</NuxtLink>
                 </li>
@@ -65,7 +95,7 @@ const isError = computed(() => !!error.value);
                 отдельно.
               </p>
               <p>
-                ООО «ТМН-Авто» ИНН 9727084176 КПП 772701001 ОГРН 1247700575649 Юридический адрес: 117449, Москва, Шверника ул., д. 16 к. 1, помещ. 1/П
+                ООО «ЕКБ-Прайм» ИНН 9727084176 КПП 772701001 ОГРН 1247700575649 Юридический адрес: 117449, Москва, Шверника ул., д. 16 к. 1, помещ. 1/П
               </p>
               <NuxtLink to="/politics/">Политика конфиденциальности</NuxtLink>
               <p>
@@ -80,15 +110,15 @@ const isError = computed(() => !!error.value);
           <div class="callback-button">
             <BaseButtonModal
               :btn-label="'Заказать обратный звонок'"
-              :modal-title="'Заказать обратный звонок'"
+              :modal-title="getModalConfig().title"
               :btn-class="`callback-fixed`"
-              :app-type="1"
+              :app-type="getModalConfig().type"
             />
           </div>
         </Teleport>
       </div>
     </footer>
-  </template>
+</template>
   
 
 <style scoped lang="scss">
