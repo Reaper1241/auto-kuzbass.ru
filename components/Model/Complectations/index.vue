@@ -32,7 +32,7 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
     <section class="complectations" v-if="currentMod?.car_complectations.length">
         <div class="complectations__wrapper">
             <div class="complectations__body">
-                <!-- <div class="complectations-calculator">
+                <div class="complectations-calculator">
                     <div class="complectations-calculator__item trade" :class="{ 'active': tradeSwitch }">
                         <div class="complectations-calculator__text" :class="{ 'active': tradeSwitch }">
                             <span class="text">Скидка при покупке авто в Trade-In</span>
@@ -84,7 +84,7 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                             </span>
                         </div>
                     </div>
-                </div> -->
+                </div>
 
                 <div class="complectations__header">
                     <BaseSectionTitle :title="`Доступные комплектации`" />
@@ -168,7 +168,8 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
     }
 
     .complectations-calculator {
-        display: grid;
+        
+        display: none;
         gap: 30px;
         align-items: center;
         grid-template-columns: 1fr 1fr 1fr 1.5fr;
@@ -182,6 +183,7 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
         }
 
         @media screen and (max-width: 768px) {
+            display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px;
         }

@@ -259,6 +259,15 @@ const show = ref(0);
     border-radius: 20px;
     gap: 10px;
     margin-top: 10px;
+    @media screen and (max-width: 767px) {
+        display: none;
+    }
+}
+
+.complectations-calculator__total{
+    @media screen and (max-width: 767px) {
+        display: none;
+    }
 }
 .complectations-calculator__switch{
     display: flex;
@@ -558,6 +567,9 @@ const show = ref(0);
     font-size: 16px;
     line-height: 18px;
     margin-top: 13px;
+    @media screen and (max-width: 767px) {
+        margin-bottom: 15px;
+    }
     @media screen and (max-width: 425px) {
         font-size: 14px;
     }
