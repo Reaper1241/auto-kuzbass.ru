@@ -70,7 +70,7 @@ export default defineNuxtConfig({
         },
       ]
     },
-    rootId: '__tumenleks',
+    rootId: '__tmnauto',
   },
 
   modules: [

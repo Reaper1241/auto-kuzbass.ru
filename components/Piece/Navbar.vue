@@ -6,10 +6,10 @@ const menuList = ref([
         link: '/cars',
     },
 
-    {
-        name: 'Каталог авто',
-        link: '/cars/',
-    },
+    // {
+    //     name: 'Каталог авто',
+    //     link: '/cars/',
+    // },
     // {
     //     // name: 'Китайские авто',
     //     // link: '/cars/china',

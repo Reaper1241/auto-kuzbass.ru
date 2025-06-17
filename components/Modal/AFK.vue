@@ -82,7 +82,7 @@ const computedCar = computed(() => {
 onMounted(() => {
     fetchCar();
 });
-const { idle, lastActive } = useIdle(30000) // Афк модалка появится через 30 секунд
+const { idle, lastActive } = useIdle(90000) // Афк модалка появится через 30 секунд
 
 function modalShow() {
     isOpen.value = !isOpen.value
