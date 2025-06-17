@@ -17,7 +17,7 @@ const slides = ref([
     {
         text: "Выгода 20% на весь модельный ряд",
         title: "Специальное предложение в «ТМН-Авто» Только до конца месяца!",
-        url: "/credit",
+        url: "/cars",
         image: "images/slider/image2.png"
     },
     {
