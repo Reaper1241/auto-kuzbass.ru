@@ -218,6 +218,24 @@ const show = ref(0);
                     </ul>
                     
                 </div>
+                    <p class="model__price-text2">Цена:</p>
+                        <div class="model__row-price2">
+                            <p class="model__diff2">
+                                от
+                                {{ makeSpaces(newStore.model.min_price) }}
+                                ₽
+                            </p>
+                            <del class="model__price2" v-if="newStore.model.sale">
+                                {{ makeSpaces(newStore.model.min_price + newStore.model.sale) }}
+                                ₽
+                            </del>
+                        </div>
+                        <p class="model__credit2">
+                            Платеж в месяц от:
+                            <span>
+                                {{ makeSpaces(appStore.calcMonthPriceModel(0, newStore.model.min_price)) }} руб/мес.
+                            </span>
+                        </p>
                 <!-- <div class="model__buttons">
                     <BaseButtonModal :car="car" :btn-label="'Обменять в Trade-In'" :app-type="8"
                             :modal-title="`Обменять по Trade-In ${newStore.model.brand} ${newStore.model.model}`"
@@ -484,9 +502,7 @@ const show = ref(0);
                     margin-bottom: 20px;
                 }
                 @media screen and (max-width: 767px) {
-                    margin-bottom: 0;
-                    margin-top: 10px;
-                    gap: 5px;
+                    display: none;
                 }
                 @media screen and (max-width: 375px) {
                     display: none;
@@ -529,10 +545,6 @@ const show = ref(0);
     @media screen and (max-width: 767px) {
         display: none;
     }
-    @media screen and (max-width: 375px) {
-        display: block;
-        margin-bottom: 0;
-    }
 }
 .model__row-price {
     position: relative;
@@ -541,11 +553,17 @@ const show = ref(0);
     flex-direction: column;
     flex-wrap: wrap;
     gap: 10px 19px;
+    @media screen and (max-width: 767px) {
+        display: none;
+    }
     .model__diff {
         color: var(--main-color);
         font-weight: 700;
         font-size: 24px;
         line-height: 32px;
+        @media screen and (max-width: 767px) {
+            display: none;
+        }
         @media screen and (max-width: 425px) {
             font-size: 22px;
             line-height: 26px;
@@ -557,6 +575,9 @@ const show = ref(0);
         font-size: 14px;
         line-height: 20px;
         color: #b9b9b9;
+        @media screen and (max-width: 767px) {
+            display: none;
+        }
         @media screen and (max-width: 425px) {
             font-size: 16px;
         }
@@ -569,6 +590,83 @@ const show = ref(0);
     margin-top: 13px;
     @media screen and (max-width: 767px) {
         margin-bottom: 15px;
+        display: none;
+    }
+    @media screen and (max-width: 425px) {
+        font-size: 14px;
+    }
+    @media screen and (max-width: 375px) {
+        margin-top: 0;
+        margin-bottom: 12px;
+    }
+    & span {
+        font-weight: 400;
+        color: var(--main-color);
+    }
+}
+.model__price-text2 {
+    position: relative;
+    z-index: 2;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: none;
+    @media screen and (max-width: 767px) {
+        display: block;
+    }
+    @media screen and (max-width: 375px) {
+        display: block;
+        margin-bottom: 0;
+    }
+}
+.model__row-price2 {
+    position: relative;
+    z-index: 2;
+    // display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px 19px;
+    
+    display: none;
+    @media screen and (max-width: 767px) {
+        display: flex;
+    }
+    .model__diff2 {
+        color: var(--main-color);
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 32px;
+        @media screen and (max-width: 767px) {
+            display: block;
+        }
+        @media screen and (max-width: 425px) {
+            font-size: 22px;
+            line-height: 26px;
+        }
+    }
+    .model__price2 {
+        display: block;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        display: none;
+        color: #b9b9b9;
+        @media screen and (max-width: 767px) {
+            display: block;
+        }
+        @media screen and (max-width: 425px) {
+            font-size: 16px;
+        }
+    }
+}
+.model__credit2 {
+    font-weight: 300;
+    display: none;
+    font-size: 16px;
+    line-height: 18px;
+    margin-top: 13px;
+    @media screen and (max-width: 767px) {
+        margin-bottom: 15px;
+        display: block;
     }
     @media screen and (max-width: 425px) {
         font-size: 14px;
