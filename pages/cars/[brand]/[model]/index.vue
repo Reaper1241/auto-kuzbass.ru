@@ -20,11 +20,7 @@ if (brand) {
     loading.value = true;
     appStore.globalLoader = true
 
-    const { data: models } = await fetchServerWrapper(`${apiNew}models/${brand}`, {
-        headers: {
-            'Domain': 'https://tmn-auto.ru'
-        }
-    });
+    const { data: models } = await fetchServerWrapper(`${apiNew}models/${brand}`);
     newStore.models = models.value;
     const modelId = findModel($route.params.model, newStore.models);
 
@@ -33,11 +29,7 @@ if (brand) {
     }
 
     try {
-        const { data: model } = await fetchServerWrapper(`${apiNew}models/model/${modelId}`, {
-            headers: {
-                'Domain': 'https://tmn-auto.ru'
-            }
-        });
+        const { data: model } = await fetchServerWrapper(`${apiNew}models/model/${modelId}`);
         newStore.model = model.value;
 
         if (!model.value || !modelId) {
@@ -60,7 +52,7 @@ if (brand) {
     }
 } else {
     throw createError({ statusCode: 404, statusMessage: 'Brand not found!', fatal: true })
-} 
+}
 </script>
 
 <template>

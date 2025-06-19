@@ -33,35 +33,19 @@ async function fetchCar() {
         if ($route.name === 'car') {
             car.value = NewCarStore.car;
         } else if ($route.name === 'model') {
-            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=price_desc&page=1&per_page=1&car_model_id=${newStore.model.id}`,{
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            });
+            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=price_desc&page=1&per_page=1&car_model_id=${newStore.model.id}`);
             const data = await res.json();
             car.value = data.cars.data[0];
         } else if ($route.name === 'brand') {
-            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=price_desc&page=1&per_page=1&brand_id=${newStore.brand.id}`,{
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            });
+            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=price_desc&page=1&per_page=1&brand_id=${newStore.brand.id}`);
             const data = await res.json();
             car.value = data.cars.data[0];
         } else if ($route.name === 'china') {
-            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=created_at_desc&per_page=8&page=1&car_tag_id=2`,{
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            });
+            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=created_at_desc&per_page=8&page=1&car_tag_id=2`);
             const data = await res.json();
             car.value = data.cars.data[0];
         } else if ($route.name === 'taxi') {
-            const res = await fetchClientWrapper(`${apiNew}models/model/3475`,{
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            });
+            const res = await fetchClientWrapper(`${apiNew}models/model/3475`);
             const data = await res.json();
             car.value = {
                 id: data.id,
@@ -76,11 +60,7 @@ async function fetchCar() {
                 car.value = newStore.AFKcar;
                 return;
             }
-            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=created_at_desc&page=1&per_page=1`, {
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            });
+            const res = await fetchClientWrapper(`${apiNew}filters/cars?sorting=created_at_desc&page=1&per_page=1`);
             const data = await res.json();
             newStore.AFKcar = data.cars.data[0];
             car.value = newStore.AFKcar;
@@ -102,7 +82,7 @@ const computedCar = computed(() => {
 onMounted(() => {
     fetchCar();
 });
-const { idle, lastActive } = useIdle(90000) // Афк модалка появится через 90 секунд
+const { idle, lastActive } = useIdle(90000) // Афк модалка появится через 30 секунд
 
 function modalShow() {
     isOpen.value = !isOpen.value

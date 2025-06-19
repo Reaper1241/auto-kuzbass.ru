@@ -23,16 +23,8 @@ if (brand) {
 
         // Use Promise.all to wait for both requests to complete
         const [brandResponse, modelsResponse] = await Promise.all([
-            fetchServerWrapper(`${apiNew}brands/brand/${brand}`, {
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            }),
-            fetchServerWrapper(`${apiNew}filters/models?brand_id=${brand}`, {
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            })
+            fetchServerWrapper(`${apiNew}brands/brand/${brand}`),
+            fetchServerWrapper(`${apiNew}filters/models?brand_id=${brand}`)
         ]);
 
         newStore.brand = brandResponse.data.value;

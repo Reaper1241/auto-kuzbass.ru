@@ -5,11 +5,7 @@ import { useAppStore } from '/stores/AppStore.js';
 const appStore = useAppStore();
 const models = ref([])
 
-fetch(`${apiNew}filters/models?car_tag_id=1`,{
-    headers: {
-        'Domain': 'https://autogag.ru'
-    }
-})
+fetchClientWrapper(`${apiNew}filters/models?car_tag_id=1`)
     .then(res => res.json())
     .then(data => models.value = data.models)
 </script>

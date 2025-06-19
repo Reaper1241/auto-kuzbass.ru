@@ -34,21 +34,13 @@ function createColorsArray(num) {
     return array;
 }
 function getModels(brandId) {
-    fetchClientWrapper(`${apiNew}models/${brandId}`).then(res => res.json()).then(data => modelsList.value = data, {
-        headers: {
-            'Domain': 'https://tmn-auto.ru'
-        }
-    })
+    fetchClientWrapper(`${apiNew}models/${brandId}`).then(res => res.json()).then(data => modelsList.value = data)
 }
 
 function getModel(modelId) {
-    fetchClientWrapper(`${apiNew}models/model/${modelId}`, {
-        headers: {
-            'Domain': 'https://tmn-auto.ru'
-        }
-    })
-    .then(res => res.json())
-    .then(data => modList.value = data.modifications)
+    fetchClientWrapper(`${apiNew}models/model/${modelId}`)
+        .then(res => res.json())
+        .then(data => modList.value = data.modifications)
 }
 
 const choiceCar = computed(() => {

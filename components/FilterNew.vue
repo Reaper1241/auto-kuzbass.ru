@@ -97,11 +97,7 @@ function updateRecentFilter() {
                 break;
         }
     }
-    fetch(`${apiNew}filters/params?${appStore.recentQueryNew}`,{
-            headers: {
-                'Domain': 'https://tmn-auto.ru'
-            }
-        })
+    fetchClientWrapper(`${apiNew}filters/params?${appStore.recentQueryNew}`)
         .then(res => res.json())
         .then(data => quary.value = data)
         .then(() => brands.value = quary.value.brands)
@@ -128,11 +124,7 @@ function getFilterData(recentStatus) {
         paramsLoading.value = false
         filterLoading.value = false
     } else {
-        fetch(`${apiNew}filters/params${$route.params.brand ? `?brand_id=${getBrand($route.params.brand)}` : ''}${$route.params.model ? `&car_model_id=${getModel($route.params.brand, $route.params.model)}` : ''}${$route?.name == 'china' ? `?car_tag_id=2` : ''}`,{
-                headers: {
-                    'Domain': 'https://tmn-auto.ru'
-                }
-            })
+        fetchClientWrapper(`${apiNew}filters/params${$route.params.brand ? `?brand_id=${getBrand($route.params.brand)}` : ''}${$route.params.model ? `&car_model_id=${getModel($route.params.brand, $route.params.model)}` : ''}${$route?.name == 'china' ? `?car_tag_id=2` : ''}`)
             .then(res => res.json())
             .then(data => quary.value = data)
             .then(() => brands.value = quary.value.brands)
@@ -221,11 +213,7 @@ function updateFilter(from) {
     paramsLoading.value = true
     filterLoading.value = true
 
-    fetch(`${apiNew}filters/params?${fullQuary}`,{
-            headers: {
-                'Domain': 'https://autogag.ru'
-            }
-        })
+    fetchClientWrapper(`${apiNew}filters/params?${fullQuary}`)
         .then(res => res.json())
         .then(data => quary.value = data)
         .then(() => from == 'model' && model.value != 0 ? null : models.value = quary.value.models)

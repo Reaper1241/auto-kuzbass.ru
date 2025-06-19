@@ -92,6 +92,7 @@ onMounted(async () => {
 appStore.setAttributes();
 </script>
 
+
 <template>
   <GlobalLoader />
   <NuxtLayout>

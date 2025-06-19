@@ -7,11 +7,7 @@ const cars = ref([])
 
 const loading = ref(true);
 
-fetch(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&car_tag_id=2`,{
-        headers: {
-            'Domain': 'https://tmn-auto.ru'
-        }
-    })
+fetchClientWrapper(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&car_tag_id=2`)
     .then(res => res.json())
     .then(data => cars.value = data.cars.data)
     .then(() => loading.value = false)

@@ -10,16 +10,8 @@ const loading = ref(true);
 const choice = ref(0);
 
 const urls = [
-    `${apiNew}galleries/${newStore.model.id}?gallery_type_id=1`,{
-        headers: {
-            'Domain': 'https://tmn-auto.ru'
-        }
-    },
-    `${apiNew}galleries/${newStore.model.id}?gallery_type_id=2`,{
-        headers: {
-            'Domain': 'https://tmn-auto.ru'
-        }
-    }
+    `${apiNew}galleries/${newStore.model.id}?gallery_type_id=1`,
+    `${apiNew}galleries/${newStore.model.id}?gallery_type_id=2`,
 ];
 
 Promise.all(urls.map(url => fetch(url).then(res => res.json())))

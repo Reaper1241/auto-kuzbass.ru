@@ -8,6 +8,7 @@ export const fetchServerWrapper = async (url, options = {}, timeoutDuration = 50
     // Обязательные заголовки
     const defaultHeaders = {
         'X-Forwarded-For': appStore.ip || '',
+        'Domain': 'https://tmn-auto.ru',
         ...options.headers,
     };
 

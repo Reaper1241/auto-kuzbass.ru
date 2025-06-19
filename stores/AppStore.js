@@ -99,8 +99,7 @@ export const useAppStore = defineStore("appStore", () => {
   function getFavorites() {
     if (favoriteCars.value.length) {
       const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Domain': 'https://tmn-auto.ru'
+        'Content-Type': 'multipart/form-data'
       };
 
       const carsIdsArray = ref([])
@@ -142,9 +141,9 @@ export const useAppStore = defineStore("appStore", () => {
   function getComparison() {
     if (comparisonCars.value.length) {
       const headers = {
-        'Content-Type': 'multipart/form-data',
-        'Domain': 'https://tmn-auto.ru'
+        'Content-Type': 'multipart/form-data'
       };
+
       const carsIdsArray = ref([])
       for (let i = 0; i < comparisonCars.value.length; i++) {
         carsIdsArray.value.push({ id: comparisonCars.value[i] })
