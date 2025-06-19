@@ -4,7 +4,11 @@ import { apiNew } from '@/constants';
 const models = ref([]);
 
 function getModels() {
-    fetch(`${apiNew}filters/models?model_tag_id=2`)
+    fetch(`${apiNew}filters/models?model_tag_id=2`,{
+            headers: {
+                'Domain': 'https://tmn-auto.ru'
+            }
+        })
         .then(res => res.json())
         .then(data => models.value = data.models)
 }

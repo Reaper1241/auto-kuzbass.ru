@@ -5,7 +5,11 @@ const selectedTag = ref(3);
 const models = ref([]);
 
 function getModels() {
-    fetch(`${apiNew}filters/models?model_tag_id=${selectedTag.value}`)
+    fetch(`${apiNew}filters/models?model_tag_id=${selectedTag.value}`,{
+            headers: {
+                'Domain': 'https://tmn-auto.ru'
+            }
+        })
         .then(res => res.json())
         .then(data => models.value = data.models)
 }

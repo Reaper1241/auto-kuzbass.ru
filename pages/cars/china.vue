@@ -9,9 +9,13 @@ definePageMeta({
 })
 
 if (appStore.chinaBrands.length == 0) {
-    fetch(`${apiNew}filters/brands?brand_tag_id=2`).
-        then(res => res.json())
-        .then(data => appStore.chinaBrands = data)
+    fetch(`${apiNew}filters/brands?brand_tag_id=2`, {
+        headers: {
+            'Domain': 'https://tmn-auto.ru'
+        }
+    })
+    .then(res => res.json())
+    .then(data => appStore.chinaBrands = data)
 }
 
 let currentQuary = ref([])

@@ -21,10 +21,24 @@ const acceptCookies = () => {
   showCookieConsent.value = false;
 };
 
-const fetchWithTimeout = (url, timeoutDuration = 5000) => {
+const fetchWithTimeout = (url, options = {}, timeoutDuration = 5000) => {
+  const headersWithDomain = url.startsWith(apiNew) 
+    ? {
+        ...(options.headers || {}),
+        'Domain': 'https://tmn-auto.ru'
+      } 
+    : (options.headers || {});
+  
+  const fetchOptions = {
+    ...options,
+    headers: headersWithDomain
+  };
+  
   return Promise.race([
-    useFetch(url),
-    new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), timeoutDuration))
+    useFetch(url, fetchOptions),
+    new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Request timed out')), timeoutDuration)
+    })
   ]);
 }
 

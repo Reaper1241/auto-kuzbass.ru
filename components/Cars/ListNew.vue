@@ -53,7 +53,11 @@ const resetAndLoad = async () => {
 
 // Загрузка данных с сервера
 const fetchCars = async (page = 1) => {
-  const url = new URL(`${apiNew}filters/cars`);
+  const url = new URL(`${apiNew}filters/cars`,{
+    headers: {
+      'Domain': 'https://tmn-auto.ru'
+    }
+  });
   url.searchParams.set('sorting', appStore.newSort);
   url.searchParams.set('page', page);
   url.searchParams.set('per_page', 30); // Загружаем больше для поиска уникальных
