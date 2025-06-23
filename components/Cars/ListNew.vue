@@ -15,37 +15,24 @@ const props = defineProps(['currentQuary']);
 const quary = ref(appStore.recentQueryNew || '');
 const isLoading = ref(false);
 const isLoadMoreLoading = ref(false);
-const allRawCars = ref([]); // Все загруженные машины без фильтрации
-const uniqueCars = ref([]); // Уникальные после фильтрации
+const allCars = ref([]); // Все загруженные машины
 const displayedCars = ref([]); // Отображаемые на экране
 const carsCount = ref(0);
 const totalPages = ref(1);
 const currentPage = ref(1);
 const carsPerLoad = 8;
-const lastDisplayedIndex = ref(0); // Индекс последней отображенной машины
-
-// Функция для удаления дубликатов
-const filterDuplicates = (cars) => {
-  const seen = new Set();
-  return cars.filter(car => {
-    const key = `${car.car_model_id}-${car.equipment_id}-${car.brand_id}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-};
+const lastDisplayedIndex = ref(0);
 
 // Полная перезагрузка данных
 const resetAndLoad = async () => {
   isLoading.value = true;
-  allRawCars.value = [];
-  uniqueCars.value = [];
+  allCars.value = [];
   displayedCars.value = [];
   currentPage.value = 1;
   lastDisplayedIndex.value = 0;
   
   try {
-    await loadUntilEnoughUniqueCars();
+    await loadInitialCars();
   } finally {
     isLoading.value = false;
   }
@@ -56,7 +43,7 @@ const fetchCars = async (page = 1) => {
   const url = new URL(`${apiNew}filters/cars`);
   url.searchParams.set('sorting', appStore.newSort);
   url.searchParams.set('page', page);
-  url.searchParams.set('per_page', 30); // Загружаем больше для поиска уникальных
+  url.searchParams.set('per_page', carsPerLoad); // Теперь загружаем ровно столько, сколько нужно
   
   if ($route.params.brand) {
     const brand = appStore.newBrands.find(b => b.url_brand === $route.params.brand);
@@ -79,82 +66,33 @@ const fetchCars = async (page = 1) => {
   return await response.json();
 };
 
-// Загрузка до тех пор, пока не наберется достаточно уникальных машин
-const loadUntilEnoughUniqueCars = async () => {
-  while (displayedCars.value.length < carsPerLoad && currentPage.value <= totalPages.value) {
-    const data = await fetchCars(currentPage.value);
-    allRawCars.value = [...allRawCars.value, ...data.cars.data];
-    carsCount.value = data.count;
-    totalPages.value = data.total_pages;
-    
-    // Фильтруем все загруженные машины
-    uniqueCars.value = filterDuplicates(allRawCars.value);
-    
-    // Добавляем новые уникальные машины для отображения
-    const newUniqueCars = uniqueCars.value.slice(
-      lastDisplayedIndex.value,
-      uniqueCars.value.length
-    );
-    
-    const needed = carsPerLoad - displayedCars.value.length;
-    const toAdd = newUniqueCars.slice(0, needed);
-    
-    if (toAdd.length > 0) {
-      displayedCars.value = [...displayedCars.value, ...toAdd];
-      lastDisplayedIndex.value += toAdd.length;
-    }
-    
-    // Если все еще не хватает - загружаем следующую страницу
-    if (displayedCars.value.length < carsPerLoad) {
-      currentPage.value++;
-    } else {
-      break;
-    }
-  }
+// Загрузка начальных данных
+const loadInitialCars = async () => {
+  const data = await fetchCars(currentPage.value);
+  allCars.value = data.cars.data;
+  carsCount.value = data.count;
+  totalPages.value = data.total_pages;
+  displayedCars.value = allCars.value.slice(0, carsPerLoad);
+  lastDisplayedIndex.value = displayedCars.value.length;
   
   yandexEcommerceArray('impressions', displayedCars.value);
 };
 
-// Загрузка следующих 8 уникальных машин
+// Загрузка следующих машин
 const loadMore = async () => {
   if (isLoadMoreLoading.value || isLoading.value) return;
   isLoadMoreLoading.value = true;
   
   try {
-    // Сбрасываем счетчик отображенных машин для новой порции
-    const needed = carsPerLoad;
-    let loaded = 0;
+    currentPage.value++;
+    const data = await fetchCars(currentPage.value);
+    const newCars = data.cars.data;
     
-    while (loaded < needed && currentPage.value <= totalPages.value) {
-      // Если есть еще неотображенные уникальные машины
-      if (lastDisplayedIndex.value < uniqueCars.value.length) {
-        const available = uniqueCars.value.length - lastDisplayedIndex.value;
-        const toAdd = uniqueCars.value.slice(
-          lastDisplayedIndex.value,
-          lastDisplayedIndex.value + Math.min(available, needed - loaded)
-        );
-        
-        displayedCars.value = [...displayedCars.value, ...toAdd];
-        lastDisplayedIndex.value += toAdd.length;
-        loaded += toAdd.length;
-        
-        if (loaded >= needed) break;
-      }
-      
-      // Если все еще не хватает - загружаем следующую страницу
-      if (currentPage.value < totalPages.value) {
-        currentPage.value++;
-        const data = await fetchCars(currentPage.value);
-        allRawCars.value = [...allRawCars.value, ...data.cars.data];
-        
-        // Фильтруем все загруженные машины
-        uniqueCars.value = filterDuplicates(allRawCars.value);
-      } else {
-        break;
-      }
-    }
+    allCars.value = [...allCars.value, ...newCars];
+    displayedCars.value = [...displayedCars.value, ...newCars];
+    lastDisplayedIndex.value = displayedCars.value.length;
     
-    yandexEcommerceArray('impressions', displayedCars.value.slice(-loaded));
+    yandexEcommerceArray('impressions', newCars);
   } finally {
     isLoadMoreLoading.value = false;
   }
@@ -176,7 +114,7 @@ onMounted(() => {
 });
 
 // Вычисляемые свойства
-const checkCars = computed(() => allRawCars.value.length > 1 || !$route.params.car);
+const checkCars = computed(() => allCars.value.length > 1 || !$route.params.car);
 
 const title = computed(() => {
   if ($route.params.car) {
@@ -191,7 +129,7 @@ const title = computed(() => {
 });
 
 const canLoadMore = computed(() => {
-  return lastDisplayedIndex.value < uniqueCars.value.length || currentPage.value < totalPages.value;
+  return currentPage.value < totalPages.value;
 });
 </script>
 
@@ -204,7 +142,7 @@ const canLoadMore = computed(() => {
     <div class="cars__content">
       <div class="container">
         <CarsNewHead 
-          :cars-count="uniqueCars.length - ($route.params.car ? 1 : 0)" 
+          :cars-count="carsCount - ($route.params.car ? 1 : 0)" 
           @update-cars="resetAndLoad()"
           :title="title" 
         />
@@ -244,7 +182,6 @@ const canLoadMore = computed(() => {
     </div>
   </section>
 </template>
-
 <style scoped lang="scss">
 .cars {
     scroll-margin-top: 15vh;
