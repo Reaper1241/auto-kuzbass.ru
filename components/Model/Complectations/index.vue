@@ -38,11 +38,10 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                             <span class="text">Скидка при покупке авто в Trade-In</span>
                             <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
                         </div>
-                        <div clas="complectations-calculator__switch">
+                        <div class="complectations-calculator__switch">
                             <div class="switch">
-                                <input type="checkbox" id="switch" :checked="tradeSwitch"
-                                    @change="tradeSwitch = !tradeSwitch" />
-                                <label for="switch"></label>
+                                <input type="checkbox" id="tradeSwitch" v-model="tradeSwitch" hidden>
+                                <label for="tradeSwitch" class="switch-label"></label>
                             </div>
                         </div>
                     </div>
@@ -52,11 +51,10 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                             <span class="text">Выгодный кредит со скидкой</span>
                             <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
                         </div>
-                        <div clas="complectations-calculator__switch">
+                        <div class="complectations-calculator__switch">
                             <div class="switch">
-                                <input type="checkbox" id="credit" :checked="creditSwitch"
-                                    @change="creditSwitch = !creditSwitch" />
-                                <label for="credit"></label>
+                                <input type="checkbox" id="creditSwitch" v-model="creditSwitch" hidden>
+                                <label for="creditSwitch" class="switch-label"></label>
                             </div>
                         </div>
                     </div>
@@ -66,15 +64,13 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                             <span class="text">Скидка от автосалона при покупке авто</span>
                             <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
                         </div>
-                        <div clas="complectations-calculator__switch">
+                        <div class="complectations-calculator__switch">
                             <div class="switch">
-                                <input type="checkbox" id="salon" :checked="salonSwitch"
-                                    @change="salonSwitch = !salonSwitch" />
-                                <label for="salon"></label>
+                                <input type="checkbox" id="salonSwitch" v-model="salonSwitch" hidden>
+                                <label for="salonSwitch" class="switch-label"></label>
                             </div>
                         </div>
                     </div>
-
                     <div class="complectations-calculator__item total"
                         :class="{ 'activeTotal': tradeSwitch || creditSwitch || salonSwitch }">
                         <div class="complectations-calculator__text">

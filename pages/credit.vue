@@ -1,16 +1,34 @@
 <script setup>
+import { useAppStore } from '/stores/AppStore.js';
+const appStore = useAppStore();
+
+// Получаем выбранный банк по его ID
+const selectedBank = computed(() => {
+  return appStore.banks.find(bank => bank.id === appStore.selectedBankId);
+});
+
+// Если банк не выбран (прямой переход на страницу), используем банк с минимальной ставкой
+const defaultBank = computed(() => {
+  return appStore.banks.reduce((prev, current) => 
+    (prev.percent < current.percent) ? prev : current
+  );
+});
+
+// Текущий банк для отображения
+const currentBank = computed(() => {
+  return selectedBank.value || defaultBank.value;
+});
 </script>
 
 <template>
     <Bread />
-    <h2 class="title">Заявка на автокредит от 3,9%</h2>
+    <h2 class="title">Заявка на автокредит от {{ currentBank.percent }}%</h2>
     <Credit />
     <!-- <BannerSB1 /> -->
     <BannerCB1/>
     <ModalAFK />
     <SEO />
 </template>
-
 
 <style lang="scss" scoped>
     .title{

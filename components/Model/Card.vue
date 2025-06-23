@@ -622,7 +622,8 @@ const show = ref(0);
     position: relative;
     z-index: 2;
     // display: flex;
-    flex-direction: column;
+    // flex-direction: column;
+    align-items: center;
     flex-wrap: wrap;
     gap: 10px 19px;
     

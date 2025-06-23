@@ -126,7 +126,7 @@ function getCrumb() {
 
 .back__wrapper {
     display: none;
-    padding: 15px;
+    padding: 15px 15px 0 15px;
 
     .back {
         padding: 10px 15px;

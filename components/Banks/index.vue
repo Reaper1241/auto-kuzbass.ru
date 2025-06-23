@@ -19,10 +19,10 @@ const appStore = useAppStore();
                     <li class="banks__item" v-for="bank in appStore.banks" :key="bank.id">
                         <div class="banks__main">
                             <img :src="bank.image" alt="photo" />
-                            <p>{{ bank.percent }}%</p>
+                            <p>от {{ bank.percent }}%</p>
                         </div>
                         <img class="banks__img" :src="bank.image" alt="photo" />
-                        <p class="banks__p">{{ bank.percent }}%</p>
+                        <p class="banks__p">от {{ bank.percent }}%</p>
                         <!-- <ul class="banks__list-mob">
                             <li>Ставка от {{ bank.percent }}%</li>
                             <li>Надежный банк</li>
