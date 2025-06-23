@@ -17,7 +17,7 @@ const appStore = useAppStore();
                         <div class="express__text-title">
                             Подайте заявку на <NuxtLink to="/banks" class="express__text-link">автокредит</NuxtLink>
                         </div>
-                        <p>и узнайте лучшие условия от <span class="text__red">4,9%</span> от банков-партнёров!</p>
+                        <p>и узнайте лучшие условия от <span class="text__red">3,9%</span> от банков-партнёров!</p>
                         <div class="express__text-list">
                             <ul class="express__text-ul">
                                 <img src="/svg/clockMob.svg"  alt="" />
