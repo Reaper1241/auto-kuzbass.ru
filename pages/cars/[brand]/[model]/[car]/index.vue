@@ -21,10 +21,18 @@ const loading = ref(true);
 
 if (brand) {
     appStore.globalLoader = true
-    const { data: car } = await fetchServerWrapper(`${apiNew}cars/car/${$route.params.car}`);
+    const { data: car } = await fetchServerWrapper(`${apiNew}cars/car/${$route.params.car}`, {
+            headers:{
+            'Domain': 'https://tmn-auto.ru' // Add your domain value here
+            }
+            });
 
     const brand = findBrand($route.params.brand, appStore.newBrands)
-    const { data: models } = await fetchServerWrapper(`${apiNew}models/${brand}`);
+    const { data: models } = await fetchServerWrapper(`${apiNew}models/${brand}`, {
+            headers:{
+            'Domain': 'https://tmn-auto.ru' // Add your domain value here
+            }
+            });
     newStore.models = models.value
 
         const model = findModel($route.params.model, newStore.models);
@@ -33,10 +41,18 @@ if (brand) {
         }
 
     if (car.value) {
-        const { data: images } = await fetchServerWrapper(`${apiNew}galleries/${car.value.car_model_id}`);
+        const { data: images } = await useFetch(`${apiNew}galleries/${car.value.car_model_id}`, {
+            headers:{
+            'Domain': 'https://tmn-auto.ru' // Add your domain value here
+            }
+        });
         carStore.galleries = images.value
 
-        const { data: model } = await fetchServerWrapper(`${apiNew}models/model/${findModel($route.params.model, newStore.models)}`);
+        const { data: model } = await fetchServerWrapper(`${apiNew}models/model/${findModel($route.params.model, newStore.models)}`, {
+            headers:{
+            'Domain': 'https://tmn-auto.ru' // Add your domain value here
+            }
+        });
         newStore.model = model.value
     }
 
@@ -67,6 +83,7 @@ if (brand) {
 
 console.log(`${apiNew}cars/car/${$route.params.car}`)
 </script>
+
 
 <template>
     <div v-if="loading" class="container">

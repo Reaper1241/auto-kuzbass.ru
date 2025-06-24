@@ -9,18 +9,30 @@ const exterior = ref([]);
 const loading = ref(true);
 const choice = ref(0);
 
+
+const fetchOptions = {
+    headers: {
+        'domain': 'https://tmn-auto.ru'
+    }
+};
+
 const urls = [
     `${apiNew}galleries/${newStore.model.id}?gallery_type_id=1`,
     `${apiNew}galleries/${newStore.model.id}?gallery_type_id=2`,
 ];
 
-Promise.all(urls.map(url => fetch(url).then(res => res.json())))
+Promise.all(urls.map(url => 
+    fetch(url, fetchOptions).then(res => res.json())
+))
     .then(([interiorData, exteriorData]) => {
         interior.value = interiorData;
         exterior.value = exteriorData;
         loading.value = false;
+    })
+    .catch(error => {
+        console.error('Error fetching galleries:', error);
+        loading.value = false;
     });
-
 
 const currentSlide = ref(0)
 const images = computed(() => {
@@ -37,7 +49,7 @@ const breakpoints = {
 }
 
 function slideTo(index) {
-    if (index === images.length) {
+    if (index === images.value.length) {
         currentSlide.value = 0;
     } else {
         currentSlide.value = index;
