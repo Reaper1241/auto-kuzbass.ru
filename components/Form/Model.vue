@@ -167,7 +167,12 @@ function timeListOutput(value) {
     .form__block {
         display: flex;
         flex-direction: column;
+        
         gap: 10px;
+        @media screen and (max-width: 768px){
+            // width: 100%;
+            // padding-right: 20px;
+        }
     }
 
     .form__block.range {
@@ -221,15 +226,14 @@ function timeListOutput(value) {
         // border: var(--border);
         // border-radius: var(--border-small-radius);
         background: white;
-
         .form__complection-list {
-            display: flex;
-            flex-wrap: nowrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Исправлено - правильно задаем 2 колонки */
             gap: 5px;
             margin-top: 5px;
             width: 100%;
-            height: 50px;
             align-items: center;
+            
             .form__complection-item {
                 padding: 5px 10px;
                 border-radius: 4px;
@@ -237,15 +241,15 @@ function timeListOutput(value) {
                 border: 1px solid #9F9F9F;
                 display: flex;
                 gap: 15px;
+                width: 100%;
                 color: #9F9F9F;
-                width: 50%;
                 align-items: center;
-                height: 100%;
-                // padding: 20px 85px;
+                
                 &.active {
-                    border: 1px solid var(--main-color); // при активном состоянии красный
+                    border: 1px solid var(--main-color);
                     color: var(--main-color);
                 }
+                
                 @media screen and (max-width: 540px) {
                     padding: 5px 10px;
                     gap: 5px;

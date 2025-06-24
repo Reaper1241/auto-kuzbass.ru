@@ -572,7 +572,7 @@ watch($route, () => showBurger.value = false)
         flex-direction: column;
         gap: 15px;
         padding: 0 0 100px 0;
-        padding-right: 20px;
+        // padding-right: 20px;
     }
 }
 

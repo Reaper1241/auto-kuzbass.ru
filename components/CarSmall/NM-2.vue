@@ -48,7 +48,7 @@ const model = computed(() => props.model)
         </NuxtLink>
         <div class="cars__buttons">
             <div class="tag">Осталось <span>{{ model.cars_count }} авто</span></div>
-            <div class="tag disabled">Выгодный кредит от 3,9%</div>
+            <div class="tag disabled">Кредит от 3,9%</div>
             <div class="tag disabled">Trade-In</div>
         </div>
 
