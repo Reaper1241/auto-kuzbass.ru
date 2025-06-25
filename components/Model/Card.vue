@@ -142,7 +142,7 @@ const show = ref(0);
                         ">
                             Гарантия:
                                 {{ newStore.model.warranty_year }} /
-                                {{ newStore.model.warranty_km }}
+                                {{ newStore.model.warranty_km }} км
                         </p>
                         <p v-else>
                             Гарантия:
@@ -338,7 +338,7 @@ const show = ref(0);
                 position: relative;
                 padding-left: 44px;
                 font-weight: 300;
-                max-width: 165px;
+                max-width: 176px;
                 font-size: 12px;
                 margin-bottom: 10px;
                 background-color: #334C85;
@@ -375,11 +375,11 @@ const show = ref(0);
                 .model__img {
                     max-width: 575px;
                     width: auto;
-                    height: 245px;
+                    height: 240px;
                     @media screen and (max-width: 767px) {
                         max-width: 100%;
                         height: auto;
-                        max-height: 300px;
+                        max-height: 240px;
                     }
                     img {
                         width: 100%;
