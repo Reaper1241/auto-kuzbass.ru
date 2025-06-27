@@ -113,7 +113,7 @@ watch($route, () => showBurger.value = false)
             <div class="container">
                 <div class="header__content">
                     <div class="header__logo">
-                        <BaseLogo />
+                        <!-- <BaseLogo /> -->
                     </div>
 
                     <nav class="header__navbar">
