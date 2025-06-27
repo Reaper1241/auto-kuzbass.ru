@@ -1,205 +1,218 @@
 <script setup>
-import { useNewCarStore } from '/stores/NewCarStore.js'
+import { computed, ref } from 'vue';
+import { useNewCarStore } from '/stores/NewCarStore.js';
 import { useAppStore } from '/stores/AppStore.js';
 
 const appStore = useAppStore();
-const carStore = useNewCarStore()
-const currentMod = computed(() => findMod(newStore.modification, newStore.model.modifications))
-const modList = computed(() => newStore.model.modifications.filter((mod) => mod.car_complectations.length))
-const car = ref([]);
-car.value = carStore.car
+const carStore = useNewCarStore();
+const car = ref(carStore.car || {}); // Защита от undefined
 
-const activeTab = ref(0)
+// Активная вкладка (Опции / Характеристики)
+const activeTab = ref(0);
 
-// Добавляем состояние для сворачивания/разворачивания блоков
-const safetyOpen = ref(true)
-const exteriorOpen = ref(true)
-const interiorOpen = ref(true)
-const comfortOpen = ref(true)
-const overviewOpen = ref(true)
-const multimediaOpen = ref(true)
-const protectionOpen = ref(true)
+// Состояния для аккордеона (открыто/закрыто)
+const safetyOpen = ref(true);
+const exteriorOpen = ref(true);
+const interiorOpen = ref(true);
+const comfortOpen = ref(true);
+const overviewOpen = ref(true);
+const multimediaOpen = ref(true);
+const protectionOpen = ref(true);
 
+/**
+ * Фильтрует характеристики, удаляя пустые, нулевые и undefined значения.
+ * @returns {Object} - Отфильтрованные данные из `car.modification`.
+ */
+const filteredSpecs = computed(() => {
+  if (!car.value.modification) return {};
 
+  const specs = { ...car.value.modification };
+  const excludedValues = [undefined, null, 0, "", "0"]; // Добавил "0" на случай строкового нуля
 
+  return Object.fromEntries(
+    Object.entries(specs).filter(([_, value]) => {
+      return !excludedValues.includes(value) && value !== false; // Оставляем boolean true
+    })
+  );
+});
+
+/**
+ * Проверяет, есть ли данные в разделе опций (например, безопасность, интерьер и т. д.).
+ * @param {string} section - Название секции (safety, exterior, ...).
+ * @returns {boolean} - Есть ли данные для отображения.
+ */
+const hasComplectationData = (section) => {
+  if (!car.value.complectation || !car.value.complectation[section]) return false;
+  const value = car.value.complectation[section];
+  return value && value.trim() !== "" && value !== "0" && value !== "Нет данных";
+};
 </script>
 
 <template>
-    <section class="car-tabs section">
-        <div class="container">
-            <div class="car-tabs__wrapper">
-                <div class="buttons__show-list">
-                    <div class="title__show-list" :class="{ active: activeTab == 0 }" @click="activeTab = 0">
-                        Опции автомобиля
-                    </div>
-                    <div class="title__show-list" :class="{ active: activeTab == 1 }" @click="activeTab = 1">
-                        Технические характеристики
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion" :class="{ hide: activeTab != 0 }">
-                <div class="accordion__content option__content">
-                    <div class="accordion__item" v-if="car.complectation.safety">
-                        <div class="accordion__item-head" @click="safetyOpen = !safetyOpen">
-                            <span class="accordion__title">Безопасность</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="safetyOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="safetyOpen" v-htmlSanitizer="car.complectation.safety"></ul>
-                    </div>
-
-                    <div class="accordion__item" v-if="car.complectation.exterior">
-                        <div class="accordion__item-head" @click="exteriorOpen = !exteriorOpen">
-                            <span class="accordion__title">Экстерьер</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="exteriorOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="exteriorOpen" v-htmlSanitizer="car.complectation.exterior"></ul>
-                    </div>
-
-                    <div class="accordion__item" v-if="car.complectation.interior">
-                        <div class="accordion__item-head" @click="interiorOpen = !interiorOpen">
-                            <span class="accordion__title">Интерьер</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="interiorOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="interiorOpen" v-htmlSanitizer="car.complectation.interior"></ul>
-                    </div>
-
-                    <div class="accordion__item" v-if="car.complectation.comfort">
-                        <div class="accordion__item-head" @click="comfortOpen = !comfortOpen">
-                            <span class="accordion__title">Комфорт</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="comfortOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="comfortOpen" v-htmlSanitizer="car.complectation.comfort"></ul>
-                    </div>
-
-                    <div class="accordion__item" v-if="car.complectation.overview">
-                        <div class="accordion__item-head" @click="overviewOpen = !overviewOpen">
-                            <span class="accordion__title">Обзор</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="overviewOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="overviewOpen" v-htmlSanitizer="car.complectation.overview"></ul>
-                    </div>
-
-                    <div class="accordion__item" v-if="car.complectation.multimedia">
-                        <div class="accordion__item-head" @click="multimediaOpen = !multimediaOpen">
-                            <span class="accordion__title">Мультимедиа</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="multimediaOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="multimediaOpen" v-htmlSanitizer="car.complectation.multimedia"></ul>
-                    </div>
-
-                    <div class="accordion__item" v-if="car.complectation.сar_theft_protection">
-                        <div class="accordion__item-head" @click="protectionOpen = !protectionOpen">
-                            <span class="accordion__title">Защита от угона</span>
-                            <span class="icon">
-                                <i class="fa-solid" :class="protectionOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-                            </span>
-                        </div>
-                        <ul class="accordion__list" v-if="protectionOpen" v-htmlSanitizer="car.complectation.сar_theft_protection"></ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion" :class="{ hide: activeTab != 1 }">
-                <div class="accordion__content tech__content">
-                    <div class="tech__content-img">
-                        <img src="/images/spec__tech.webp" alt="car" />
-                        <p>{{ car.modification.length }}</p>
-                        <p>{{ car.modification.height }}</p>
-                        <p>{{ car.modification.width }}</p>
-                    </div>
-                    <ul class="accordion__list accordion__list-tech" id="tech">
-                        <li class="list-group-item" v-if="car.modification.length">
-                            <span>Длина, мм.</span><span>{{ car.modification.length }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.height">
-                            <span>Высота, мм.</span><span>{{ car.modification.height }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.width">
-                            <span>Ширина, мм.</span><span>{{ car.modification.width }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.wheel_base">
-                            <span>Колесная база, мм.</span>
-                            <span>{{ car.modification.wheel_base }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.clearance">
-                            <span>Клиренс, мм.</span>
-                            <span>{{ car.modification.clearance }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.fuel">
-                            <span>Тип двигателя</span>
-                            <span>{{ car.modification.fuel }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.engine_size">
-                            <span>Объем двигателя, л.</span>
-                            <span>{{ car.modification.engine_size }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.displacement">
-                            <span>Рабочий объем двигателя, см3.</span>
-                            <span>{{ car.modification.displacement }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.power">
-                            <span>Мощность, л.с.</span>
-                            <span>{{ car.modification.power }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.number_of_gears">
-                            <span>Количество передач</span>
-                            <span>{{ car.modification.number_of_gears }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.from_0_to_100">
-                            <span>Разгон от 0 до 100 км/ч, сек.</span>
-                            <span> {{ car.modification.from_0_to_100 }} </span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.max_speed">
-                            <span>Максимальная скорость, км/ч.</span>
-                            <span> {{ car.modification.max_speed }} </span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.consumption_highway">
-                            <span>Расход топлива на трассе, л/100 км.</span>
-                            <span> {{ car.modification.consumption_highway }} </span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.consumption_city">
-                            <span>Расход топлива в городе, л/100 км.</span>
-                            <span> {{ car.modification.consumption_city }} </span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.consumption_combine">
-                            <span>Смешанный расход топлива, л/100 км.</span>
-                            <span> {{ car.modification.consumption_combine }} </span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.fuel_tank_capacity">
-                            <span>Объем топливного бака, л.</span>
-                            <span>{{ car.modification.fuel_tank_capacity }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.trunk_capacity">
-                            <span>Объем багажного отделения, л.</span>
-                            <span>{{ car.modification.trunk_capacity }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.curb_weight">
-                            <span>Снаряженная масса, кг.</span>
-                            <span>{{ car.modification.curb_weight }}</span>
-                        </li>
-                        <li class="list-group-item" v-if="car.modification.max_weight">
-                            <span>Максимальная масса, кг.</span>
-                            <span>{{ car.modification.max_weight }}</span>
-                        </li>
-                        <!-- остальные технические характеристики -->
-                    </ul>
-                </div>
-            </div>
+  <section class="car-tabs section">
+    <div class="container">
+      <div class="car-tabs__wrapper">
+        <div class="buttons__show-list">
+          <div class="title__show-list" :class="{ active: activeTab == 0 }" @click="activeTab = 0">
+            Опции автомобиля
+          </div>
+          <div class="title__show-list" :class="{ active: activeTab == 1 }" @click="activeTab = 1">
+            Технические характеристики
+          </div>
         </div>
-    </section>
+      </div>
+
+      <!-- Блок с опциями (аккордеон) -->
+      <div class="accordion" :class="{ hide: activeTab != 0 }">
+        <div class="accordion__content option__content">
+          <!-- Безопасность -->
+          <div class="accordion__item" v-if="hasComplectationData('safety')">
+            <div class="accordion__item-head" @click="safetyOpen = !safetyOpen">
+              <span class="accordion__title">Безопасность</span>
+              <span class="icon">
+                <i class="fa-solid" :class="safetyOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="safetyOpen" v-htmlSanitizer="car.complectation.safety"></ul>
+          </div>
+
+          <!-- Экстерьер -->
+          <div class="accordion__item" v-if="hasComplectationData('exterior')">
+            <div class="accordion__item-head" @click="exteriorOpen = !exteriorOpen">
+              <span class="accordion__title">Экстерьер</span>
+              <span class="icon">
+                <i class="fa-solid" :class="exteriorOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="exteriorOpen" v-htmlSanitizer="car.complectation.exterior"></ul>
+          </div>
+
+          <!-- Интерьер -->
+          <div class="accordion__item" v-if="hasComplectationData('interior')">
+            <div class="accordion__item-head" @click="interiorOpen = !interiorOpen">
+              <span class="accordion__title">Интерьер</span>
+              <span class="icon">
+                <i class="fa-solid" :class="interiorOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="interiorOpen" v-htmlSanitizer="car.complectation.interior"></ul>
+          </div>
+
+          <!-- Комфорт -->
+          <div class="accordion__item" v-if="hasComplectationData('comfort')">
+            <div class="accordion__item-head" @click="comfortOpen = !comfortOpen">
+              <span class="accordion__title">Комфорт</span>
+              <span class="icon">
+                <i class="fa-solid" :class="comfortOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="comfortOpen" v-htmlSanitizer="car.complectation.comfort"></ul>
+          </div>
+
+          <!-- Обзор -->
+          <div class="accordion__item" v-if="hasComplectationData('overview')">
+            <div class="accordion__item-head" @click="overviewOpen = !overviewOpen">
+              <span class="accordion__title">Обзор</span>
+              <span class="icon">
+                <i class="fa-solid" :class="overviewOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="overviewOpen" v-htmlSanitizer="car.complectation.overview"></ul>
+          </div>
+
+          <!-- Мультимедиа -->
+          <div class="accordion__item" v-if="hasComplectationData('multimedia')">
+            <div class="accordion__item-head" @click="multimediaOpen = !multimediaOpen">
+              <span class="accordion__title">Мультимедиа</span>
+              <span class="icon">
+                <i class="fa-solid" :class="multimediaOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="multimediaOpen" v-htmlSanitizer="car.complectation.multimedia"></ul>
+          </div>
+
+          <!-- Защита от угона -->
+          <div class="accordion__item" v-if="hasComplectationData('сar_theft_protection')">
+            <div class="accordion__item-head" @click="protectionOpen = !protectionOpen">
+              <span class="accordion__title">Защита от угона</span>
+              <span class="icon">
+                <i class="fa-solid" :class="protectionOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
+              </span>
+            </div>
+            <ul class="accordion__list" v-if="protectionOpen" v-htmlSanitizer="car.complectation.сar_theft_protection"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Блок с техническими характеристиками -->
+      <div class="accordion" :class="{ hide: activeTab != 1 }">
+        <div class="accordion__content tech__content">
+          <div class="tech__content-img">
+            <img src="/images/spec__tech.webp" alt="car" />
+          </div>
+          <ul class="accordion__list accordion__list-tech" id="tech">
+            <li class="list-group-item" v-if="filteredSpecs.length">
+              <span>Длина, мм.</span><span>{{ filteredSpecs.length }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.height">
+              <span>Высота, мм.</span><span>{{ filteredSpecs.height }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.width">
+              <span>Ширина, мм.</span><span>{{ filteredSpecs.width }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.wheel_base">
+              <span>Колесная база, мм.</span><span>{{ filteredSpecs.wheel_base }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.clearance">
+              <span>Клиренс, мм.</span><span>{{ filteredSpecs.clearance }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.fuel">
+              <span>Тип двигателя</span><span>{{ filteredSpecs.fuel }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.engine_size">
+              <span>Объем двигателя, л.</span><span>{{ filteredSpecs.engine_size }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.displacement">
+              <span>Рабочий объем двигателя, см3.</span><span>{{ filteredSpecs.displacement }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.power">
+              <span>Мощность, л.с.</span><span>{{ filteredSpecs.power }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.number_of_gears">
+              <span>Количество передач</span><span>{{ filteredSpecs.number_of_gears }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.from_0_to_100">
+              <span>Разгон от 0 до 100 км/ч, сек.</span><span>{{ filteredSpecs.from_0_to_100 }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.max_speed">
+              <span>Максимальная скорость, км/ч.</span><span>{{ filteredSpecs.max_speed }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.consumption_highway">
+              <span>Расход топлива на трассе, л/100 км.</span><span>{{ filteredSpecs.consumption_highway }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.consumption_city">
+              <span>Расход топлива в городе, л/100 км.</span><span>{{ filteredSpecs.consumption_city }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.consumption_combine">
+              <span>Смешанный расход топлива, л/100 км.</span><span>{{ filteredSpecs.consumption_combine }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.fuel_tank_capacity">
+              <span>Объем топливного бака, л.</span><span>{{ filteredSpecs.fuel_tank_capacity }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.trunk_capacity">
+              <span>Объем багажного отделения, л.</span><span>{{ filteredSpecs.trunk_capacity }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.curb_weight">
+              <span>Снаряженная масса, кг.</span><span>{{ filteredSpecs.curb_weight }}</span>
+            </li>
+            <li class="list-group-item" v-if="filteredSpecs.max_weight">
+              <span>Максимальная масса, кг.</span><span>{{ filteredSpecs.max_weight }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped lang="scss">
