@@ -66,7 +66,7 @@ watch(timeList, (newTimeList, oldTimeList) => {
 
             <input class="range-slider__input range-input" type="range" min="0" max="7" id="range" list="timelist"
                 step="1" v-model="timeList" @change="handleTimeListOutput" :disabled="props.disabled"
-                :style="{ background: `linear-gradient(to right, #334C85 ${timeList / max * 100}%, #334C85 ${timeList / max * 100}%)` }" />
+                :style="{ background: `linear-gradient(to right, #15744e ${timeList / max * 100}%, #15744e ${timeList / max * 100}%)` }" />
             <ul class="datalist" id="timelist" :class="{ 'disabled': props.disabled }">
                 <li value="0" label="6 мес.">6 мес.</li>
                 <li value="1" label="1 год">1 год</li>
@@ -117,7 +117,7 @@ watch(timeList, (newTimeList, oldTimeList) => {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #334C85;
+    background: #15744e;
     cursor: pointer;
     border: none;
     margin-top: -7px; // чтобы выровнять по центру трека
@@ -127,7 +127,7 @@ watch(timeList, (newTimeList, oldTimeList) => {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #334C85;
+    background: #15744e;
     cursor: pointer;
     border: none;
 }
@@ -136,7 +136,7 @@ watch(timeList, (newTimeList, oldTimeList) => {
     height: 18px;
     width: 18px;
     border-radius: 50%;
-    background: #334C85;
+    background: #15744e;
     cursor: pointer;
     border: none;
 }

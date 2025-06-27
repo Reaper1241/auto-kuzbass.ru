@@ -107,7 +107,7 @@
                 top: 4px;
                 bottom: 4px;
                 width: 4px;
-                background-color: #334C85; // Красная линия
+                background-color: #15744e; // Красная линия
                 border-radius: 2px;
             }
 

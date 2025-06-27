@@ -341,7 +341,7 @@ const show = ref(0);
                 max-width: 176px;
                 font-size: 12px;
                 margin-bottom: 10px;
-                background-color: #334C85;
+                background-color: #15744e;
                 border-radius: 15px;
                 padding: 10px;
                 color: #fff;

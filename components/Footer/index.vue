@@ -176,7 +176,7 @@ onMounted(() => {
         }
 
         .footer__contacts {
-            color: #334C85; // красный цвет иконок и текста
+            color: #15744e; // красный цвет иконок и текста
             font-size: 16px;
             padding: 10px;
             display: flex;
@@ -227,7 +227,7 @@ onMounted(() => {
 
                     &:hover {
                         text-decoration: underline;
-                        color: #334C85;
+                        color: #15744e;
                     }
                 }
             }
