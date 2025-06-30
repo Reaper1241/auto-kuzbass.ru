@@ -1,150 +1,182 @@
 <script setup>
+import { computed, ref } from 'vue';
 import { useNewStore } from '/stores/NewStore.js';
+
 const newStore = useNewStore();
+const selectedColor = ref(0);
+const colors = ref(newStore.model.colored_galleries);
+const selectedTab = ref(0);
 
-const currentMod = computed(() => findMod(newStore.modification, newStore.model.modifications))
-const selectedColor = ref(0)
-const colors = ref(newStore.model.colored_galleries)
-const selectedTab = ref(0)
+const currentMod = computed(() => {
+  const mod = findMod(newStore.modification, newStore.model.modifications) || {};
+  const excludedValues = [undefined, null, 0, "", "0", "Нет данных"];
+  
+  // Фильтруем все свойства модификации
+  const filteredMod = {};
+  Object.keys(mod).forEach(key => {
+    if (!excludedValues.includes(mod[key])) {
+      filteredMod[key] = mod[key];
+    }
+  });
+  
+  return filteredMod;
+});
 
-const modList = computed(() => newStore.model.modifications?.filter((mod) => mod.car_complectations.length))
+const modList = computed(() => {
+  return newStore.model.modifications?.filter((mod) => mod.car_complectations.length) || [];
+});
+
+// Проверяет, есть ли хотя бы одно значение для отображения в разделе тех. характеристик
+const hasTechSpecs = computed(() => {
+  const specs = ['fuel', 'engine_size', 'displacement', 'power', 'max_weight', 
+                'drive', 'from_0_to_100', 'max_speed', 'consumption_combine',
+                'fuel_tank_capacity', 'trunk_capacity', 'curb_weight'];
+  return specs.some(spec => currentMod.value[spec] !== undefined);
+});
+
+// Проверяет, есть ли хотя бы одно значение для отображения в разделе размеров
+const hasDimensions = computed(() => {
+  const dimensions = ['length', 'width', 'height', 'wheel_base', 'clearance'];
+  return dimensions.some(dim => currentMod.value[dim] !== undefined);
+});
 </script>
 
 <template>
-    <section class="model-сharacteristics section">
-        <div class="container">
-            <div class="model-сharacteristics__wrapper">
-                <div class="model-сharacteristics__header section__header">
-                    <h2 class="model-сharacteristics__tab-title" @click="selectedTab = 0"
-                        :class="{ active: selectedTab == 0 }">
-                        Тех. характеристики
-                        <i class="fa-solid fa-sort-down"></i>
-                    </h2>
+  <section class="model-сharacteristics section" v-if="hasTechSpecs || hasDimensions">
+    <div class="container">
+      <div class="model-сharacteristics__wrapper">
+        <div class="model-сharacteristics__header section__header">
+          <h2 class="model-сharacteristics__tab-title" 
+              @click="selectedTab = 0"
+              :class="{ active: selectedTab == 0 }"
+              v-if="hasTechSpecs">
+            Тех. характеристики
+            <i class="fa-solid fa-sort-down"></i>
+          </h2>
 
-                    <h2 class="model-сharacteristics__tab-title" @click="selectedTab = 1"
-                        :class="{ active: selectedTab == 1 }">
-                        Размеры и габариты
-                        <i class="fa-solid fa-sort-down"></i>
-                    </h2>
+          <h2 class="model-сharacteristics__tab-title" 
+              @click="selectedTab = 1"
+              :class="{ active: selectedTab == 1 }"
+              v-if="hasDimensions">
+            Размеры и габариты
+            <i class="fa-solid fa-sort-down"></i>
+          </h2>
 
-                    <div class="model-сharacteristics__tab-title select" v-if="modList.length > 1">
-                        <label class="model-card__mod-select">
-                            <select v-model="newStore.modification">
-                                <option v-for="(option, index) in modList" :key="option.id" :value="option.id">
-                                    {{ option.modification }}
-                                </option>
-                            </select>
-                        </label>
-                        <i class="fa-solid fa-sort-down"></i>
-                    </div>
-                </div>
-
-                <div class="model-сharacteristics__body tab__content" v-show="selectedTab == 0">
-                    <div class="model-сharacteristics__text">
-
-                        <ul class="model-сharacteristics__params">
-                            <li class="model-сharacteristics__param" v-if="currentMod.fuel">
-                                <span class="title">Тип двигателя</span>
-                                <span class="value">{{ currentMod.fuel }}</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.engine_size">
-                                <span class="title">Объем двигателя</span>
-                                <span class="value">{{ currentMod.engine_size }} л</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.displacement">
-                                <span class="title">Рабочий объем двигателя</span>
-                                <span class="value">{{ currentMod.displacement }} см3</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.power">
-                                <span class="title">Мощность</span>
-                                <span class="value">{{ currentMod.power }} л.с</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.max_weight">
-                                <span class="title">Максимальная масса</span>
-                                <span class="value">{{ currentMod.max_weight }} кг</span>
-                            </li>
-                            <!-- <li class="model-сharacteristics__param" v-if="currentMod.number_of_gears">
-                                <span class="title">Количество передач</span>
-                                <span class="value">{{ currentMod.number_of_gears }}</span>
-                            </li> -->
-                            <li class="model-сharacteristics__param" v-if="currentMod.drive">
-                                <span class="title">Тип привода</span>
-                                <span class="value">{{ currentMod.drive }}</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.from_0_to_100">
-                                <span class="title">Разгон от 0 до 100 км/ч</span>
-                                <span class="value">{{ currentMod.from_0_to_100 }} с</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.max_speed">
-                                <span class="title">Максимальная скорость</span>
-                                <span class="value">{{ currentMod.max_speed }} км/ч</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.consumption_combine">
-                                <span class="title">Смешанный расход топлива</span>
-                                <span class="value">{{ currentMod.consumption_combine }}</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.fuel_tank_capacity">
-                                <span class="title">Объем топливного бака</span>
-                                <span class="value">{{ currentMod.fuel_tank_capacity }} л</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.trunk_capacity">
-                                <span class="title">Объем багажного отделения</span>
-                                <span class="value">{{ currentMod.trunk_capacity }} л</span>
-                            </li>
-                            <li class="model-сharacteristics__param" v-if="currentMod.curb_weight">
-                                <span class="title">Снаряженная масса</span>
-                                <span class="value">{{ currentMod.curb_weight }} л</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="model-dimensions__body tab__content" v-show="selectedTab == 1">
-                    <div class="model-dimensions__images">
-                        <div class="model-dimensions__image-item">
-                            <NuxtImg lazy format="webp" quality="90" loading="lazy" src="/images/dimensions1.png"
-                                alt="model-dimensions" />
-                            <span class="value">{{ currentMod.length }} мм</span>
-                        </div>
-                        <div class="model-dimensions__image-item">
-                            <NuxtImg lazy format="webp" quality="90" loading="lazy" src="/images/dimensions2.png"
-                                alt="model-dimensions" />
-                            <span class="value">{{ currentMod.width }} мм</span>
-                        </div>
-                        <div class="model-dimensions__image-item">
-                            <NuxtImg lazy format="webp" quality="90" loading="lazy" src="/images/dimensions3.png"
-                                alt="model-dimensions" />
-                            <span class="value">{{ currentMod.width }} мм</span>
-                        </div>
-                    </div>
-                    <div class="model-dimensions__text">
-                        <ul class="model-dimensions__params">
-                            <li class="model-dimensions__param">
-                                <span class="title">Длина кузова</span>
-                                <span class="value">{{ currentMod.length }} мм</span>
-                            </li>
-                            <li class="model-dimensions__param">
-                                <span class="title">Ширина кузова</span>
-                                <span class="value">{{ currentMod.width }} мм</span>
-                            </li>
-                            <li class="model-dimensions__param">
-                                <span class="title">Высота кузова</span>
-                                <span class="value">{{ currentMod.height }} мм</span>
-                            </li>
-                            <li class="model-dimensions__param">
-                                <span class="title">Колесная база</span>
-                                <span class="value">{{ currentMod.wheel_base }} мм</span>
-                            </li>
-                            <li class="model-dimensions__param">
-                                <span class="title">Дорожный просвет</span>
-                                <span class="value">{{ currentMod.clearance }} мм</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+          <div class="model-сharacteristics__tab-title select" v-if="modList.length > 1">
+            <label class="model-card__mod-select">
+              <select v-model="newStore.modification">
+                <option v-for="(option, index) in modList" 
+                        :key="option.id" 
+                        :value="option.id">
+                  {{ option.modification }}
+                </option>
+              </select>
+            </label>
+            <i class="fa-solid fa-sort-down"></i>
+          </div>
         </div>
-    </section>
+
+        <div class="model-сharacteristics__body tab__content" v-show="selectedTab == 0 && hasTechSpecs">
+          <div class="model-сharacteristics__text">
+            <ul class="model-сharacteristics__params">
+              <li class="model-сharacteristics__param" v-if="currentMod.fuel">
+                <span class="title">Тип двигателя</span>
+                <span class="value">{{ currentMod.fuel }}</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.engine_size">
+                <span class="title">Объем двигателя</span>
+                <span class="value">{{ currentMod.engine_size }} л</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.displacement">
+                <span class="title">Рабочий объем двигателя</span>
+                <span class="value">{{ currentMod.displacement }} см3</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.power">
+                <span class="title">Мощность</span>
+                <span class="value">{{ currentMod.power }} л.с</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.max_weight">
+                <span class="title">Максимальная масса</span>
+                <span class="value">{{ currentMod.max_weight }} кг</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.drive">
+                <span class="title">Тип привода</span>
+                <span class="value">{{ currentMod.drive }}</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.from_0_to_100">
+                <span class="title">Разгон от 0 до 100 км/ч</span>
+                <span class="value">{{ currentMod.from_0_to_100 }} с</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.max_speed">
+                <span class="title">Максимальная скорость</span>
+                <span class="value">{{ currentMod.max_speed }} км/ч</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.consumption_combine">
+                <span class="title">Смешанный расход топлива</span>
+                <span class="value">{{ currentMod.consumption_combine }}</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.fuel_tank_capacity">
+                <span class="title">Объем топливного бака</span>
+                <span class="value">{{ currentMod.fuel_tank_capacity }} л</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.trunk_capacity">
+                <span class="title">Объем багажного отделения</span>
+                <span class="value">{{ currentMod.trunk_capacity }} л</span>
+              </li>
+              <li class="model-сharacteristics__param" v-if="currentMod.curb_weight">
+                <span class="title">Снаряженная масса</span>
+                <span class="value">{{ currentMod.curb_weight }} кг</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="model-dimensions__body tab__content" v-show="selectedTab == 1 && hasDimensions">
+          <div class="model-dimensions__images">
+            <div class="model-dimensions__image-item" v-if="currentMod.length">
+              <NuxtImg lazy format="webp" quality="90" loading="lazy" 
+                      src="/images/dimensions1.png" alt="model-dimensions" />
+              <span class="value">{{ currentMod.length }} мм</span>
+            </div>
+            <div class="model-dimensions__image-item" v-if="currentMod.width">
+              <NuxtImg lazy format="webp" quality="90" loading="lazy" 
+                      src="/images/dimensions2.png" alt="model-dimensions" />
+              <span class="value">{{ currentMod.width }} мм</span>
+            </div>
+            <div class="model-dimensions__image-item" v-if="currentMod.width">
+              <NuxtImg lazy format="webp" quality="90" loading="lazy" 
+                      src="/images/dimensions3.png" alt="model-dimensions" />
+              <span class="value">{{ currentMod.width }} мм</span>
+            </div>
+          </div>
+          <div class="model-dimensions__text">
+            <ul class="model-dimensions__params">
+              <li class="model-dimensions__param" v-if="currentMod.length">
+                <span class="title">Длина кузова</span>
+                <span class="value">{{ currentMod.length }} мм</span>
+              </li>
+              <li class="model-dimensions__param" v-if="currentMod.width">
+                <span class="title">Ширина кузова</span>
+                <span class="value">{{ currentMod.width }} мм</span>
+              </li>
+              <li class="model-dimensions__param" v-if="currentMod.height">
+                <span class="title">Высота кузова</span>
+                <span class="value">{{ currentMod.height }} мм</span>
+              </li>
+              <li class="model-dimensions__param" v-if="currentMod.wheel_base">
+                <span class="title">Колесная база</span>
+                <span class="value">{{ currentMod.wheel_base }} мм</span>
+              </li>
+              <li class="model-dimensions__param" v-if="currentMod.clearance">
+                <span class="title">Дорожный просвет</span>
+                <span class="value">{{ currentMod.clearance }} мм</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>
