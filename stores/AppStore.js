@@ -298,7 +298,7 @@ export const useAppStore = defineStore("appStore", () => {
     {
       id: 9,
       name: 'ВТБ',
-      percent: 3.9,
+      percent: 4.9,
       image: '/images/banks/vtb.png',
     },
     {

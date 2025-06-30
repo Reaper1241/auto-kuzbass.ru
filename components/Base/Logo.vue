@@ -4,8 +4,8 @@ const props = defineProps(['type'])
 
 <template>
     <NuxtLink to="/" class="logo">
-        <img src="/TMN1.png" alt="logo footer" v-if="props?.type == 'footer'" />
-        <img src="/TMN1.png" alt="logo header" />
+        <img src="/logoK.png" alt="logo footer" v-if="props?.type == 'footer'" />
+        <img src="/logoK.png" alt="logo header" />
     </NuxtLink>
 </template>
 
