@@ -12,7 +12,7 @@ const choice = ref(0);
 
 const fetchOptions = {
     headers: {
-        'domain': 'https://tmn-auto.ru'
+        'domain': 'https://auto-kuzbass.ru'
     }
 };
 

@@ -38,7 +38,7 @@ function modalShow() {
   checkWorkingHours(); // Проверяем время перед открытием
   
   if (!isWorkingHours.value) {
-    currentModalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона TMN-auto";
+    currentModalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона auto-kuzbass";
     currentAppType.value = 1;
   } else {
     currentModalTitle.value = "Оставьте заявку и мы перезвоним вам в течение 30 минут!";

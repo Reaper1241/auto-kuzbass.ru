@@ -64,7 +64,7 @@ export default function postForm(data, appType, car, category) {
 
       send_form: 1,
       send_page: window.location.origin + window.location.pathname,
-      source: `https://tmn-auto.ru/`, // обязательно должен быть / на конце url
+      source: `https://auto-kuzbass.ru/`, // обязательно должен быть / на конце url
 
       referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
       entry: appStore.entry ? appStore.entry : null,
@@ -75,7 +75,7 @@ export default function postForm(data, appType, car, category) {
     }, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Domain': `https://tmn-auto.ru`,
+        'Domain': `https://auto-kuzbass.ru`,
       },
       withCredentials: true
     })
@@ -93,7 +93,7 @@ export default function postForm(data, appType, car, category) {
         appStore.formLoading = false
       })
 
-    navigateTo('/success-tmn-auto');
+    navigateTo('/success-auto-kuzbass');
   }
 }
 
@@ -135,7 +135,7 @@ export default function postForm(data, appType, car, category) {
 //       price: car?.price ? Number(car.price) : null,
 //       send_form: 1,
 //       send_page: window.location.href,
-//       source: 'https://tmn-auto.ru/',
+//       source: 'https://auto-kuzbass.ru/',
 //       referrer: document.referrer || window.location.href,
 //       entry: appStore.entry || null,
 //       ip: appStore.ip,

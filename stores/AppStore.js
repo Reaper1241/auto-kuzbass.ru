@@ -188,8 +188,8 @@ export const useAppStore = defineStore("appStore", () => {
 
 
   /* Main App Data */
-  const siteName = ref('Tmn-auto')
-  const siteUrl = ref('https://tmn-auto.ru')
+  const siteName = ref('auto-kuzbass')
+  const siteUrl = ref('https://auto-kuzbass.ru')
   const phone = ref('+7 (345 )257-97-09')
   const siteCity = ref('Тюмень')
   const address = ref('Тюмень, ул. Московский тракт 321 стр 1')
