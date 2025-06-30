@@ -256,7 +256,7 @@ function validateYear() {
                     <!-- <div class="page__text-content" v-htmlSanitizer="appStore?.newSeo[$route.name]?.text_content ? removeTrash(appStore.newSeo[$route.name].text_content) : null"></div>   -->
                     <div class="page__text-content">
                         <h2>
-                Обменяйте старое авто на новое — быстро и выгодно с "auto-kuzbass"!
+                Обменяйте старое авто на новое — быстро и выгодно с «CARPLAZA»!
             </h2>
             <p class="chapter">
                Трейд-ин в нашем автосалоне — это идеальный вариант для тех, кто ценит своё время и хочет без лишних хлопот пересесть на новый автомобиль. 
@@ -268,7 +268,7 @@ function validateYear() {
         
         <div class="content__text content__section">
             <div class="chapter">
-                <h2>Почему выбирают трейд-ин в “auto-kuzbass”: 
+                <h2>Почему выбирают трейд-ин в «CARPLAZA»: 
 
 </h2>
                 <ul>
@@ -293,7 +293,7 @@ function validateYear() {
 <p class="chapter">
 Доверьте обмен авто профессионалам — и откройте для себя комфорт нового уровня. 
 Оставьте заявку на auto-kuzbass.ru и сделайте шаг к новому автомобилю уже сегодня! 
-"auto-kuzbass" — меняем старое на лучшее! 
+«CARPLAZA» — меняем старое на лучшее! 
 </p>
             </div>
                     </div>

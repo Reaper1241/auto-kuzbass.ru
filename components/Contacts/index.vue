@@ -16,7 +16,7 @@ function checkWorkingHours() {
   const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
   const moscowTime = new Date(now.getTime() + moscowOffset);
   const currentHour = moscowTime.getUTCHours();
-  isWorkingHours.value = currentHour >= 9 && currentHour < 21;
+  isWorkingHours.value = currentHour >= 5 && currentHour < 16;
 }
 
 // Определение мобильного устройства (по ширине экрана ≤500px)
@@ -29,7 +29,7 @@ function modalShow() {
   checkWorkingHours();
   
   if (!isWorkingHours.value) {
-    currentModalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время!";
+    currentModalTitle.value = "Мы работаем с 9:00 до 20:00. Оставьте заявку и мы перезвоним Вам в рабочее время!";
     currentAppType.value = 1;
   } else {
     currentModalTitle.value = "Оставьте заявку и мы перезвоним Вам в течение 30 минут!";

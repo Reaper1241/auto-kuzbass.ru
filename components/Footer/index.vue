@@ -15,7 +15,7 @@ function checkWorkingHours() {
   const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
   const moscowTime = new Date(now.getTime() + moscowOffset);
   const currentHour = moscowTime.getUTCHours();
-  isWorkingHours.value = currentHour >= 9 && currentHour < 21; // 9:00–21:00 как указано в футере
+  isWorkingHours.value = currentHour >= 5 && currentHour < 16; // 9:00–21:00 как указано в футере
 }
 
 // Получаем правильный заголовок и тип в зависимости от времени
@@ -24,7 +24,7 @@ const getModalConfig = () => {
   
   if (!isWorkingHours.value) {
     return {
-      title: "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним вам в рабочее время! С уважением, команда Автосалона auto-kuzbass",
+      title: "Мы работаем с 9:00 до 20:00. Оставьте заявку и мы перезвоним вам в рабочее время! С уважением, команда Автосалона «CARPLAZA»",
       type: 1
     };
   } else {
@@ -51,7 +51,7 @@ onMounted(() => {
             <div class="footer__contacts"> 
               <p>
                 <i class="fa-solid fa-location-dot"></i>
-                <span class="footer__info-adress">Тюмень, ул. Московский тракт 321 стр 1</span>
+                <span class="footer__info-adress">г. Кемерово, ул. Тухачевского 58В</span>
               </p>
                 <p class="time">9:00–21:00 без выходных</p>
               <p>
@@ -95,7 +95,7 @@ onMounted(() => {
                 отдельно.
               </p>
               <p>
-                ООО «ТМН-Авто» ИНН 9727084176 КПП 772701001 ОГРН 1247700575649 Юридический адрес: 117449, Москва, Шверника ул., д. 16 к. 1, помещ. 1/П
+                ООО «ВИВАТ» ИНН 6320082324 КПП 632001001 ОГРН 1246300022088 Юридический адрес: 445037, САМАРСКАЯ ОБЛАСТЬ, Г. О. ТОЛЬЯТТИ, Г. ТОЛЬЯТТИ, ПРОЕЗДНОВЫЙ, Д.3, КОМ. 6Г-8
               </p>
               <NuxtLink to="/politics/">Политика конфиденциальности</NuxtLink>
               <p>

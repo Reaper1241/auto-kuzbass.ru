@@ -11,7 +11,7 @@ const appStore = useAppStore();
                     <!-- <p class="content__main-text">Лучшее предложение в СПб</p> -->
                     <h2 class="content__main-title">
                         Авто под такси в кредит без первого взноса
-                        лучшие условия в автосалоне “auto-kuzbass”
+                        лучшие условия в автосалоне «CARPLAZA»
                         <!-- Авто под такси<br>
                         в кредит от <span>{{ appStore.creditPercent }}%</span> -->
                     </h2>

@@ -30,7 +30,7 @@ function checkWorkingHours() {
   const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
   const moscowTime = new Date(now.getTime() + moscowOffset);
   const currentHour = moscowTime.getUTCHours();
-  isWorkingHours.value = currentHour >= 7 && currentHour < 19;
+  isWorkingHours.value = currentHour >= 5 && currentHour < 16;
 }
 
 function modalShow() {
@@ -38,7 +38,7 @@ function modalShow() {
   checkWorkingHours(); // Проверяем время перед открытием
   
   if (!isWorkingHours.value) {
-    currentModalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона auto-kuzbass";
+    currentModalTitle.value = "Мы работаем с 9:00 до 20:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона «CARPLAZA»";
     currentAppType.value = 1;
   } else {
     currentModalTitle.value = "Оставьте заявку и мы перезвоним вам в течение 30 минут!";

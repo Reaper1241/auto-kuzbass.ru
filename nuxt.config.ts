@@ -70,7 +70,7 @@ export default defineNuxtConfig({
         },
       ]
     },
-    rootId: '__tmnauto',
+    rootId: '__autokuzbass',
   },
 
   modules: [

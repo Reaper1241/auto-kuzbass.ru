@@ -34,14 +34,14 @@ function checkWorkingHours() {
   const moscowOffset = 3 * 60 * 60 * 1000; // MSK (UTC+3)
   const moscowTime = new Date(now.getTime() + moscowOffset);
   const currentHour = moscowTime.getUTCHours();
-  isWorkingHours.value = currentHour >= 7 && currentHour < 19;
+  isWorkingHours.value = currentHour >= 5 && currentHour < 16;
 }
 
 const openModal = () => {
   checkWorkingHours(); // Проверяем время перед открытием модалки
   
   if (!isWorkingHours.value) {
-    modalTitle.value = "Мы работаем с 9:00 до 21:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона auto-kuzbass";
+    modalTitle.value = "Мы работаем с 9:00 до 20:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона «CARPLAZA»";
   } else {
     modalTitle.value = "Оставьте заявку на LADA по госпрограмме";
   }
