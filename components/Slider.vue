@@ -207,7 +207,7 @@ onMounted(() => {
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 39%, rgba(0, 0, 0, 0) 63%);
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 39%, rgba(0, 0, 0, 0) 90%);
             z-index: 0;
             pointer-events: none;
         }
@@ -281,7 +281,7 @@ onMounted(() => {
                     @media screen and (max-width: 520px) {
                         font-size: 22px;
                         position: absolute;
-                        top: 55px;
+                        top: 65px;
                         line-height: 30px;
                     }
                 }
@@ -295,7 +295,7 @@ onMounted(() => {
                     @media screen and (max-width: 520px) {
                         font-weight: 700;
                         font-size: 30px;
-                        line-height: 24px;
+                        line-height: 30px;
                         position: absolute;
                         top: 10px;
                     }

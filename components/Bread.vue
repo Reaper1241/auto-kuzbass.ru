@@ -86,7 +86,7 @@ function getCrumb() {
 
 <style scoped lang="scss">
 .breadcrumbs {
-    padding: 20px 0;
+    padding: 20px 0 10px 0;
     display: block;
 
     .breadcrumbs__list {
