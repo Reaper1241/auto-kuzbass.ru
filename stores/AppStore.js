@@ -188,9 +188,9 @@ export const useAppStore = defineStore("appStore", () => {
 
 
   /* Main App Data */
-  const siteName = ref('auto-kuzbass')
+  const siteName = ref('CARPLAZA')
   const siteUrl = ref('https://auto-kuzbass.ru')
-  const phone = ref('+7 (345 )257-97-09')
+  const phone = ref('+7 (384)223-25-75')
   const siteCity = ref('Кемерово')
   const address = ref(' г. Кемерово, ул. Тухачевского 58В')
   // const yandexMap = ref('')

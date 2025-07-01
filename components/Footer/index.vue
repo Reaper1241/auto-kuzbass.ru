@@ -53,10 +53,10 @@ onMounted(() => {
                 <i class="fa-solid fa-location-dot"></i>
                 <span class="footer__info-adress">г. Кемерово, ул. Тухачевского 58В</span>
               </p>
-                <p class="time">9:00–21:00 без выходных</p>
+                <p class="time">9:00–20:00 без выходных</p>
               <p>
                 <i class="fa-solid fa-phone"></i>
-                <span>+7 (343) 343-23-68</span>
+                <span>+7 (384) 223-25-75</span>
               </p>
               <p class="phone"><a href="#">Заказать обратный звонок</a></p>
             </div>
