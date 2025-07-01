@@ -60,8 +60,8 @@ const appStore = useAppStore();
 }
 .section__body {
     position: relative;
-    background: url(/images/banner2.png) no-repeat 3% 67%;
-    background-size: 130%;
+    background: url(/images/banner2.png) no-repeat 0% 50%;
+    background-size: 140%;
     width: 100%;
     margin: 30px auto;
     color: var(--bg-light);
