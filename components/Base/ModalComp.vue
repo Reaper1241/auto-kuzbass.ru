@@ -70,7 +70,7 @@ const props = defineProps({
 
                             <div class="modal__params-item" v-if="comp.multimedia">
                                 <div class="modal__params-title">
-                                    Мултимедиа
+                                    Мультимедиа
                                 </div>
                                 <div class="modal__params-value" v-htmlSanitizer="comp.multimedia"></div>
                             </div>
