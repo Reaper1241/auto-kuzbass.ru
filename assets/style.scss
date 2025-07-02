@@ -659,7 +659,7 @@ input {
           height: 100%;
           object-fit: cover;
           border-radius: var(--border-small-radius);
-          max-width: 800px;
+          max-width: 550px;
 
           @media screen and (max-width: 1400px) {
             max-width: 100%;
@@ -720,7 +720,8 @@ input {
 
     .stickers {
       position: absolute;
-      top: 50px;
+      top: 10px;
+      left: 10px;
       background: transparent;
       right: 10px;
       font-size: var(--standart-size);
@@ -728,7 +729,7 @@ input {
       display: flex;
       flex-direction: column;
       gap: 5px;
-      align-items: end;
+      align-items: start;
 
       @media screen and (max-width: 1000px) {
         left: 20px;
