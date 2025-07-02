@@ -171,7 +171,7 @@ appStore.setAttributes();
   margin-top: 10px;
   
   &:hover {
-    background:#007FA4;
+    background:var(--main-color);
   }
 }
 

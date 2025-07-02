@@ -23,7 +23,7 @@ onMounted(() => {
             <div class="brand__content">
                 <div class="brand__form-wrapper">
                     <h2 class="">
-                        <span>Получить индивидуальное предложение на покупку {{ newStore?.brand?.brand.toUpperCase() }} в кредит от 3,9%</span></h2>
+                        <span>Получить индивидуальное предложение на покупку {{ newStore?.brand?.brand.toUpperCase() }} в кредит от 4,9%</span></h2>
                     <FormBanner class="brand__form" />
                 </div>
 
