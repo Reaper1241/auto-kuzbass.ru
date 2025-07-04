@@ -49,7 +49,7 @@ const model = computed(() => props.model)
         <div class="cars__buttons">
             <div class="tag">Осталось <span>{{ model.cars_count }} авто</span></div>
             <div class="tag disabled">Кредит от 4,9%</div>
-            <div class="tag disabled">Trade-In</div>
+            <div class="tag disabled">Без первого взноса</div>
         </div>
 
         <div class="model__controls">
@@ -59,7 +59,7 @@ const model = computed(() => props.model)
                 :modal-title="`Купить в кредит ${cleanUpTitle(model.url_brand, model.url_model)}`"
                 :btn-class="`classic credit`" category="new" />
             <BaseButtonModal :car="car" :btn-label="'Заказать обратный звонок'"  :app-type="8"
-                :modal-title="`Закажите обратный звонок и наш специалсит перезвонит Вам в течение 15 минут!`"
+                :modal-title="`Закажите обратный звонок и наш специалист перезвонит Вам в течение 15 минут!`"
                 :btn-class="`classic trade`" category="new" :btnIcon="`fa-solid fa-phone`"/>                
         </div>
     </div>
@@ -68,7 +68,7 @@ const model = computed(() => props.model)
 <style scoped lang="scss">
 .cars__buttons{
     display: flex;
-    gap: 10px;
+    gap: 3px;
     padding: 0 15px;
     flex-wrap: nowrap;
     overflow-x: auto;
@@ -79,13 +79,14 @@ const model = computed(() => props.model)
         display: none; // Chrome, Safari
     }
     .tag {
-        padding: 6px 10px;
+        padding: 6px 8px;
         font-size: 10px;
         font-weight: 500;
         border: 1px solid #C4C4C4;
         border-radius: 6px;
         white-space: nowrap;
         background: #fff;
+        
         color: var(--main-color);
     }
 

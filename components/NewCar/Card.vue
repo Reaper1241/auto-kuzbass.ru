@@ -539,8 +539,8 @@ margin-right: 5px;
 
 .car-card__stickers {
                 // position: absolute;
-                margin-top: 30px;
-                
+                margin-top: 0px !important;
+
                 align-items: center;
                 z-index: 2;
                 top: 20px;
@@ -557,8 +557,9 @@ margin-right: 5px;
                 }
                 @media screen and (max-width: 768px) {
                     top: 10px;
-                    left: 10px;
+                    left: 0px;
                     flex-wrap: wrap;
+                    margin-top: 0px !important;
                 }
                 .car-card__credit{
                     border: 2px solid var(--main-color);
