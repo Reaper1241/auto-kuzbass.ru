@@ -338,7 +338,7 @@ const show = ref(0);
                 position: relative;
                 padding-left: 44px;
                 font-weight: 300;
-                max-width: 176px;
+                max-width: 180px;
                 font-size: 12px;
                 margin-bottom: 10px;
                 background-color: #15744e;
@@ -502,10 +502,34 @@ const show = ref(0);
                     margin-bottom: 20px;
                 }
                 @media screen and (max-width: 767px) {
-                    display: none;
+                    display: flex !important;
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    white-space: nowrap;
+                    border: none;
+                    -webkit-overflow-scrolling: touch;
+                    padding-bottom: 15px;
+                    margin-bottom: 15px;
+                    width: 100%;
+                    gap: 20px;
+                    scrollbar-width: none; /* Для Firefox */
+                    
+                    &::-webkit-scrollbar {
+                        display: none; /* Для Chrome/Safari */
+                    }
+                    
+                    & li {
+                        flex: 0 0 auto;
+                        padding: 0 15px 0 28px !important;
+                        
+                        &::before {
+                            left: 5px;
+                        }
+                    }
                 }
+                
                 @media screen and (max-width: 375px) {
-                    display: none;
+                    display: flex !important; /* Переопределяем display:none */
                 }
                 &::before {
                     content: "";

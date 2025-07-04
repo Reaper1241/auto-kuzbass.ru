@@ -1,12 +1,10 @@
 <script setup>
 import { options, name } from "@/constants/";
-
 import { vMaska } from "maska/vue"
-
 import { useAppStore } from '/stores/AppStore.js';
-const appStore = useAppStore();
-
 import { useNewStore } from '/stores/NewStore.js';
+
+const appStore = useAppStore();
 const newStore = useNewStore();
 
 const props = defineProps({
@@ -62,7 +60,15 @@ watch(() => props.modification, () => {
 
 const modelSale = computed(() => props.model.sale);
 const selectedComplectationId = ref(props.modification.car_complectations?.[0].id);
-const currentComplectation = computed(() => props.modification.car_complectations?.find(item => item.id == selectedComplectationId.value));
+
+// Добавляем сортировку комплектаций по цене
+const sortedComplectations = computed(() => {
+    if (!props.modification?.car_complectations) return [];
+    return [...props.modification.car_complectations].sort((a, b) => a.price - b.price);
+});
+
+// Используем отсортированный массив для поиска текущей комплектации
+const currentComplectation = computed(() => sortedComplectations.value.find(item => item.id == selectedComplectationId.value));
 
 const modList = computed(() => newStore.model.modifications?.filter((mod) => mod.car_complectations.length))
 
@@ -104,7 +110,9 @@ function timeListOutput(value) {
             <div class="form__complection-select">
                 Выбранная комплектация:
                 <ul class="form__complection-list">
-                    <li class="form__complection-item" v-for="item in modification.car_complectations" :key="item.id"
+                    <li class="form__complection-item" 
+                        v-for="item in sortedComplectations" 
+                        :key="item.id"
                         @click="selectedComplectationId = item.id"
                         :class="{ 'active': selectedComplectationId == item.id }">
                         <span class="text">
@@ -133,7 +141,6 @@ function timeListOutput(value) {
             <BaseRangeTime @timeListOutput="timeListOutput" />
             <BaseRangePercent :min="0" :max="80" :step="5" :carPrice="currentComplectation.price - modelSale"
                 @percentListOutput="fee = $event" />
-
         </div>
 
         <div class="form__block">
@@ -150,13 +157,10 @@ function timeListOutput(value) {
                 <FormPieceCheck @formChecked="returnEmit" />
                 <BaseFormButton :title="'Оставить заявку'" :label="'Оставить заявку'" :disabled="!formChecked"
                     :loading="!appStore.formLoading" />
-
-                
             </form>
         </div>
     </div>
 </template>
-
 
 <style lang="scss" scoped>
 .model-credit__form {
