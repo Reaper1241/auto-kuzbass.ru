@@ -321,14 +321,19 @@ onMounted(() => {
                 }
 
                 .slider__item {
-                    height: 170px;
+                    height: 200px;
                     width: 100%;
-                    padding: 0 30px;
+                    padding: 0 0px;
+                    display: flex;
+                    align-items: flex-end; /* Это выровняет изображение по нижнему краю */
+                    overflow: hidden;
+                    
                     img {
                         width: 100%;
-                        height: 100%;
+                        height: auto;
+                        max-height: 100%;
                         object-fit: cover;
-                        
+                        object-position: center bottom; /* Обрезка будет только сверху */
                     }
                 }
 
