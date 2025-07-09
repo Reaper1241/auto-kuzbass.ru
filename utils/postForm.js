@@ -51,7 +51,7 @@ export default function postForm(data, appType, car, category) {
     navigateTo('/thank');
   } else {
     const { $ym } = useNuxtApp()
-    $ym('reachGoal', 'success')
+    $ym('reachGoal', 'success-auto-kuzbass')
     axios.post(`${apiFormNew}`, {
       phone_number: clearPhone,
       full_name: formData.name ? formData.name : null,
