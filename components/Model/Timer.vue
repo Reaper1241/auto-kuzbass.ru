@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
             <div class="timer__container">
                 <div class="timer__block">
                     <h2 class="timer__title">
-                        Успей получить дополнительую скидку за покупку в кредит +
+                        Успейте получить дополнительную скидку за покупку в кредит +
                         <span>КАСКО в подарок</span> сроки акции ограничены
                     </h2>
                     <div class="timer" :data-time="targetDate">
@@ -149,11 +149,13 @@ onBeforeUnmount(() => {
                                 declOfNum(seconds, ["секунда", "секунды", "секунд"])
                             }}</span>
                         </div>
+                        <FormTimer class="form__timer"/>
                     </div>
                     <!-- Добавленная кнопка -->
                     <button class="timer__button" @click="modalShow">
                         Оставить заявку
                     </button>
+                    
                 </div>
             </div>
         </div>
@@ -174,29 +176,37 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss" scoped>
+.form__timer{
+    max-width: 450px;
+    margin-left: 50px;
+    @media screen and (max-width: 1133px) {
+        display: none;
+    }
+}
 .timer__section {
     background: #fff;
     margin: 30px 0;
-    border: 2px solid var(--main-color2);
-    border-left: none;
-    border-right: none;
+    // border: 2px solid var(--main-color2);
+    // border-left: none;
+    // border-right: none;
     .timer__container {
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 60px;
-        padding: 30px 0;
+        padding: 30px 10px;
         color: black;
-
+        border: 2px solid var(--main-color2);
+        border-radius: 4px;
         @media screen and (max-width: 1023px) {
             gap: 20px;
-            padding: 20px 0;
+            padding: 20px 15px;
         }
 
         @media screen and (max-width: 767px) {
             flex-direction: column;
             gap: 35px;
-            padding: 38px 0;
+            padding: 38px 10px;
             max-width: 540px;
             width: 100%;
             margin: 0 auto;
@@ -226,7 +236,7 @@ onBeforeUnmount(() => {
                 }
 
                 & span {
-                    color: var(--main-color);
+                    color: #c91212;
                     font-weight: 700;
                 }
             }
@@ -251,7 +261,7 @@ onBeforeUnmount(() => {
                     gap: 6px;
                     width: 126px;
                     height: 109px;
-                    border: 2px solid var(--main-color);
+                    border: 2px solid #c91212;
                     border-radius: 4px;
 
                     @media screen and (max-width: 1023px) {
@@ -275,7 +285,7 @@ onBeforeUnmount(() => {
                         font-size: 18px;
                         line-height: 12px;
                         text-align: center;
-                        color: var(--main-color);
+                        color: #c91212;
                         font-weight: 700;
                         
                         @media screen and (max-width: 375px) {
@@ -285,7 +295,7 @@ onBeforeUnmount(() => {
                     }
 
                     .time-count__text {
-                        color: var(--main-color);
+                        color: #c91212;
                         display: block;
                         font-weight: 300;
                         font-size: 18px;
@@ -315,8 +325,8 @@ onBeforeUnmount(() => {
         display: block;
         margin: 20px auto 0;
         padding: 12px 24px;
-        width: 100%;
-        background-color: var(--main-color); /* или ваш цвет акцента */
+        width: 70%;
+        background-color: #c91212; /* или ваш цвет акцента */
         color: white;
         border: none;
         border-radius: 4px;

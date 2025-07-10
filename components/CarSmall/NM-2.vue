@@ -47,7 +47,8 @@ const model = computed(() => props.model)
             </div>
         </NuxtLink>
         <div class="cars__buttons">
-            <div class="tag">Осталось <span>{{ model.cars_count }} авто</span></div>
+            <!-- <div class="tag">Осталось <span>{{ model.cars_count }} авто</span></div> -->
+            <div class="tag">В наличии</div>
             <div class="tag disabled">Кредит от 4,9%</div>
             <div class="tag disabled">Без первого взноса</div>
         </div>
@@ -79,8 +80,8 @@ const model = computed(() => props.model)
         display: none; // Chrome, Safari
     }
     .tag {
-        padding: 6px 8px;
-        font-size: 10px;
+        padding: 6px 10px;
+        font-size: 11px;
         font-weight: 500;
         border: 1px solid #C4C4C4;
         border-radius: 6px;
@@ -88,6 +89,10 @@ const model = computed(() => props.model)
         background: #fff;
         
         color: var(--main-color);
+        // @media screen and (max-width: 400px) {
+        //     padding: 6px 10px;
+        //     font-size: 12px;
+        // }
     }
 
     .tag.disabled {
