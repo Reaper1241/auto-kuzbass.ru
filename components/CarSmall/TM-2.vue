@@ -307,8 +307,9 @@ const model = computed(() => props.model)
                 background: white;
                 text-align: center;
                 z-index: 1;
-                padding: 6px 8px;
-                font-size: var(--small-size);
+                padding: 6px;
+                font-size: 10px;
+                font-weight: 700;
                 line-height: normal;
             }
 
