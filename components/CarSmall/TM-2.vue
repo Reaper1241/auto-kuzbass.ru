@@ -14,7 +14,7 @@ const model = computed(() => props.model)
                 :alt="model.model" class="model__img" :class="{ 'no-taxi': !model.taxi }" />
 
             <div class="model__stickers">
-                <div class="sticker available">В наличии</div>
+                <div class="sticker available">Осталось <span>{{ model.cars_count }}</span> авто</div>
                 <!-- <div class="sticker count">В наличии: <span>{{ model.cars_count }} авто</span></div> -->
             </div>
         </NuxtLink>
@@ -48,9 +48,9 @@ const model = computed(() => props.model)
             </div>
         </NuxtLink>
         <div class="taxi__buttons">
-            <div class="tag">Осталось <span>{{ model.cars_count }} авто</span></div>
-            <div class="tag disabled">Кредит от 4,9%</div>
-            <div class="tag disabled">Trade-In</div>
+            <div class="tag">Кредит от 4,9%</div>
+            <div class="tag disabled">Первый взнос от 0 ₽</div>
+            <div class="tag disabled">Трейд-Ин</div>
         </div>
             
         <div class="model__controls">
@@ -319,6 +319,9 @@ const model = computed(() => props.model)
                 display: inline-block; // показываем
                 font-weight: 600;
                 border-radius: 4px;
+                span{
+                    font-weight: 700;
+                }
             }
 
             .garantee {
