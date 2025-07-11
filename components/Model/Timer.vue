@@ -186,6 +186,12 @@ onBeforeUnmount(() => {
 .timer__section {
     background: #fff;
     margin: 30px 0;
+    @media screen and (max-width: 767px){
+        margin: 10px 0;
+    }
+    @media screen and (max-width: 540px){
+        margin: 0;
+    }
     // border: 2px solid var(--main-color2);
     // border-left: none;
     // border-right: none;
