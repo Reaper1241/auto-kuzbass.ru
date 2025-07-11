@@ -68,7 +68,18 @@ const show = ref(0);
                     <div class="model__top">
                         <div class="model__right-top">
                             <ul class="model__card-list-top">
-                                <li>Гарантия 5 лет или 150 000 км</li>
+                                <li v-if="
+                                    newStore.model.warranty_year &&
+                                    newStore.model.warranty_km != 0
+                                ">
+                                    Гарантия:
+                                        {{ newStore.model.warranty_year }} /
+                                        {{ newStore.model.warranty_km }} км
+                                </li>
+                                <li v-else>
+                                    Гарантия:
+                                    5 лет / 100 000 км
+                                </li>
                                 <li>От 4,9% без 1-го взноса</li>
                                 <li>Trade-In выгода до 250 000 ₽</li>
                                 <!-- <li>Процентная ставка от 4,9%</li> -->
@@ -221,11 +232,22 @@ const show = ref(0);
                 </div>
                 <div class="model__right">
                     <ul class="model__card-list">
-                        <li>Бонус при Trade-In до 250 000 ₽</li>
-                        <li>Без первого взноса</li>
-                        <li>Гарантия 3 года или 100 000 км</li>
-                        <li>Процентная ставка от 4,9%</li>
-                        <li>Кредит сроком до 8 лет</li>
+                        <li v-if="
+                            newStore.model.warranty_year &&
+                            newStore.model.warranty_km != 0
+                        ">
+                            Гарантия:
+                                {{ newStore.model.warranty_year }} /
+                                {{ newStore.model.warranty_km }} км
+                        </li>
+                        <li v-else>
+                            Гарантия:
+                            5 лет / 100 000 км
+                        </li>
+                        <li>От 4,9% без 1-го взноса</li>
+                        <li>Trade-In выгода до 250 000 ₽</li>
+                        <!-- <li>Процентная ставка от 4,9%</li> -->
+                        <li>Срок до 7 лет</li>
                         <li>Рассрочка 0%</li>
                     </ul>
                     
