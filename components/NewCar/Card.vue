@@ -558,7 +558,7 @@ margin-right: 5px;
                 @media screen and (max-width: 768px) {
                     top: 10px;
                     left: 0px;
-                    flex-wrap: wrap;
+                    flex-wrap: nowrap;
                     margin-top: 0px !important;
                 }
                 .car-card__credit{
@@ -574,9 +574,11 @@ margin-right: 5px;
                     background: #fff;background: #fff;
                     @media screen and (max-width: 1170px) {
                         min-width: 49%;
+                        padding: 8px;
+                        font-size: var(--small-size)
                     }
                     @media screen and (max-width: 570px) {
-                        min-width:  100%;
+                        // min-width:  100%;
                     }
                 }
                 .sticker {
@@ -595,11 +597,11 @@ margin-right: 5px;
                     @media screen and (max-width: 768px) {
                         padding: 2px;
                         font-size: var(--small-size);
-                        font-weight: 700;
+                        font-weight: 500;
                         opacity: 0.85;
                     }
                     @media screen and (max-width: 570px) {
-                        min-width: 100%;
+                        // min-width: 100%;
                     }
                 }
 

@@ -4,7 +4,7 @@ const props = defineProps(['carPrice', 'disabled', 'minPercent'])
 const emits = defineEmits(['percentListOutput']);
 
 let percentList = ref(props?.minPercent ? props?.minPercent : 10);
-let currentStep = ref(5);
+let currentStep = ref(10);
 const max = ref(80);
 const min = ref(props.minPercent ? props.minPercent : 0);
 

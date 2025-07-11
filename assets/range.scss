@@ -129,13 +129,13 @@ input[type="range"]::-ms-fill-upper {
 
     li {
         color: var(--main-black);
-        font-size: 9px;
+        font-size: 12px;
         font-weight: 700;
         width: 10px;
         position: relative;
 
         @media screen and (max-width: 400px) {
-            font-size: 7px;
+            font-size: 10px;
         }
 
         &::after {

@@ -81,6 +81,6 @@ if (brand) {
 
 <style scoped lang="scss">
 .model{
-    margin-top: 30px;
+    // margin-top: 30px;
 }
 </style>

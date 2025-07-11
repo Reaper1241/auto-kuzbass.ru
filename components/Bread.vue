@@ -131,8 +131,8 @@ function getCrumb() {
     .back {
         padding: 10px 15px;
         border-radius: 20px;
-        background: var(--dark-grey);
-        color: white;
+        // background: var(--dark-grey);
+        color: black;
 
         display: flex;
         align-items: center;

@@ -68,14 +68,14 @@ watch(timeList, (newTimeList, oldTimeList) => {
                 step="1" v-model="timeList" @change="handleTimeListOutput" :disabled="props.disabled"
                 :style="{ background: `linear-gradient(to right, #15744e ${timeList / max * 100}%, #15744e ${timeList / max * 100}%)` }" />
             <ul class="datalist" id="timelist" :class="{ 'disabled': props.disabled }">
-                <li value="0" label="6 мес.">6 мес.</li>
-                <li value="1" label="1 год">1 год</li>
-                <li value="2" label="2 года">2 года</li>
-                <li value="3" label="3 года">3 года</li>
-                <li value="4" label="4 года">4 года</li>
-                <li value="5" label="5 лет">5 лет</li>
-                <li value="6" label="6 лет">6 лет</li>
-                <li value="7" label="7 лет">7 лет</li>
+                <li value="0" label="6 мес.">0.5</li>
+                <li value="1" label="1 год">1</li>
+                <li value="2" label="2 года">2</li>
+                <li value="3" label="3 года">3</li>
+                <li value="4" label="4 года">4</li>
+                <li value="5" label="5 лет">5</li>
+                <li value="6" label="6 лет">6</li>
+                <li value="7" label="7 лет">7</li>
             </ul>
             <div class="range-slider__progress">
             </div>

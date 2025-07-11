@@ -22,6 +22,13 @@ onMounted(() => {
 
 const currentModel = computed(() => newStore.model)
 const show = ref(0);
+
+// Состояния для скрывающихся секций (по умолчанию false - свернуты)
+const sections = ref({
+    preferentialTerms: false,
+    noDownPayment: false,
+    discountsGifts: false
+});
 </script>
 
 <template>
@@ -37,84 +44,114 @@ const show = ref(0);
                     </div>
                     <div class="model-finance__header section__header">
                         <div class="model-finance__info">
-                            <p class="finance__content-text">
-                                <span class="main__span">{{ cleanUpTitle($route.params.brand).toUpperCase() }}
-                                    Finance</span> – это выгодная кредитная
-                                программа, позволяющая нашим клиентам реализовать мечту об автомобиле. Предлагаемые
-                                процентные ставки начинаются всего от <b>{{ appStore.creditPercent }}%</b>, а
-                                ежемесячные
-                                платежи установлены на минимальном уровне. Процесс оформления кредита сделан простым и
-                                оперативным, с возможностью получения кредита в тот же день. Программа создана дилерским
-                                центром <b>{{ appStore.sitename }}</b> при поддержке таких банков, как "ЛокоБанк",
-                                "Альфа-Банк" и
-                                "СовкомБанк".
-                            </p>
-                        </div>
-                        <div class="model-finance__info">
-                            <h3 class="finance__content-title">
-                                Льготные условия
-                            </h3>
-                            <p class="finance__content-text">
-                                Программа Finance стремится предоставить каждому клиенту минимально возможные процентные
-                                ставки и низкие ежемесячные платежи. Благодаря её гибкости, автокредит доступен широкому
-                                кругу клиентов на самых привлекательных условиях.
-                            </p>
-                            <h3 class="finance__content-title">
-                                Без первоначального взноса
-                            </h3>
-                            <p class="finance__content-text">
-                                Для получения кредита не требуется первоначальный взнос, что является уникальным
-                                предложением по сравнению с большинством банков. Автоцентр <b>«{{ appStore.sitename
-                                    }}»</b>
-                                предлагает своим клиентам первый взнос в виде беспроцентной рассрочки.
-                            </p>
-                            <h3 class="finance__content-title">
-                                Скидки и подарки
-                            </h3>
-                            <p class="finance__content-text">
-                                При оформлении автокредита по программе Finance вы получите значительную <b>скидку в
-                                    размере 10%</b> на выбранный автомобиль, а также возможность выбора одного из трёх
-                                <b>подарков</b>: страхование КАСКО/ОСАГО, зимние шины или автомобильный коврик.
-                            </p>
-                            <div class="model-finance__car">
-                                <div class="view__col">
-                                    <div class="view__row" v-if="currentMod.max_speed">
-                                        <img src="/svg/speedometer1.svg" alt="icon" />
-                                        <p>
-                                            {{ currentMod.max_speed }}
-                                            км/ч<br />
-                                            <span>скорость</span>
-                                        </p>
-                                    </div>
-                                    <div class="view__row" v-if="currentMod.power">
-                                        <img src="/svg/speed1.svg" alt="icon" />
-                                        <p>
-                                            {{ currentMod.power }}
-                                            л.с.<br />
-                                            <span>мощность</span>
-                                        </p>
-                                    </div>
-                                    <div class="view__row" v-if="currentMod.from_0_to_100">
-                                        <img src="/svg/car-engine1.svg" alt="icon" />
-                                        <p>
-                                            {{ currentMod.from_0_to_100 }}
-                                            сек.<br />
-                                            <span>разгон</span>
-                                        </p>
-                                    </div>
-                                    <div class="view__row" v-if="currentMod.consumption_combine">
-                                        <img src="/svg/gasoline-pump1.svg" alt="icon" />
-                                        <p>
-                                            {{ currentMod.consumption_combine }}
-                                            л./100 км<br />
-                                            <span>расход</span>
-                                        </p>
-                                    </div>
+                            <!-- Основная информация - без скрывашки -->
+                            <div class="model-finance__section">
+                                <div class="model-finance__section-head static-head">
+                                    <span class="section-title">О программе Finance</span>
                                 </div>
-                                <NuxtImg lazy format="webp" quality="90" loading="lazy"
-                                    :src="currentModel.colored_galleries[newStore.color]?.url" alt="icon"
-                                    class="complectations__item-img" v-if="currentModel.colored_galleries.length" />
+                                <div class="model-finance__section-content">
+                                    <p class="finance__content-text">
+                                        <span class="main__span">{{ cleanUpTitle($route.params.brand).toUpperCase() }}
+                                            Finance</span> – это выгодная кредитная
+                                        программа, позволяющая нашим клиентам реализовать мечту об автомобиле. Предлагаемые
+                                        процентные ставки начинаются всего от <b>{{ appStore.creditPercent }}%</b>, а
+                                        ежемесячные
+                                        платежи установлены на минимальном уровне. Процесс оформления кредита сделан простым и
+                                        оперативным, с возможностью получения кредита в тот же день. Программа создана дилерским
+                                        центром <b>{{ appStore.sitename }}</b> при поддержке таких банков, как "ЛокоБанк",
+                                        "Альфа-Банк" и
+                                        "СовкомБанк".
+                                    </p>
+                                </div>
                             </div>
+
+                            <!-- Льготные условия -->
+                            <div class="model-finance__section">
+                                <div class="model-finance__section-head" @click="sections.preferentialTerms = !sections.preferentialTerms">
+                                    <span class="section-title">Льготные условия</span>
+                                    <span class="icon"><i class="fa-solid"
+                                            :class="sections.preferentialTerms ? 'fa-chevron-down' : 'fa-chevron-up'"></i></span>
+                                </div>
+                                <div class="model-finance__section-content" v-if="sections.preferentialTerms">
+                                    <p class="finance__content-text">
+                                        Программа Finance стремится предоставить каждому клиенту минимально возможные процентные
+                                        ставки и низкие ежемесячные платежи. Благодаря её гибкости, автокредит доступен широкому
+                                        кругу клиентов на самых привлекательных условиях.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Без первоначального взноса -->
+                            <div class="model-finance__section">
+                                <div class="model-finance__section-head" @click="sections.noDownPayment = !sections.noDownPayment">
+                                    <span class="section-title">Без первоначального взноса</span>
+                                    <span class="icon"><i class="fa-solid"
+                                            :class="sections.noDownPayment ? 'fa-chevron-down' : 'fa-chevron-up'"></i></span>
+                                </div>
+                                <div class="model-finance__section-content" v-if="sections.noDownPayment">
+                                    <p class="finance__content-text">
+                                        Для получения кредита не требуется первоначальный взнос, что является уникальным
+                                        предложением по сравнению с большинством банков. Автоцентр <b>«{{ appStore.sitename
+                                            }}»</b>
+                                        предлагает своим клиентам первый взнос в виде беспроцентной рассрочки.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Скидки и подарки -->
+                            <div class="model-finance__section">
+                                <div class="model-finance__section-head" @click="sections.discountsGifts = !sections.discountsGifts">
+                                    <span class="section-title">Скидки и подарки</span>
+                                    <span class="icon"><i class="fa-solid"
+                                            :class="sections.discountsGifts ? 'fa-chevron-down' : 'fa-chevron-up'"></i></span>
+                                </div>
+                                <div class="model-finance__section-content" v-if="sections.discountsGifts">
+                                    <p class="finance__content-text">
+                                        При оформлении автокредита по программе Finance вы получите значительную <b>скидку в
+                                            размере 10%</b> на выбранный автомобиль, а также возможность выбора одного из трёх
+                                        <b>подарков</b>: страхование КАСКО/ОСАГО, зимние шины или автомобильный коврик.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="model-finance__car">
+                            <div class="view__col">
+                                <div class="view__row" v-if="currentMod.max_speed">
+                                    <img src="/svg/speedometer1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.max_speed }}
+                                        км/ч<br />
+                                        <span>скорость</span>
+                                    </p>
+                                </div>
+                                <div class="view__row" v-if="currentMod.power">
+                                    <img src="/svg/speed1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.power }}
+                                        л.с.<br />
+                                        <span>мощность</span>
+                                    </p>
+                                </div>
+                                <div class="view__row" v-if="currentMod.from_0_to_100">
+                                    <img src="/svg/car-engine1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.from_0_to_100 }}
+                                        сек.<br />
+                                        <span>разгон</span>
+                                    </p>
+                                </div>
+                                <div class="view__row" v-if="currentMod.consumption_combine">
+                                    <img src="/svg/gasoline-pump1.svg" alt="icon" />
+                                    <p>
+                                        {{ currentMod.consumption_combine }}
+                                        л./100 км<br />
+                                        <span>расход</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <NuxtImg lazy format="webp" quality="90" loading="lazy"
+                                :src="currentModel.colored_galleries[newStore.color]?.url" alt="icon"
+                                class="complectations__item-img" v-if="currentModel.colored_galleries.length" />
                         </div>
                     </div>
                 </div>
@@ -136,9 +173,7 @@ const show = ref(0);
 
 <style lang="scss" scoped>
 .model-finance {
-    // background: var(--bg-color);
     scroll-margin-top: 80px;
-    // margin: 20px 0;
     border: 1px solid var(--main-color);
     border-left: none;
     border-right: none;
@@ -182,15 +217,63 @@ const show = ref(0);
             justify-content: start;
             gap: 10px;
 
+            .model-finance__section {
+                margin-bottom: 10px;
+                
+                .model-finance__section-head {
+                    font-weight: 600;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 100%;
+                    align-items: center;
+                    padding: 15px 20px;
+                    color: white;
+                    background: #9F9F9F;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    margin-bottom: 5px;
+
+                    &.static-head {
+                        cursor: default;
+                        // background: white;
+                        // color: black;
+                        font-weight: 700;
+                        font-size: 16px;
+                        .icon {
+                            display: none;
+                        }
+                    }
+
+                    .icon {
+                        padding: 10px;
+                        background: white;
+                        border-radius: 100%;
+                        width: 30px;
+                        height: 30px;
+                        color: black;
+                        box-shadow: var(--box-shadow);
+                        position: relative;
+
+                        i {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
+                    }
+                }
+
+                .model-finance__section-content {
+                    padding: 0 20px 10px;
+                    animation: fadeIn 0.3s ease-in-out;
+                }
+            }
+
             .model-finance__car {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                // flex-direction: column;
                 margin: 20px 0;
-                // border: var(--border);
-                // border-radius: var(--border-radius);
-                // padding: 30px 15px;
                 gap: 30px;
 
                 @media screen and (max-width: 1420px) {
@@ -206,7 +289,6 @@ const show = ref(0);
                     flex-direction: column;
                     display: none;
                 }
-
 
                 img {
                     object-fit: contain;
@@ -296,7 +378,6 @@ const show = ref(0);
 }
 
 .model-finance__info {
-    // margin-top: 30px;
     p {
         padding: 10px 0;
     }
@@ -313,5 +394,16 @@ const show = ref(0);
 
 .finance__content-text{
     margin-bottom: 30px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

@@ -62,9 +62,21 @@ const show = ref(0);
             <div class="section__header">
                 <BasePageTitle />
             </div>
+            
             <div class="model__container">
                 <div class="complectations-calculator">
                     <div class="model__top">
+                        <div class="model__right-top">
+                            <ul class="model__card-list-top">
+                                <li>Гарантия 5 лет или 150 000 км</li>
+                                <li>От 4,9% без 1-го взноса</li>
+                                <li>Trade-In выгода до 250 000 ₽</li>
+                                <!-- <li>Процентная ставка от 4,9%</li> -->
+                                <li>Срок до 7 лет</li>
+                                <li>Рассрочка 0%</li>
+                            </ul>
+                            
+                        </div>
                         <p class="model__price-text">Цена:</p>
                         <div class="model__row-price">
                             <del class="model__price" v-if="newStore.model.sale">
@@ -135,7 +147,7 @@ const show = ref(0);
                     </div>
                 </div>    
                 <div class="model__left">
-                    <div class="model__garantee">
+                    <!-- <div class="model__garantee">
                         <p v-if="
                             newStore.model.warranty_year &&
                             newStore.model.warranty_km != 0
@@ -148,7 +160,7 @@ const show = ref(0);
                             Гарантия:
                             5 лет / 100 000 км
                         </p>
-                    </div>
+                    </div> -->
                     <div class="model__img-block">
                         <div class="model__img" v-for="(item, index) in newStore.model.colored_galleries"
                             :key="item.color_id" v-show="show === index">
@@ -249,6 +261,70 @@ const show = ref(0);
     </section>
 </template>
 <style lang="scss" scoped>
+.model__card-list-top{
+                display: none;
+                    @media screen and (max-width: 767px){
+                        display: flex !important;
+                        overflow-x: auto;
+                        overflow-y: hidden;
+                        white-space: wrap;
+                        border: none;
+                        -webkit-overflow-scrolling: touch;
+                        padding-bottom: 5px;
+                        margin-bottom: 5px;
+                        width: 100%;
+                        gap: 10px;
+                        scrollbar-width: none; /* Для Firefox */
+                        
+                        &::-webkit-scrollbar {
+                            display: none; /* Для Chrome/Safari */
+                        }
+                        
+                        & li {
+                            flex: 0 0 auto;
+                            // padding: 0 15px 0 28px !important;
+                            
+                            &::before {
+                                left: 5px;
+                            }
+                        }
+                    }
+                    @media screen and (max-width: 375px) {
+                        display: flex !important; /* Переопределяем display:none */
+                    }
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        bottom: 5px;
+                        left: 0;
+                        z-index: -1;
+                        pointer-events: none;
+                        @media screen and (max-width: 1024px) {
+                            content: none;
+                        }
+                    }
+                    & li {
+                        position: relative;
+                        padding:10px  8px;
+                        font-weight: 300;
+                        line-height: 22px;
+                        border: 1px solid var(--main-color);
+                        border-radius: 4px;
+                        flex-wrap: wrap;
+                        width: 100px;
+                        height: 90px;
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            // width: 18px;
+                            // height: 1px;
+                            // background: var(--main-color);
+                        }
+                    }
+                }
+                
 .model__top{
     @media screen and (max-width: 1075px) {
         position: absolute;
@@ -356,11 +432,11 @@ const show = ref(0);
                 align-items: flex-end;
                 gap: 20px 36px;
                 margin-bottom: 5px;
-                margin-top: 0px;
+                margin-top: 27px;
                 @media screen and (max-width: 1199px) {
                     flex-direction: column;
                     align-items: flex-start;
-                    margin-top: 0;
+                    margin-top: 0px;
                     margin-bottom: 20px;
                 }
                 @media screen and (max-width: 767px) {
@@ -438,28 +514,49 @@ const show = ref(0);
                 }
             }
             .model__main-color {
-                margin-bottom: 22px;
-                .car__name-color {
-                    margin-top: 15px;
-                }
-                .color__bar {
-                    position: relative;
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                    max-width: 310px;
-                    @media screen and (max-width: 440px) {
-                        max-width: 100%;
-                    }
-                    .color__bar-item {
-                        width: 30px;
-                        height: 30px;
-                        cursor: pointer;
-                        border-radius: 33px;
-                        border: 1px solid #000;
-                    }
-                }
+    margin-bottom: 22px;
+    .car__name-color {
+        margin-top: 15px;
+    }
+    .color__bar {
+        position: relative;
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scrollbar-width: thin; /* Для Firefox */
+        scrollbar-color: var(--main-color) #f1f1f1; /* Для Firefox */
+        
+        /* Скрываем стандартный скроллбар для WebKit */
+        &::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 2px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--main-color);
+            border-radius: 2px;
+        }
+        
+        .color__bar-item {
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 33px;
+            border: 1px solid #000;
+            transition: transform 0.2s;
+            
+            &:hover {
+                transform: scale(1.1);
             }
+        }
+    }
+}
         }
 
         .model__right {
@@ -502,34 +599,37 @@ const show = ref(0);
                     margin-bottom: 20px;
                 }
                 @media screen and (max-width: 767px) {
-                    display: flex !important;
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                    white-space: nowrap;
-                    border: none;
-                    -webkit-overflow-scrolling: touch;
-                    padding-bottom: 15px;
-                    margin-bottom: 15px;
-                    width: 100%;
-                    gap: 20px;
-                    scrollbar-width: none; /* Для Firefox */
-                    
-                    &::-webkit-scrollbar {
-                        display: none; /* Для Chrome/Safari */
-                    }
-                    
-                    & li {
-                        flex: 0 0 auto;
-                        padding: 0 15px 0 28px !important;
-                        
-                        &::before {
-                            left: 5px;
-                        }
-                    }
+                    display: none;
                 }
+                // .model__card-list-top{
+                //     display: flex !important;
+                //     overflow-x: auto;
+                //     overflow-y: hidden;
+                //     white-space: nowrap;
+                //     border: none;
+                //     -webkit-overflow-scrolling: touch;
+                //     padding-bottom: 15px;
+                //     margin-bottom: 15px;
+                //     width: 100%;
+                //     gap: 20px;
+                //     scrollbar-width: none; /* Для Firefox */
+                    
+                //     &::-webkit-scrollbar {
+                //         display: none; /* Для Chrome/Safari */
+                //     }
+                    
+                //     & li {
+                //         flex: 0 0 auto;
+                //         padding: 0 15px 0 28px !important;
+                        
+                //         &::before {
+                //             left: 5px;
+                //         }
+                //     }
+                // }
                 
                 @media screen and (max-width: 375px) {
-                    display: flex !important; /* Переопределяем display:none */
+                    display: none; /* Переопределяем display:none */
                 }
                 &::before {
                     content: "";

@@ -166,13 +166,13 @@ function timeListOutput(value) {
 .model-credit__form {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px;
+    // gap: 20px;
     
     .form__block {
         display: flex;
         flex-direction: column;
         
-        gap: 10px;
+        gap: 0px;
         @media screen and (max-width: 768px){
             // width: 100%;
             // padding-right: 20px;
