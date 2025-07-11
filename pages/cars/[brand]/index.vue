@@ -69,6 +69,6 @@ if (brand) {
 
 <style scoped lang="scss">
 .section__header{
-    margin-top: 30px;
+    margin-top: 10px;
 }
 </style>

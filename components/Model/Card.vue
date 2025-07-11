@@ -68,26 +68,22 @@ const show = ref(0);
                     <div class="model__top">
                         <div class="model__right-top">
                             <ul class="model__card-list-top">
-                                <li v-if="
-                                    newStore.model.warranty_year &&
-                                    newStore.model.warranty_km != 0
-                                ">
-                                    Гарантия:
-                                        {{ newStore.model.warranty_year }} /
-                                        {{ newStore.model.warranty_km }} км
-                                </li>
-                                <li v-else>
-                                    Гарантия:
-                                    5 лет / 100 000 км
-                                </li>
-                                <li>От 4,9% без 1-го взноса</li>
-                                <li>Trade-In выгода до 250 000 ₽</li>
-                                <!-- <li>Процентная ставка от 4,9%</li> -->
-                                <li>Срок до 7 лет</li>
-                                <li>Рассрочка 0%</li>
+                            <li v-if="newStore.model.warranty_year && newStore.model.warranty_km != 0" class="centered-item">
+                                <span class="model__card-span">Гарантия:</span>
+                                {{ newStore.model.warranty_year }} /
+                                {{ newStore.model.warranty_km }} км
+                            </li>
+                            <li v-else class="centered-item">
+                                <span class="model__card-span">Гарантия:</span> 
+                                5 лет / 100 000 км
+                            </li>
+                            <li class="centered-item"><span class="model__card-span">От 4,9%</span> без 1-го взноса</li>
+                            <li class="centered-item"><span class="model__card-span">Trade-In</span> выгода до 250 000 ₽</li>
+                            <li class="centered-item"><span class="model__card-span">Срок</span> до 7 лет</li>
+                            <li class="centered-item"><span class="model__card-span">Рассрочка</span> 0%</li>
                             </ul>
-                            
                         </div>
+
                         <p class="model__price-text">Цена:</p>
                         <div class="model__row-price">
                             <del class="model__price" v-if="newStore.model.sale">
@@ -283,9 +279,22 @@ const show = ref(0);
     </section>
 </template>
 <style lang="scss" scoped>
+.centered-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.model__card-span{
+    font-weight: 700 !important;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
 .model__card-list-top{
                 display: none;
                     @media screen and (max-width: 767px){
+
                         display: flex !important;
                         overflow-x: auto;
                         overflow-y: hidden;
@@ -293,7 +302,7 @@ const show = ref(0);
                         border: none;
                         -webkit-overflow-scrolling: touch;
                         padding-bottom: 5px;
-                        margin-bottom: 5px;
+                        margin-bottom: 15px;
                         width: 100%;
                         gap: 10px;
                         scrollbar-width: none; /* Для Firefox */
@@ -327,8 +336,12 @@ const show = ref(0);
                     }
                     & li {
                         position: relative;
-                        padding:10px  8px;
+                        padding:10px  12px;
                         font-weight: 300;
+                        display: flex !important;
+                        justify-content: center !important;
+                        // align-items: center;
+                        margin: 0 auto !important;
                         line-height: 22px;
                         border: 1px solid var(--main-color);
                         border-radius: 4px;
@@ -607,6 +620,7 @@ const show = ref(0);
                 gap: 15px 32px;
                 margin-bottom: 30px;
                 width: max-content;
+
                 @media screen and (max-width: 1199px) {
                     padding: 15px;
                     padding-right: 0;
@@ -669,6 +683,7 @@ const show = ref(0);
                     padding:0 28px;
                     font-weight: 300;
                     line-height: 22px;
+
                     &::before {
                         content: "";
                         position: absolute;

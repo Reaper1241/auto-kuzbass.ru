@@ -218,7 +218,7 @@ const sections = ref({
             gap: 10px;
 
             .model-finance__section {
-                margin-bottom: 10px;
+                // margin-bottom: 10px;
                 
                 .model-finance__section-head {
                     font-weight: 600;
@@ -393,7 +393,7 @@ const sections = ref({
 }
 
 .finance__content-text{
-    margin-bottom: 30px;
+    // margin-bottom: 30px;
 }
 
 @keyframes fadeIn {

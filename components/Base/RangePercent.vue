@@ -18,7 +18,7 @@ const props = defineProps({
     },
     step: {
         type: Number,
-        default: 0,
+        default: 10, // Изменено с 0 на 10 для шага 10%
     },
     class: {
         type: String,
@@ -57,8 +57,6 @@ onMounted(() => {
 });
 </script>
 
-
-
 <template>
     <div class="percent-block" :class="class">
         <label class="credit__first" for=" credit-page--first">
@@ -73,19 +71,63 @@ onMounted(() => {
             </p>
         </label>
         <div class="range-slider">
-            <!-- <div class="range-slider__value">
-                <div class="value__left">{{ min }} %</div>
-                <div class="value__right">{{ max }} %</div>
-            </div> -->
-
             <input class="range-slider__input timelist range-slider__progress range-input" type="range" :min="min"
                 :max="max" list="timelist" :step="step" v-model="percentList" @change="percentListOutput"
                 :disabled="disabled"
                 :style="{ background: `linear-gradient(to right, #15744e ${percentList / max * 100}%, #15744e ${percentList / max * 100}%)` }" />
 
             <ul id="timelist" class="datalist" :class="{ 'disabled': disabled }">
-                <li v-for="i in range" :key="i" :value="i" label="">
+                <!-- <li v-for="i in range" :key="i" :value="i" label="">
                     {{ i }}
+                </li> -->
+                <li>
+                    0
+                </li>
+                <li>
+                </li>
+                <li>    
+                    10
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    20
+                </li>
+                <li>
+                </li>
+                <li>
+                    30
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    40
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    50
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    60
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    70
+                </li>
+                <li>
+                    
+                </li>
+                <li>
+                    80
                 </li>
             </ul>
         </div>

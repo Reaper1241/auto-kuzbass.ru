@@ -173,6 +173,7 @@ margin-top: 30px;
 margin-right: 5px;
     @media screen and (max-width: 600px) {
         margin-right: 15px;
+        margin-top: 0px;
     }
 }
 
@@ -560,6 +561,7 @@ margin-right: 5px;
                     left: 0px;
                     flex-wrap: nowrap;
                     margin-top: 0px !important;
+                    margin-bottom: 10px;
                 }
                 .car-card__credit{
                     border: 2px solid var(--main-color);
@@ -567,28 +569,32 @@ margin-right: 5px;
                     align-items: center;
                     justify-content: center;
                     width: 250px;
-                    font-weight: 700;
+                    // font-weight: 700;
                     color: var(--main-color);
                     height: 40px;
                     border-radius: 4px;
                     background: #fff;background: #fff;
+                    span{
+                       font-weight: 700; 
+                       font-size: var(--small-size) !important;
+                    }
                     @media screen and (max-width: 1170px) {
                         min-width: 49%;
                         padding: 8px;
-                        font-size: var(--small-size)
+
                     }
                     @media screen and (max-width: 570px) {
                         // min-width:  100%;
                     }
                 }
                 .sticker {
-                    border: 1px solid var(--main-color);
+                    // border: 2px solid var(--main-color);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     width: 250px;
-                    font-weight: 700;
-                    color: var(--main-color);
+                    // font-weight: 700;
+                    // color: var(--main-color);
                     height: 40px;
                     border-radius: 4px;
                     @media screen and (max-width: 1170px) {
@@ -596,8 +602,8 @@ margin-right: 5px;
                     }
                     @media screen and (max-width: 768px) {
                         padding: 2px;
-                        font-size: var(--small-size);
-                        font-weight: 500;
+                        // font-size: var(--small-size);
+                        font-weight: 700 !important;
                         opacity: 0.85;
                     }
                     @media screen and (max-width: 570px) {
@@ -609,6 +615,8 @@ margin-right: 5px;
                     background: #fff;
                     color: var(--main-color);
                     border: 2px solid var(--main-color);
+                    font-weight: 700;
+                    font-size: var(--small-size) !important;
                 }
             }
 </style>
