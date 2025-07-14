@@ -34,8 +34,27 @@ function percentListOutput(value) {
 }
 
 function timeListOutput(value) {
-    value == 0 ? timeListOutputData.value = 0.5 * 12 : timeListOutputData.value = value * 12
-    props.modelValue.RangeTime = value
+    if (value == 0) {
+        timeListOutputData.value = 0.166667 * 12;
+    } else if (value == 1) {
+        timeListOutputData.value = 0.5 * 12;
+    } else if (value == 2) {
+        timeListOutputData.value = 1 * 12;
+    } else if (value == 3) {
+        timeListOutputData.value = 2 * 12;
+    } else if (value == 4) {
+        timeListOutputData.value = 3 * 12;
+    } else if (value == 5) {
+        timeListOutputData.value = 4 * 12;
+    } else if (value == 6) {
+        timeListOutputData.value = 5 * 12;
+    } else if (value == 7) {
+        timeListOutputData.value = 6 * 12;
+    } 
+    else {
+        timeListOutputData.value = 7 * 12;
+    }
+    props.modelValue.RangeTime = value;
 }
 
 let monthlyPayment = computed(() => {
