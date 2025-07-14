@@ -1,6 +1,6 @@
 <script setup>
-const timeList = ref(7);
-const max = ref(7);
+const timeList = ref(8);
+const max = ref(8);
 const timeListOutputData = ref('7 лет');
 
 const emits = defineEmits(['timeListOutput']);
@@ -10,23 +10,26 @@ emits('timeListOutput', timeList.value)
 
 watch(timeList, (newTimeList, oldTimeList) => {
     if (newTimeList === '0' || newTimeList === '0') {
-        timeListOutputData.value = '6 мес.';
+        timeListOutputData.value = '2 мес.';
     } else if (newTimeList === '1') {
-        timeListOutputData.value = '1 год';
+        timeListOutputData.value = '6 мес.';
     } else if (newTimeList === '2') {
-        timeListOutputData.value = '2 года';
+        timeListOutputData.value = '1 год';
     } else if (newTimeList === '3') {
-        timeListOutputData.value = '3 года';
+        timeListOutputData.value = '2 года';
     } else if (newTimeList === '4') {
-        timeListOutputData.value = '4 года';
+        timeListOutputData.value = '3 года';
     } else if (newTimeList === '5') {
-        timeListOutputData.value = '5 лет';
+        timeListOutputData.value = '4 года';
     } else if (newTimeList === '6') {
-        timeListOutputData.value = '6 лет';
+        timeListOutputData.value = '5 лет';
     } else if (newTimeList === '7') {
+        timeListOutputData.value = '6 лет';
+    } else if (newTimeList === '8') {
         timeListOutputData.value = '7 лет';
     }
 })
+
 
 watch(timeList, (newTimeList, oldTimeList) => {
     emits('timeListOutput', timeList.value)
@@ -46,7 +49,7 @@ watch(timeList, (newTimeList, oldTimeList) => {
 
         <div class="range-slider">
             <div class="range-slider__value">
-                <div class="value__left">6 мес.</div>
+                <div class="value__left">2 мес.</div>
                 <div class="value__right">7 лет</div>
             </div>
 
@@ -55,14 +58,15 @@ watch(timeList, (newTimeList, oldTimeList) => {
                 :style="{ background: `linear-gradient(to right, #15744e ${timeList / max * 100}%, #E0E0E0 ${timeList / max * 100}%)` }" />
 
             <ul class="datalist" id="timelist" :class="{ 'disabled': props.disabled }">
-                <li value="0" label="6 мес.">0.5</li>
-                <li value="1" label="1 год">1</li>
-                <li value="2" label="2 года">2</li>
-                <li value="3" label="3 года">3</li>
-                <li value="4" label="4 года">4</li>
-                <li value="5" label="5 лет">5</li>
-                <li value="6" label="6 лет">6</li>
-                <li value="7" label="7 лет">7</li>
+                <li value="0" label="2 мес.">0.2</li>
+                <li value="1" label="6 мес.">0.5</li>
+                <li value="2" label="1 год">1</li>
+                <li value="3" label="2 года">2</li>
+                <li value="4" label="3 года">3</li>
+                <li value="5" label="4 года">4</li>
+                <li value="6" label="5 лет">5</li>
+                <li value="7" label="6 лет">6</li>
+                <li value="8" label="7 лет">7</li>
             </ul>
         </div>
     </div>
