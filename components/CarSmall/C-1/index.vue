@@ -156,7 +156,7 @@ onMounted(() => {
                 :btn-class="`classic credit`" category="new" />
 
             <BaseButtonModal :car="car" :btn-label="'Заказать обратный звонок'"  :app-type="8"
-                :modal-title="`Закажите обратный звонок и наш специалсит перезвонит Вам в течение 15 минут!`"
+                :modal-title="`Закажите обратный звонок и наш специалист перезвонит Вам в течение 15 минут!`"
                 :btn-class="`classic trade`" category="new" :btnIcon="`fa-solid fa-phone`"/>
         </div>
     </div>
