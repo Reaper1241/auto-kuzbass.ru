@@ -70,12 +70,12 @@ const show = ref(0);
                             <ul class="model__card-list-top">
                                 <li v-if="newStore.model.warranty_year && newStore.model.warranty_km != 0" class="centered-item">
                                     <span class="model__card-span">Гарантия:</span>
-                                    {{ newStore.model.warranty_year }} /
+                                    {{ newStore.model.warranty_year }} / <br>
                                     {{ newStore.model.warranty_km }} км
                                 </li>
                                 <li v-else class="centered-item">
                                     <p class="absolute"><span class="model__card-span">Гарантия:</span> 
-                                    5 лет / 100 000 км</p>
+                                    5 лет /<br> 100 000 км</p>
                                 </li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">От 4,9%</span>без 1-го взноса</p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">Trade-In</span>выгода до 250 000 ₽</p></li>
