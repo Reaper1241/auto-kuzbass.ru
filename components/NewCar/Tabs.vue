@@ -11,10 +11,10 @@ const car = ref(carStore.car || {}); // Защита от undefined
 const activeTab = ref(0);
 
 // Состояния для аккордеона (открыто/закрыто)
-const safetyOpen = ref(true);
-const exteriorOpen = ref(true);
-const interiorOpen = ref(true);
-const comfortOpen = ref(true);
+const safetyOpen = ref(false);
+const exteriorOpen = ref(false);
+const interiorOpen = ref(false);
+const comfortOpen = ref(false);
 const overviewOpen = ref(true);
 const multimediaOpen = ref(true);
 const protectionOpen = ref(true);
@@ -423,4 +423,4 @@ const hasComplectationData = (section) => {
         }
     }
 }
-</style>и 
+</style>  

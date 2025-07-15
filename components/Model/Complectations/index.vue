@@ -119,17 +119,24 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                                         </span>
                                         <span class="current">от {{ makeSpaces(item.price - totalSale) }} ₽</span>
                                     </div>
-                                    <div class="complectations__item-month-price">
+                                    <div class="complectations__item-prices-mobile">
+                                        <span class="current-mobile">от {{ makeSpaces(item.price - totalSale) }} ₽</span>
+                                        <span class="old-mobile" v-if="currentModel.sale && totalSale">
+                                            от {{ makeSpaces(item.price) }} ₽
+                                        </span>
+                                    </div>
+                                    <!-- <div class="complectations__item-month-price">
                                         в кредит от: <span class="month__price">{{ makeSpaces(appStore.calcMonthPriceModel(totalSale, item.price)) }} ₽/мес.</span>
                                         
-                                    </div>
+                                    </div> -->
                                 </div>
-
                                 <div class="complectations__item-buttons">
                                     <BaseButtonModal :btn-label="'Подробнее'" :app-type="2" :btn-class="`comp`"
                                         :modalType="`modalComp`" :comp="item"
                                         :car="{ price: item.price, sale: totalSale, images: [{ url: '/images/modalModelDefault.webp' }], model: $route.params.model, brand: $route.params.brand }" />
-                                    <BaseButtonModal :btn-label="'Купить в кредит'" :app-type="2" :btn-class="`credit`"
+                                    <!-- <BaseButtonModal class="credit-button" :btn-label="'Купить в кредит'" :app-type="2" :btn-class="`credit`"
+                                        :car="{ price: item.price, sale: totalSale, images: [{ url: '/images/modalModelDefault.webp' }], model: $route.params.model, brand: $route.params.brand }" /> -->
+                                    <BaseButtonModal class="credit-button-mob" :btn-label="`В кредит от ${ makeSpaces(appStore.calcMonthPriceModel(totalSale, item.price)) } ₽/мес`" :app-type="2" :btn-class="`credit`"
                                         :car="{ price: item.price, sale: totalSale, images: [{ url: '/images/modalModelDefault.webp' }], model: $route.params.model, brand: $route.params.brand }" />
                                 </div>
                             </div>
@@ -373,6 +380,10 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
             & {
                 border-bottom: 2px solid #E5E5E5;
             }
+            
+            @media screen and (max-width: 767px) {
+                align-items: start;
+            }
 
             @media screen and (max-width: 1100px) {
                 flex-direction: column;
@@ -413,6 +424,9 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                     display: flex;
                     flex-direction: column;
                     text-align: end;
+                    @media screen and (max-width: 767px) {
+                        display: none;
+                    }
                     .current {
                         font-weight: 600;
                         font-size: var(--large-size);
@@ -428,10 +442,38 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                         text-decoration: line-through;
                     }
                 }
+                .complectations__item-prices-mobile {
+                    display: none;
+                    @media screen and (max-width: 767px) {
+                        display: flex;
+                        gap: 10px;
+                        flex-direction: row;
+                        text-align: end;
+                    }
+                    .current-mobile {
+                        display: none;
+                        @media screen and (max-width: 767px) {
+                            display: flex;
+                            font-weight: 600;
+                            font-size: var(--large-size);
+                            color: var(--main-color);
+                        }
+                        @media screen and (max-width: 540px) {
+                            font-size: var(--medium-size);
+                        }
+                    }
+
+                    .old-mobile {
+                        font-size: var(--standart-size);
+                        color: #9C9C9C;
+                        text-decoration: line-through;
+                    }
+                }
 
                 .complectations__item-month-price {
-                    @media screen and (max-width: 540px) {
-                        font-size: var(--standart-size);
+                    
+                    @media screen and (max-width: 767px) {
+                        display: none;;
                     }
                 }
             }
@@ -441,7 +483,13 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
                 flex-direction: column;
                 gap: 5px;
                 width: 150px;
-
+                @media screen and (max-width: 767px) {
+                    display: flex;
+                    flex-direction: row;
+                    width: 100%;
+                    text-align: start;
+                    justify-content: flex-start;
+                }
                 .complectations__item-title {
                     font-weight: 600;
                 }
@@ -484,4 +532,5 @@ const modList = computed(() => newStore.model.modifications.filter((mod) => mod.
 .month__price{
     color: var(--main-color);
 }
+
 </style>

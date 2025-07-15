@@ -34,8 +34,10 @@ const activeTab = ref(1);
 
 <style lang="scss" scoped>
 .section__tabs {
+
     @media screen and (max-width: 570px) {
         border-bottom: 1px solid #C4C4C4;
+        margin-top: 10px;
     }
 
     .tabs__header {

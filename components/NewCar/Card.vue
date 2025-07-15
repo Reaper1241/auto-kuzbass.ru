@@ -561,7 +561,7 @@ margin-right: 5px;
                     left: 0px;
                     flex-wrap: nowrap;
                     margin-top: 0px !important;
-                    margin-bottom: 10px;
+                    margin-bottom: 20px;
                 }
                 .car-card__credit{
                     border: 2px solid var(--main-color);

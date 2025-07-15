@@ -68,19 +68,19 @@ const show = ref(0);
                     <div class="model__top">
                         <div class="model__right-top">
                             <ul class="model__card-list-top">
-                            <li v-if="newStore.model.warranty_year && newStore.model.warranty_km != 0" class="centered-item">
-                                <span class="model__card-span">Гарантия:</span>
-                                {{ newStore.model.warranty_year }} /
-                                {{ newStore.model.warranty_km }} км
-                            </li>
-                            <li v-else class="centered-item">
-                                <span class="model__card-span">Гарантия:</span> 
-                                5 лет / 100 000 км
-                            </li>
-                            <li class="centered-item"><span class="model__card-span">От 4,9%</span> без 1-го взноса</li>
-                            <li class="centered-item"><span class="model__card-span">Trade-In</span> выгода до 250 000 ₽</li>
-                            <li class="centered-item"><span class="model__card-span">Срок</span> до 7 лет</li>
-                            <li class="centered-item"><span class="model__card-span">Рассрочка</span> 0%</li>
+                                <li v-if="newStore.model.warranty_year && newStore.model.warranty_km != 0" class="centered-item">
+                                    <span class="model__card-span">Гарантия:</span>
+                                    {{ newStore.model.warranty_year }} /
+                                    {{ newStore.model.warranty_km }} км
+                                </li>
+                                <li v-else class="centered-item">
+                                    <p class="absolute"><span class="model__card-span">Гарантия:</span> 
+                                    5 лет / 100 000 км</p>
+                                </li>
+                                <li class="centered-item"><p class="absolute"><span class="model__card-span">От 4,9%</span>без 1-го взноса</p></li>
+                                <li class="centered-item"><p class="absolute"><span class="model__card-span">Trade-In</span>выгода до 250 000 ₽</p></li>
+                                <li class="centered-item"><p class="absolute"><span class="model__card-span">Срок</span>до 7 лет</p></li>
+                                <li class="centered-item"><p class="absolute"><span class="model__card-span">Рассрочка</span>0%</p></li>
                             </ul>
                         </div>
 
@@ -280,11 +280,25 @@ const show = ref(0);
 </template>
 <style lang="scss" scoped>
 .centered-item {
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+.absolute{
+    flex-wrap: wrap;
+    position: absolute;
+    width: 70px;
+    display: flex;
+      flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  top: 16px;
+  line-height: 20px;
+  gap: 1px;
 }
 .model__card-span{
     font-weight: 700 !important;
@@ -549,7 +563,10 @@ const show = ref(0);
                 }
             }
             .model__main-color {
-    margin-bottom: 22px;
+                margin-bottom: 22px;
+                @media screen and (max-width: 767px) {
+                    margin-bottom: 10px;;
+                }
     .car__name-color {
         margin-top: 15px;
     }
@@ -772,11 +789,10 @@ const show = ref(0);
     margin-bottom: 10px;
     display: none;
     @media screen and (max-width: 767px) {
-        display: block;
+        display: none;
     }
     @media screen and (max-width: 375px) {
-        display: block;
-        margin-bottom: 0;
+
     }
 }
 .model__row-price2 {
@@ -791,6 +807,7 @@ const show = ref(0);
     display: none;
     @media screen and (max-width: 767px) {
         display: flex;
+        gap: 8px 12px;
     }
     .model__diff2 {
         color: var(--main-color);
