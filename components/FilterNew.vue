@@ -19,12 +19,7 @@ const unmaskedPriceFrom = ref(null);
 const unmaskedPriceTo = ref(null);
 
 const options = {
-    // number: { mask: '#', unsigned: true, fraction: true },
     number: { mask: '#-#', unsigned: true, fraction: true, tokensReplace: true },
-    // mask: "#########",
-    // unsigned: true,
-    // fraction: true,
-    // tokensReplace: true,
 }
 
 const unPriceFrom = (event) => {
@@ -156,7 +151,6 @@ function getModel(brandName, modelName) {
     return appStore.brands.find(brand => brand.url_brand === brandName)?.car_models.find(model => model.url_model === modelName)?.id
 }
 
-
 /* Обновляем параметры фильтрации при переходе между страницами */
 if ($route.name === 'model') {
     model.value = getModel($route.params.brand, $route.params.model) || 0;
@@ -169,7 +163,6 @@ if (['brand', 'model'].includes($route.name)) {
 if ($route.name != 'car') {
     appStore.recentPage = $route.name
 }
-
 
 function reset() {
     model.value = $route.name === 'model' ? model.value : 0;
@@ -257,12 +250,8 @@ getFilterData(true)
                 </button>
             </div>    
             <div class="filter__content" :class="{ 'active': showFilter }">
-                <!-- <div class="filter__header">
-                    <BaseSectionTitle :title="'Подобрать новые авто по параметрам'" />
-                </div>               -->
                 <div class="filter__body">
                     <div class="filter__body-selects">
-
                         <div class="filter__body-column fields">
                             <BaseSelect v-model="brand" :label="'Марка'" :options="brands"
                                 :disabled="$route.name == 'brand' || $route.name == 'model' || paramsLoading"
@@ -273,12 +262,16 @@ getFilterData(true)
                                 @change="updateFilter('model')" />
 
                             <BaseSelect v-model="fuel" :label="'Тип двигателя'" :options="fuels"
-                                :disabled="paramsLoading" @change="updateFilter(`fuel`)" />
+                                :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                @change="updateFilter(`fuel`)" />
 
                             <BaseSelect v-model="transmission" :label="'Коробка'" :options="transmissions"
-                                :disabled="paramsLoading" @change="updateFilter(`transmission`)" />
+                                :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                @change="updateFilter(`transmission`)" />
 
-                            <BaseSelect v-model="drive" :label="'Привод'" :disabled="paramsLoading" :options="drives"
+                            <BaseSelect v-model="drive" :label="'Привод'" 
+                                :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                :options="drives"
                                 @change="updateFilter(`drive`)" />
                         </div>
 
@@ -286,12 +279,15 @@ getFilterData(true)
                             <label class="filter__body-input wide">
                                 <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
                                     :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" autocomplete="off"
-                                    :disabled="paramsLoading" @maska="unPriceFrom" @change="updateFilter()"
+                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    @maska="unPriceFrom" @change="updateFilter()"
                                     maxlength="10">
                                 <span class="separator">|</span>
                                 <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
                                     :placeholder="`до ${makeSpaces(priceTo)} руб`" autocomplete="off"
-                                    inputmode="numeric" :disabled="paramsLoading" @maska="unPriceTo"
+                                    inputmode="numeric" 
+                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    @maska="unPriceTo"
                                     @change="updateFilter()" maxlength="10">
                             </label>
 
@@ -329,24 +325,30 @@ getFilterData(true)
                         <div v-show="showMoreFilter" class="filter__body-column more">
                             <Title :title="'Дополнительные параметры'" class="wide" />
                             <BaseSelect v-model="fuel" :label="'Тип двигателя'" :options="fuels" class="wide"
-                                :disabled="paramsLoading" @change="updateFilter(`fuel`)" />
+                                :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                @change="updateFilter(`fuel`)" />
 
                             <BaseSelect v-model="transmission" :label="'Коробка'" :options="transmissions" class="wide"
-                                :disabled="paramsLoading" @change="updateFilter(`transmission`)" />
-
+                                :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                @change="updateFilter(`transmission`)" />
 
                             <BaseSelect v-model="drive" :label="'Привод'" :options="drives" class="wide"
-                                :disabled="paramsLoading" @change="updateFilter(`drive`)" />
+                                :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                @change="updateFilter(`drive`)" />
 
                             <label class="filter__body-input wide">
                                 <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
                                     :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" autocomplete="off"
-                                    inputmode="numeric" :disabled="paramsLoading" @maska="unPriceFrom"
+                                    inputmode="numeric" 
+                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    @maska="unPriceFrom"
                                     @change="updateFilter()" maxlength="10">
                                 <span class="separator">|</span>
                                 <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
                                     :placeholder="`до ${makeSpaces(priceTo)} руб`" autocomplete="off"
-                                    inputmode="numeric" :disabled="paramsLoading" @maska="unPriceTo"
+                                    inputmode="numeric" 
+                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    @maska="unPriceTo"
                                     @change="updateFilter()" maxlength="10">
                             </label>
                         </div>
@@ -357,18 +359,12 @@ getFilterData(true)
                                 :label="countCars > 0 ? `Показать ${countCars} объявлений` : 'Авто не найдено'"
                                 @click="emit('showCars', fullQuary), appStore.newCatalog.scrollIntoView({ behavior: 'smooth' })" />
                         </div>
-
-                        <!-- <div class="filter__body-show" @click="showMoreFilter = !showMoreFilter">
-                            {{ showMoreFilter ? `Скрыть фильтры` :
-                                'Показать больше фильтров' }}
-                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </template>
-
 
 <style scoped lang="scss">
 .filter {
