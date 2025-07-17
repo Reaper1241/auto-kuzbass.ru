@@ -78,7 +78,7 @@ const show = ref(0);
                                     5 лет /<br> 100 000 км</p>
                                 </li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">От 4,9%</span>без 1-го взноса</p></li>
-                                <li class="centered-item"><p class="absolute"><span class="model__card-span">Trade-In</span>выгода до 250 000 ₽</p></li>
+                                <li class="centered-item"><p class="absolute"><span class="model__card-span">Trade-In</span>выгода до 150 000 ₽</p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">Срок</span>до 7 лет</p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">Рассрочка</span>0%</p></li>
                             </ul>
@@ -241,7 +241,7 @@ const show = ref(0);
                             5 лет / 100 000 км
                         </li>
                         <li>От 4,9% без 1-го взноса</li>
-                        <li>Trade-In выгода до 250 000 ₽</li>
+                        <li>Trade-In выгода до 150 000 ₽</li>
                         <!-- <li>Процентная ставка от 4,9%</li> -->
                         <li>Срок до 7 лет</li>
                         <li>Рассрочка 0%</li>

@@ -6,7 +6,7 @@
         <div class="container">
             <div class="banner-head__content">
                 <div class="banner-head__title">
-                    <b>Скидка до 250 000 ₽</b>
+                    <b>Скидка до 150 000 ₽</b>
                     <span>Оформи Trade-IN выгодно!</span>
 
                     <span>Быстрое оформление документов, без занижения цены и большая скидка на покупку нового
@@ -18,7 +18,7 @@
         </div>
         <div class="banner-head__sticker">
             <span>Скидка до</span>
-            <b>250 000 ₽</b>
+            <b>150 000 ₽</b>
         </div>
     </section>
 </template>

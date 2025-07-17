@@ -91,7 +91,7 @@ const benefitsList = computed(() => {
     else if ($route.name == 'trade-in') {
         return [
             {
-                title: 'Выгода до 250 000 ₽',
+                title: 'Выгода до 150 000 ₽',
                 subtitle: 'Надежная гарантия от салона',
                 icon: '/images/benefit1.webp'
             },

@@ -25,7 +25,7 @@ const appStore = useAppStore();
                             <i class="fa-solid fa-car"></i>
                         </div>
                         <div class="special__item-text">
-                            <div class="special__item-title">Trade-in - оптимальный выбор и экономия до 250 000 ₽</div>
+                            <div class="special__item-title">Trade-in - оптимальный выбор и экономия до 150 000 ₽</div>
                             <NuxtLink to="/trade-in" class="special__item-link">
                                 Узнать подробности <i class="fa-solid fa-chevron-right"></i>
                             </NuxtLink>
