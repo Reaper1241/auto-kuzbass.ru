@@ -186,7 +186,7 @@ const show = ref(0);
                                     </p>
                                 </div>
                                 <div class="view__row" v-if="currentMod.power">
-                                    <img src="/svg/speed1.svg" alt="icon" />
+                                    <img src="/svg/car-engine1.svg" alt="icon" />
                                     <p>
                                         {{ currentMod.power }}
                                         л.с.<br />
@@ -194,7 +194,7 @@ const show = ref(0);
                                     </p>
                                 </div>
                                 <div class="view__row" v-if="currentMod.from_0_to_100">
-                                    <img src="/svg/car-engine1.svg" alt="icon" />
+                                    <img src="/svg/speed1.svg" alt="icon" />
                                     <p>
                                         {{ currentMod.from_0_to_100 }}
                                         сек.<br />
