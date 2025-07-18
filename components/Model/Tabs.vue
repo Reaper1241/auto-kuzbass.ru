@@ -12,14 +12,14 @@ const activeTab = ref(1);
                 <div class="tabs__header-item" :class="{ active: activeTab === 2 }" @click="activeTab = 2">
                     Фото и характеристики
                 </div>
+                <div class="tabs__header-item" :class="{ active: activeTab === 3 }" @click="activeTab = 3">
+                    {{ cleanUpTitle($route.params.brand).toUpperCase() }} FINANCE
+                </div>
                 <NuxtLink class="tabs__header-item tabs__header-link section__cars" :to="{ hash: '#catalog' }"
                     @click="activeTab = 4" :class="{ active: activeTab === 4 }">
                     Авто в наличии
                 </NuxtLink>
                 <!-- </div> -->
-                <div class="tabs__header-item" :class="{ active: activeTab === 3 }" @click="activeTab = 3">
-                    {{ cleanUpTitle($route.params.brand).toUpperCase() }} FINANCE
-                </div>
             </div>
             <div class="tabs__body">
                 <ModelComplectations v-if="activeTab === 1" />
