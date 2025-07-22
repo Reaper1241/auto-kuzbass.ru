@@ -216,6 +216,7 @@ onBeforeUnmount(() => {
             max-width: 540px;
             width: 100%;
             margin: 0 auto;
+            margin-bottom: 10px;
         }
 
         .timer__block {

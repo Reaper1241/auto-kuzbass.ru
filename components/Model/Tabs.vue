@@ -12,7 +12,7 @@ const scrollToTabContent = (tabNumber) => {
   nextTick(() => {
     const element = document.getElementById(`tab-${tabNumber}`);
     if (element) {
-      const offset = 20;
+      const offset = 50;
       const bodyRect = document.body.getBoundingClientRect().top;
       const elementRect = element.getBoundingClientRect().top;
       const elementPosition = elementRect - bodyRect;
