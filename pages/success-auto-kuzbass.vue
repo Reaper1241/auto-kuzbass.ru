@@ -1,16 +1,21 @@
 <script setup>
 import { useAppStore } from '/stores/AppStore.js'
 const appStore = useAppStore()
+const router = useRouter()
 
 definePageMeta({
     name: 'success',
 })
+
+// Перенаправление через 5 секунд
+setTimeout(() => {
+    router.push('/')
+}, 5000)
 </script>
 
 <template>
     <Bread />
     <section class="success">
-
         <div class="success-content">
             <div class="success-block">
                 <div class="success-block__text">
@@ -30,7 +35,6 @@ definePageMeta({
                     <NuxtLink to="/" class="success-back">Вернуться на главную</NuxtLink>
                 </div>
             </div>
-
         </div>
     </section>
 </template>
