@@ -675,6 +675,7 @@ select:disabled {
     align-items: center;
     width: 100%;
     gap: 5px;
+    margin-bottom: 10px;
 }
 .filter__mobile-reset{
     display: none;

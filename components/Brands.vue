@@ -84,6 +84,7 @@ const brands = computed(() => $route.name == 'china' ? appStore?.chinaBrands.bra
         @media screen and (max-width: 570px) {
             grid-template-columns: repeat(3, 1fr);
             gap: 30px;
+            margin-bottom: 15px;
         }
 
         @media screen and (max-width: 359px) {

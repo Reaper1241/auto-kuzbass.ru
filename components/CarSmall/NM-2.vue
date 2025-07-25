@@ -289,7 +289,7 @@ const model = computed(() => props.model)
             width: 100%;
             height: 150px;
             object-fit: contain;
-            padding: 20px;
+            // padding: 20px;
         }
 
         .model__stickers {
