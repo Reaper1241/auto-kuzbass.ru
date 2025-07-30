@@ -13,7 +13,7 @@ export function yandexEcommerce(action, product) {
           "products": [
             {
               "category": 'Новый авто',
-              "brand": product.brand ? product.brand : null,
+              "brand": product.brand ? product.brand.toLowerCase() : null,
               "name": product.model ? product.model : null,
               "list": 'new',
 

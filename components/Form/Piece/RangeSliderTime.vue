@@ -1,6 +1,6 @@
 <script setup>
-const timeList = ref(8);
-const max = ref(8);
+const timeList = ref(7);
+const max = ref(7);
 const timeListOutputData = ref('7 лет');
 
 const emits = defineEmits(['timeListOutput']);

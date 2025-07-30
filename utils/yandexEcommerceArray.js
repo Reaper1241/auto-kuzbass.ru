@@ -3,7 +3,7 @@ export function yandexEcommerceArray(action, products) {
   for (let i = 0; i < products.length; i++) {
     ecomItems.value.push({
       "category": 'Новый авто',
-      "brand": products[i].brand ? products[i].brand : null,
+      "brand": products[i].brand ? products[i].brand.toLowerCase() : null,
       "name": products[i].model ? products[i].model : null,
 
       "id": products[i].id,
