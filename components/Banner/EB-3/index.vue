@@ -60,15 +60,25 @@ const appStore = useAppStore();
 }
 .section__body {
     position: relative;
-    background: url(/images/banner2.png) no-repeat 0% 50%;
+    background: url(/images/banner2.png) no-repeat 45% 50%;
     background-size: 140%;
     width: 100%;
     margin: 30px auto;
     color: var(--bg-light);
     border-radius: var(--border-radius);
+    @media screen and (max-width: 1000px) {
+        background: url(/images/banner2.png) no-repeat 55% 50%;
+        background-size: 200%; /* или используйте конкретный размер, например: */
+        /* background-size: 150%; */ /* чтобы отдалить изображение */
+    }
     @media screen and (max-width: 768px) {
         background: url(/images/banner2.png) no-repeat 55% 50%;
-        background-size: cover; /* или используйте конкретный размер, например: */
+        background-size: 300%; /* или используйте конкретный размер, например: */
+        /* background-size: 150%; */ /* чтобы отдалить изображение */
+    }
+    @media screen and (max-width: 500px) {
+        background: url(/images/banner2.png) no-repeat 55% 60%;
+        background-size: 400%; /* или используйте конкретный размер, например: */
         /* background-size: 150%; */ /* чтобы отдалить изображение */
     }
     .express__content {
