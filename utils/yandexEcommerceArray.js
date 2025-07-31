@@ -2,7 +2,6 @@ export function yandexEcommerceArray(action, products) {
   let ecomItems = ref([]);
   
   for (let i = 0; i < products.length; i++) {
-    // Нормализация бренда: заменяем "ваз(lada)" на "lada"
     let brand = products[i].brand ? products[i].brand.toLowerCase() : null;
     if (brand && brand.includes('ваз(lada)')) {
       brand = 'lada';
@@ -10,7 +9,7 @@ export function yandexEcommerceArray(action, products) {
 
     ecomItems.value.push({
       "category": 'Новый авто',
-      "brand": brand, // Используем нормализованное значение
+      "brand": brand,
       "name": products[i].model ? products[i].model : null,
       "id": products[i].id,
       "price": products[i].sale ? products[i].price - products[i].sale : products[i].price,

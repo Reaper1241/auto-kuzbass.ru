@@ -6,9 +6,8 @@ export function yandexEcommerce(action, product) {
       list: 'new'
     });
 
-    // Нормализация бренда: заменяем "ваз(lada)" на "lada"
     let brand = product.brand ? product.brand.toLowerCase() : null;
-    if (brand && brand.includes('ваз(lada)')) {
+    if (brand && brand.includes('ваз (lada)')) {
       brand = 'lada';
     }
 
