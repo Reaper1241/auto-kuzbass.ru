@@ -4,7 +4,13 @@ export function yandexEcommerce(action, product) {
       action: action,
       product: product,
       list: 'new'
-    })
+    });
+
+    // Нормализация бренда: заменяем "ваз(lada)" на "lada"
+    let brand = product.brand ? product.brand.toLowerCase() : null;
+    if (brand && brand.includes('ваз(lada)')) {
+      brand = 'lada';
+    }
 
     window.dataLayer.push({
       "ecommerce": {
@@ -13,19 +19,18 @@ export function yandexEcommerce(action, product) {
           "products": [
             {
               "category": 'Новый авто',
-              "brand": product.brand ? product.brand.toLowerCase() : null,
+              "brand": brand,
               "name": product.model ? product.model : null,
               "list": 'new',
-
               "id": product.id,
               "price": product.sale ? product.price - product.sale : product.price,
               "discount": product.sale ? product.sale : 0,
               "quantity": 1,
-              "variant": product.color ? product.color : null
+              "variant": product.color ? product.color : null,
             },
           ]
         }
       }
-    })
+    });
   }
 }

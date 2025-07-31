@@ -1,7 +1,13 @@
 export function yandexEcommercePurchase(id, product) {
-  console.log(id, product.id)
+  console.log(id, product.id);
 
   if (process.client) {
+    // Нормализация бренда: заменяем "ваз(lada)" на "lada"
+    let brand = product.brand ? product.brand.toLowerCase() : null;
+    if (brand && brand.includes('ваз(lada)')) {
+      brand = 'lada';
+    }
+
     window.dataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
@@ -12,18 +18,17 @@ export function yandexEcommercePurchase(id, product) {
           "products": [
             {
               "category": 'Новый авто',
-              "brand": product.brand ? product.brand.toLowerCase() : null,
+              "brand": brand, // Используем нормализованное значение
               "name": product.model ? product.model : null,
-
               "id": product.id,
               "price": product.sale ? product.price - product.sale : product.price,
               "discount": product.sale ? product.sale : 0,
               "quantity": 1,
               "variant": product.color ? product.color : null
-            },
+            }
           ]
         }
       }
-    })
+    });
   }
 }
