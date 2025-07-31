@@ -3,7 +3,7 @@ export function yandexEcommerceArray(action, products) {
   
   for (let i = 0; i < products.length; i++) {
     let brand = products[i].brand ? products[i].brand.toLowerCase() : null;
-    if (brand && brand.includes('ваз(lada)')) {
+    if (brand && brand.includes('ваз (lada)')) {
       brand = 'lada';
     }
 

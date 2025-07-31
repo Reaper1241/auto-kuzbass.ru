@@ -3,7 +3,7 @@ export function yandexEcommercePurchase(id, product) {
 
   if (process.client) {
     let brand = product.brand ? product.brand.toLowerCase() : null;
-    if (brand && brand.includes('ваз(lada)')) {
+    if (brand && brand.includes('ваз (lada)')) {
       brand = 'lada';
     }
 
