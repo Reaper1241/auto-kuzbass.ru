@@ -333,7 +333,7 @@ onMounted(() => {
                         height: auto;
                         max-height: 100%;
                         object-fit: cover;
-                        object-position: center bottom; /* Обрезка будет только сверху */
+                        // object-position: center bottom; /* Обрезка будет только сверху */
                     }
                 }
 
