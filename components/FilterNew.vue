@@ -29,7 +29,6 @@ const unPriceFrom = (event) => {
 const unPriceTo = (event) => {
     unmaskedPriceTo.value = event.detail.unmasked
 }
-/* vMaska */
 
 const filterLoading = ref(false);
 
@@ -109,7 +108,6 @@ function updateRecentFilter() {
         .then(() => appStore.recentQueryNew ? null : emit('showCars', fullQuary))
         .then(() => paramsLoading.value = false)
 }
-/* Recent Quary */
 
 function getFilterData(recentStatus) {
     paramsLoading.value = true
@@ -140,7 +138,18 @@ function getFilterData(recentStatus) {
 }
 
 function updateQuery() {
-    fullQuary = [`${$route?.name == 'china' ? `car_tag_id=2` : ''}`, `${brand.value > 0 ? `brand_id=${brand.value}` : ''}`, `${model.value > 0 ? `car_model_id=${model.value}` : ''}`, `${modification.value > 0 ? `modification_id=${modification.value}` : ''}`, `${complectation.value > 0 ? `complectation_id=${complectation.value}` : ''}`, `${fuel.value > 0 ? `fuel_type_id=${fuel.value}` : ''}`, `${transmission.value > 0 ? `transmission_type_id=${transmission.value}` : ''}`, `${drive.value > 0 ? `drive_type_id=${drive.value}` : ''}`, `${unmaskedPriceFrom.value > 0 ? `price_from=${unmaskedPriceFrom.value}` : ''}`, `${unmaskedPriceTo.value > 0 ? `price_to=${unmaskedPriceTo.value}` : ''}`].filter(elm => elm).join('&')
+    fullQuary = [
+        `${$route?.name == 'china' ? `car_tag_id=2` : ''}`,
+        `${brand.value > 0 ? `brand_id=${brand.value}` : ''}`,
+        `${model.value > 0 ? `car_model_id=${model.value}` : ''}`,
+        `${modification.value > 0 ? `modification_id=${modification.value}` : ''}`,
+        `${complectation.value > 0 ? `complectation_id=${complectation.value}` : ''}`,
+        `${fuel.value > 0 ? `fuel_type_id=${fuel.value}` : ''}`,
+        `${transmission.value > 0 ? `transmission_type_id=${transmission.value}` : ''}`,
+        `${drive.value > 0 ? `drive_type_id=${drive.value}` : ''}`,
+        `${unmaskedPriceFrom.value > 0 ? `price_from=${unmaskedPriceFrom.value}` : ''}`,
+        `${unmaskedPriceTo.value > 0 ? `price_to=${unmaskedPriceTo.value}` : ''}`
+    ].filter(elm => elm).join('&')
 }
 
 function getBrand(brandName) {
@@ -151,22 +160,21 @@ function getModel(brandName, modelName) {
     return appStore.brands.find(brand => brand.url_brand === brandName)?.car_models.find(model => model.url_model === modelName)?.id
 }
 
-/* Обновляем параметры фильтрации при переходе между страницами */
 if ($route.name === 'model') {
     model.value = getModel($route.params.brand, $route.params.model) || 0;
 }
 if (['brand', 'model'].includes($route.name)) {
     brand.value = getBrand($route.params.brand) || 0;
 }
-/* Обновляем параметры фильтрации при переходе между страницами */
 
 if ($route.name != 'car') {
     appStore.recentPage = $route.name
 }
 
-function reset() {
-    model.value = $route.name === 'model' ? model.value : 0;
-
+async function reset() {
+    // Сбрасываем все значения, включая марку, независимо от текущего роута
+    brand.value = 0;
+    model.value = 0;
     modification.value = 0;
     complectation.value = 0;
     fuel.value = 0;
@@ -179,10 +187,16 @@ function reset() {
     unmaskedPriceFrom.value = null;
     unmaskedPriceTo.value = null;
 
-    fullQuary = ``
+    fullQuary = ``;
 
-    emit('showCars', fullQuary)
-    getFilterData(false)
+    // Если мы на странице бренда/модели, перенаправляем на главную
+    if (['brand', 'model'].includes($route.name)) {
+        await navigateTo('/new');
+    }
+
+    // Сбрасываем состояние и загружаем базовые фильтры
+    await resetFilterData();
+    emit('showCars', fullQuary);
 }
 
 function updateFilter(from) {
@@ -279,14 +293,14 @@ getFilterData(true)
                             <label class="filter__body-input wide">
                                 <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
                                     :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" autocomplete="off"
-                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    :disabled="paramsLoading" 
                                     @maska="unPriceFrom" @change="updateFilter()"
                                     maxlength="10">
                                 <span class="separator">|</span>
                                 <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
                                     :placeholder="`до ${makeSpaces(priceTo)} руб`" autocomplete="off"
                                     inputmode="numeric" 
-                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    :disabled="paramsLoading" 
                                     @maska="unPriceTo"
                                     @change="updateFilter()" maxlength="10">
                             </label>
@@ -306,8 +320,6 @@ getFilterData(true)
                             </button>
                         </div>
                     </div>
-
-                    {{ appStore.catalog }}
 
                     <div class="filter__body-selects mobile">
                         <div class="filter__body-column">
@@ -340,14 +352,14 @@ getFilterData(true)
                                 <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
                                     :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" autocomplete="off"
                                     inputmode="numeric" 
-                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    :disabled="paramsLoading" 
                                     @maska="unPriceFrom"
                                     @change="updateFilter()" maxlength="10">
                                 <span class="separator">|</span>
                                 <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
                                     :placeholder="`до ${makeSpaces(priceTo)} руб`" autocomplete="off"
                                     inputmode="numeric" 
-                                    :disabled="brand == 0 || model == 0 || paramsLoading" 
+                                    :disabled="paramsLoading" 
                                     @maska="unPriceTo"
                                     @change="updateFilter()" maxlength="10">
                             </label>
@@ -365,6 +377,7 @@ getFilterData(true)
         </div>
     </section>
 </template>
+
 
 <style scoped lang="scss">
 .filter {
