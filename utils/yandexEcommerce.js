@@ -6,14 +6,10 @@ export function yandexEcommerce(action, product) {
       list: 'new'
     });
 
-    // Обработка бренда
     let brand = product.brand ? product.brand.toLowerCase() : null;
     if (brand && brand.includes('ваз (lada)')) {
       brand = 'lada';
     }
-
-    // Обработка модели
-    let model = product.model ? product.model.toLowerCase().replace(/\s+/g, '_') : null;
 
     window.dataLayer.push({
       "ecommerce": {
@@ -23,7 +19,7 @@ export function yandexEcommerce(action, product) {
             {
               "category": 'Новый авто',
               "brand": brand,
-              "name": model,
+              "name": product.model ? product.model : null,
               "list": 'new',
               "id": product.id,
               "price": product.sale ? product.price - product.sale : product.price,
