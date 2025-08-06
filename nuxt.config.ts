@@ -96,7 +96,7 @@ export default defineNuxtConfig({
     trackLinks: true,
     accurateTrackBounce: true,
     webvisor: true,
-    ecommerce:"dataLayer",
+    ecommerce: true,
   },
 
   pinia: {
