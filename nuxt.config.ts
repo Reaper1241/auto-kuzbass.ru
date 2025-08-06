@@ -40,6 +40,7 @@ export default defineNuxtConfig({
         { name: 'og:image', content: '/og.png' },
         { name: 'og:logo', content: '/og-logo.svg' },
         { name: 'og:locale', content: 'ru_RU' },
+        { name: 'yandex-verification', content: 'e16c84adddfbd3ca'},
         {
           name: 'viewport',
           content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'

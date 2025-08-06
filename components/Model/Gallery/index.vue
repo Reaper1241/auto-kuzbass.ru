@@ -1,6 +1,5 @@
 <script setup>
 import { apiNew } from '@/constants';
-
 import { useNewStore } from '/stores/NewStore.js';
 const newStore = useNewStore();
 
@@ -8,7 +7,6 @@ const interior = ref([]);
 const exterior = ref([]);
 const loading = ref(true);
 const choice = ref(0);
-
 
 const fetchOptions = {
     headers: {
@@ -34,10 +32,12 @@ Promise.all(urls.map(url =>
         loading.value = false;
     });
 
-const currentSlide = ref(0)
+const currentSlide = ref(0);
+const carouselRef = ref(null);
+
 const images = computed(() => {
-    return choice.value === 0 ? interior.value : exterior.value
-})
+    return choice.value === 0 ? interior.value : exterior.value;
+});
 
 const breakpoints = {
     0: {
@@ -49,58 +49,59 @@ const breakpoints = {
 }
 
 function slideTo(index) {
-    if (index === images.value.length) {
-        currentSlide.value = 0;
-    } else {
-        currentSlide.value = index;
+    if (carouselRef.value) {
+        carouselRef.value.slideTo(index);
     }
 }
 
-watch(() => images.value, () => {
-    if (images.value.length) {
-        currentSlide.value = 1;
+watch(images, (newVal) => {
+    if (newVal.length) {
+        currentSlide.value = 0;
     }
-});
+}, { immediate: true });
 </script>
 
 <template>
     <section class="gallery" v-if="interior?.length || exterior?.length">
-            <div class="gallery__wrapper">
-                <div class="gallery__body">
-                    <div class="gallery__choice">
-                        <div class="choice__item" @click="choice = 0" :class="{ 'active': choice == 0 }"
-                            v-if="interior?.length">
-                            Интерьер
-                            <i class="fa-solid fa-sort-down"></i>
-                        </div>
-                        <div class="choice__item" @click="choice = 1" :class="{ 'active': choice == 1 }"
-                            v-if="exterior?.length">
-                            Экстерьер
-                            <i class="fa-solid fa-sort-down"></i>
-                        </div>
+        <div class="gallery__wrapper">
+            <div class="gallery__body">
+                <div class="gallery__choice">
+                    <div class="choice__item" @click="choice = 0; currentSlide = 0" :class="{ 'active': choice == 0 }"
+                        v-if="interior?.length">
+                        Интерьер
+                        <i class="fa-solid fa-sort-down"></i>
                     </div>
-                    <div class="gallery__output">
-                        <div class="special__slider model__gallery">
-                            <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide"
-                                :mouseDrag="false" :breakpoints="breakpoints">
-                                <Slide v-for="(slide, index) in images" :key="index">
-                                    <div class="carousel__item">
-                                        <div class="slide">
-                                            <a data-fancybox="gallery" :href="`${slide.url}`">
-                                                <img :src="`${slide.url}`" alt="car" style="width: 100%;" />
-                                            </a>
-                                        </div>
+                    <div class="choice__item" @click="choice = 1; currentSlide = 0" :class="{ 'active': choice == 1 }"
+                        v-if="exterior?.length">
+                        Экстерьер
+                        <i class="fa-solid fa-sort-down"></i>
+                    </div>
+                </div>
+                <div class="gallery__output">
+                    <div class="special__slider model__gallery">
+                        <Carousel ref="carouselRef" id="gallery" 
+                                 :items-to-show="1" 
+                                 :wrap-around="true" 
+                                 v-model="currentSlide"
+                                 :breakpoints="breakpoints">
+                            <Slide v-for="(slide, index) in images" :key="index">
+                                <div class="carousel__item">
+                                    <div class="slide">
+                                        <a data-fancybox="gallery" :href="`${slide.url}`">
+                                            <img :src="`${slide.url}`" alt="car" style="width: 100%;" />
+                                        </a>
                                     </div>
-                                </Slide>
+                                </div>
+                            </Slide>
 
-                                <template #addons>
-                                    <Navigation class="carousel__navigation" />
-                                </template>
-                            </Carousel>
-                        </div>
+                            <template #addons>
+                                <Navigation class="carousel__navigation" />
+                            </template>
+                        </Carousel>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 </template>
 
@@ -157,7 +158,6 @@ watch(() => images.value, () => {
         overflow-x: auto;
         padding-bottom: 10px;
 
-
         img {
             width: auto;
             object-fit: cover;
@@ -165,4 +165,6 @@ watch(() => images.value, () => {
         }
     }
 }
+
+
 </style>
