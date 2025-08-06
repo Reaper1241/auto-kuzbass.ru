@@ -18,6 +18,18 @@ const props = defineProps({
 })
 
 document.body.style.overflow = 'hidden'
+const carEcommerce = computed(() => {
+  return {
+    brand: props.car?.brand_url || null,
+    name: props.car?.model || null,
+    category: 'Новый авто',
+    id: props.car?.id || null,
+    price: props.car?.sale ? (props.car.price - props.car.sale) : props.car?.price || 0,
+    discount: props.car?.sale || 0,
+    quantity: 1,
+    variant: props.car?.color || null
+  };
+});
 function closeModal() {
     document.body.style.overflow = 'auto'
     emits('closeModal')
@@ -25,12 +37,12 @@ function closeModal() {
 </script>
 
 <template>
-    <div class="modal" @click.self="closeModal(), car ? yandexEcommerce('remove', car) : null">
+    <div class="modal" @click.self="closeModal(), car ? yandexEcommerce('remove', carEcommerce) : null">
 
         <div class="modal__dialog" :class="car && appType == 2 ? '__car' : ''">
             <div class="modal__content" :class="car && appType == 2 ? '__car' : ''">
                 <button class="modal__close" type="button"
-                    @click="closeModal(), car ? yandexEcommerce('remove', car) : null">
+                    @click="closeModal(), car ? yandexEcommerce('remove', carEcommerce) : null">
                     <span class="close__text">Закрыть</span>
                 </button>
 
