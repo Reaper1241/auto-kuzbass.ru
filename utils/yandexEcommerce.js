@@ -11,6 +11,8 @@ export function yandexEcommerce(action, product) {
       brand = 'lada';
     }
 
+    let model = product.model ? product.model.toLowerCase().replace(/\s+/g, '_') : null;
+
     window.dataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
@@ -19,7 +21,7 @@ export function yandexEcommerce(action, product) {
             {
               "category": 'Новый авто',
               "brand": brand,
-              "name": product.model ? product.model : null,
+              "name": model,
               "list": 'new',
               "id": product.id,
               "price": product.sale ? product.price - product.sale : product.price,

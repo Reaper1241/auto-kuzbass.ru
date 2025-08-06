@@ -5,7 +5,7 @@ const appStore = useAppStore()
 import { useCreditStore } from "/stores/CreditStore.js";
 const creditStore = useCreditStore();
 
-import { apiNew, name } from "@/constants/";
+import { apiNew } from "@/constants/";
 
 const emits = defineEmits(['closeModal', 'choiceCar']);
 
@@ -56,23 +56,12 @@ const choiceCar = computed(() => {
         complectation: selectedComp.value,
     }
 })
-const carEcommerce = computed(() => {
-  return {
-    brand: props.car?.url_brand || null,
-    name: props.car?.model || null,
-    category: 'Новый авто',
-    id: props.car?.id || null,
-    price: props.car?.sale ? (props.car.price - props.car.sale) : props.car?.price || 0,
-    discount: props.car?.sale || 0,
-    quantity: 1,
-    variant: props.car?.color || null
-  };
-});
+
 getModels(selectedBrand.value.id)
 </script>
 
 <template>
-    <div class="modal" @click.self="emits('closeModal'), car ? yandexEcommerce('remove', carEcommerce) : null">
+    <div class="modal" @click.self="emits('closeModal'), car ? yandexEcommerce('remove', car) : null">
         <div class="modal__dialog">
             <div class="modal__content">
                 <div class="modal__title">

@@ -48,18 +48,7 @@ const props = defineProps({
         type: String,
     }
 })
-const carEcommerce = computed(() => {
-  return {
-    brand: props.car?.url_brand || null,
-    name: props.car?.model || null,
-    category: 'Новый авто',
-    id: props.car?.id || null,
-    price: props.car?.sale ? (props.car.price - props.car.sale) : props.car?.price || 0,
-    discount: props.car?.sale || 0,
-    quantity: 1,
-    variant: props.car?.color || null
-  };
-});
+
 function modalShow() {
     isOpen.value = !isOpen.value
     appStore.modalShown = !appStore.modalShown
@@ -74,7 +63,7 @@ function modalShow() {
 
 <template>
     <BaseButton class="button-modal" :icon="btnIcon" :label="btnLabel" :class="btnClass" :mobileIcon="btnMobileIcon"
-        @click="modalShow(), car ? yandexEcommerce('add', carEcommerce) : null" />
+        @click="modalShow(), car ? yandexEcommerce('add', car) : null" />
     <Teleport to="body">
         <div v-if="isOpen">
             <BaseModalComp @closeModal="modalShow()" v-if="modalType == 'modalComp'" :comp="comp" :car="car"
