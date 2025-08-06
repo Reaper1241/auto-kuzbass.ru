@@ -50,7 +50,7 @@ const props = defineProps({
 })
 const carEcommerce = computed(() => {
   return {
-    brand: props.car?.brand_url || null,
+    brand: props.car?.url_brand || null,
     name: props.car?.model || null,
     category: 'Новый авто',
     id: props.car?.id || null,
