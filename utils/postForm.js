@@ -3,7 +3,18 @@ import { useAppStore } from '/stores/AppStore.js'
 import { apiFormNew, blackList  } from "@/constants/";
 import { useNuxtApp } from '#imports'
 axios.defaults.withCredentials = true
-
+const carEcommerce = computed(() => {
+  return {
+    brand: props.car?.url_brand || null,
+    name: props.car?.model || null,
+    category: 'Новый авто',
+    id: props.car?.id || null,
+    price: props.car?.sale ? (props.car.price - props.car.sale) : props.car?.price || 0,
+    discount: props.car?.sale || 0,
+    quantity: 1,
+    variant: props.car?.color || null
+  };
+});
 export default function postForm(data, appType, car, category) {
   const appStore = useAppStore()
 
@@ -81,7 +92,7 @@ export default function postForm(data, appType, car, category) {
     })
       .then(res => {
         appStore.orderId = res.data
-        car ? yandexEcommercePurchase(appStore.orderId, car) : null;
+        car ? yandexEcommercePurchase(appStore.orderId, carEcommerce) : null;
         appStore.formLoading = false;
       })
       .catch(err => {
