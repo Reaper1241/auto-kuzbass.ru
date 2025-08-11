@@ -7,12 +7,10 @@ export function yandexEcommerceArray(action, products) {
       brand = 'lada';
     }
 
-    let model = products[i].model ? products[i].model.toLowerCase().replace(/\s+/g, '_') : null;
-
     ecomItems.value.push({
       "category": 'Новый авто',
       "brand": brand,
-      "name": model, 
+      "name": products[i].model ? products[i].model : null,
       "id": products[i].id,
       "price": products[i].sale ? products[i].price - products[i].sale : products[i].price,
       "discount": products[i].sale ? products[i].sale : 0,

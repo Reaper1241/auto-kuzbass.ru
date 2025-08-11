@@ -1,6 +1,8 @@
 <script setup>
 import { apiNew } from '@/constants';
 import { useNewStore } from '/stores/NewStore.js';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
+
 const newStore = useNewStore();
 
 const interior = ref([]);
@@ -8,87 +10,131 @@ const exterior = ref([]);
 const loading = ref(true);
 const choice = ref(0);
 
+const currentSlide = ref(0);
+const carouselRef = ref(null);
+
 const fetchOptions = {
     headers: {
         'domain': 'https://auto-kuzbass.ru'
     }
 };
 
-const urls = [
-    `${apiNew}galleries/${newStore.model.id}?gallery_type_id=1`,
-    `${apiNew}galleries/${newStore.model.id}?gallery_type_id=2`,
-];
-
-Promise.all(urls.map(url => 
-    fetch(url, fetchOptions).then(res => res.json())
-))
-    .then(([interiorData, exteriorData]) => {
-        interior.value = interiorData;
-        exterior.value = exteriorData;
-        loading.value = false;
-    })
-    .catch(error => {
-        console.error('Error fetching galleries:', error);
-        loading.value = false;
-    });
-
-const currentSlide = ref(0);
-const carouselRef = ref(null);
-
 const images = computed(() => {
     return choice.value === 0 ? interior.value : exterior.value;
 });
 
 const breakpoints = {
-    0: {
-        itemsToShow: 1.25,
-    },
-    1150: {
-        itemsToShow: 1.75,
-    },
+    0: { itemsToShow: 1.25 },
+    1150: { itemsToShow: 1.75 },
+};
+
+// Ждём пока все картинки загрузятся
+function waitForImagesToLoad(imgList) {
+    return Promise.all(
+        imgList.map(src => 
+            new Promise(resolve => {
+                const img = new Image();
+                img.src = src;
+                if (img.complete) {
+                    resolve();
+                } else {
+                    img.onload = () => resolve();
+                    img.onerror = () => resolve();
+                }
+            })
+        )
+    );
 }
 
-function slideTo(index) {
-    if (carouselRef.value) {
-        carouselRef.value.slideTo(index);
+async function loadGalleries() {
+    try {
+        loading.value = true;
+
+        const urls = [
+            `${apiNew}galleries/${newStore.model.id}?gallery_type_id=1`,
+            `${apiNew}galleries/${newStore.model.id}?gallery_type_id=2`,
+        ];
+
+        const [interiorData, exteriorData] = await Promise.all(
+            urls.map(url => fetch(url, fetchOptions).then(res => res.json()))
+        );
+
+        interior.value = interiorData;
+        exterior.value = exteriorData;
+
+        await nextTick();
+
+        // ждём пока загрузятся картинки текущего набора
+        await waitForImagesToLoad(images.value.map(i => i.url));
+
+        // даём карусели время и пересчитываем
+        setTimeout(() => {
+            if (carouselRef.value?.updateSlideWidth) {
+                carouselRef.value.updateSlideWidth();
+            }
+        }, 50);
+
+    } catch (error) {
+        console.error('Error fetching galleries:', error);
+    } finally {
+        loading.value = false;
     }
 }
 
-watch(images, (newVal) => {
+onMounted(() => {
+    loadGalleries();
+});
+
+watch(images, async (newVal) => {
     if (newVal.length) {
         currentSlide.value = 0;
+        await nextTick();
+        await waitForImagesToLoad(newVal.map(i => i.url));
+        setTimeout(() => {
+            if (carouselRef.value?.updateSlideWidth) {
+                carouselRef.value.updateSlideWidth();
+            }
+        }, 50);
     }
 }, { immediate: true });
 </script>
 
 <template>
-    <section class="gallery" v-if="interior?.length || exterior?.length">
+    <section class="gallery" v-if="interior.length || exterior.length">
         <div class="gallery__wrapper">
             <div class="gallery__body">
                 <div class="gallery__choice">
-                    <div class="choice__item" @click="choice = 0; currentSlide = 0" :class="{ 'active': choice == 0 }"
-                        v-if="interior?.length">
+                    <div class="choice__item"
+                         @click="choice = 0"
+                         :class="{ 'active': choice == 0 }"
+                         v-if="interior.length">
                         Интерьер
                         <i class="fa-solid fa-sort-down"></i>
                     </div>
-                    <div class="choice__item" @click="choice = 1; currentSlide = 0" :class="{ 'active': choice == 1 }"
-                        v-if="exterior?.length">
+                    <div class="choice__item"
+                         @click="choice = 1"
+                         :class="{ 'active': choice == 1 }"
+                         v-if="exterior.length">
                         Экстерьер
                         <i class="fa-solid fa-sort-down"></i>
                     </div>
                 </div>
+
                 <div class="gallery__output">
                     <div class="special__slider model__gallery">
-                        <Carousel ref="carouselRef" id="gallery" 
-                                 :items-to-show="1" 
-                                 :wrap-around="true" 
-                                 v-model="currentSlide"
-                                 :breakpoints="breakpoints">
+                        <Carousel
+                            ref="carouselRef"
+                            id="gallery" 
+                            :items-to-show="1" 
+                            :wrap-around="true" 
+                            v-model="currentSlide"
+                            :breakpoints="breakpoints"
+                        >
                             <Slide v-for="(slide, index) in images" :key="index">
                                 <div class="carousel__item">
                                     <div class="slide">
-                                        <a data-fancybox="gallery" :href="`${slide.url}`">
-                                            <img :src="`${slide.url}`" alt="car" style="width: 100%;" />
+                                        <a data-fancybox="gallery" :href="slide.url">
+                                            <img :src="slide.url" alt="car" style="width: 100%;" />
                                         </a>
                                     </div>
                                 </div>
@@ -142,7 +188,6 @@ watch(images, (newVal) => {
 
             &:hover {
                 opacity: 1;
-                transition: 0.3s;
             }
         }
 
@@ -165,6 +210,4 @@ watch(images, (newVal) => {
         }
     }
 }
-
-
 </style>

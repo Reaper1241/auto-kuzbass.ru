@@ -11,7 +11,7 @@ car.value = carStore.car
 const sale = ref(car.value.sale);
 
 onMounted(() => {
-    // yandexEcommerce('detail', car.value);
+    yandexEcommerce('detail', car.value);
 })
 
 /*

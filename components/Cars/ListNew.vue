@@ -75,7 +75,7 @@ const loadInitialCars = async () => {
   displayedCars.value = allCars.value.slice(0, carsPerLoad);
   lastDisplayedIndex.value = displayedCars.value.length;
   
-  // yandexEcommerceArray('impressions', displayedCars.value);
+  yandexEcommerceArray('impressions', displayedCars.value);
 };
 
 // Загрузка следующих машин
@@ -92,7 +92,7 @@ const loadMore = async () => {
     displayedCars.value = [...displayedCars.value, ...newCars];
     lastDisplayedIndex.value = displayedCars.value.length;
     
-    // yandexEcommerceArray('impressions', newCars);
+    yandexEcommerceArray('impressions', newCars);
   } finally {
     isLoadMoreLoading.value = false;
   }
