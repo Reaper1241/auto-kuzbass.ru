@@ -12,6 +12,7 @@ const choice = ref(0);
 
 const currentSlide = ref(0);
 const carouselRef = ref(null);
+const carouselKey = ref(0); 
 
 const fetchOptions = {
     headers: {
@@ -28,7 +29,7 @@ const breakpoints = {
     1150: { itemsToShow: 1.75 },
 };
 
-// Ждём пока все картинки загрузятся
+
 function waitForImagesToLoad(imgList) {
     return Promise.all(
         imgList.map(src => 
@@ -44,6 +45,17 @@ function waitForImagesToLoad(imgList) {
             })
         )
     );
+}
+
+function refreshCarousel(forceRecreate = false) {
+    nextTick(() => {
+        if (forceRecreate) {
+            carouselKey.value++;
+        } else if (carouselRef.value) {
+            carouselRef.value.updateSlideWidth?.();
+            carouselRef.value.updateSlidesData?.();
+        }
+    });
 }
 
 async function loadGalleries() {
@@ -63,17 +75,10 @@ async function loadGalleries() {
         exterior.value = exteriorData;
 
         await nextTick();
-
-        // ждём пока загрузятся картинки текущего набора
         await waitForImagesToLoad(images.value.map(i => i.url));
 
-        // даём карусели время и пересчитываем
-        setTimeout(() => {
-            if (carouselRef.value?.updateSlideWidth) {
-                carouselRef.value.updateSlideWidth();
-            }
-        }, 50);
 
+        refreshCarousel(true);
     } catch (error) {
         console.error('Error fetching galleries:', error);
     } finally {
@@ -81,22 +86,21 @@ async function loadGalleries() {
     }
 }
 
-onMounted(() => {
-    loadGalleries();
-});
 
 watch(images, async (newVal) => {
     if (newVal.length) {
         currentSlide.value = 0;
         await nextTick();
         await waitForImagesToLoad(newVal.map(i => i.url));
-        setTimeout(() => {
-            if (carouselRef.value?.updateSlideWidth) {
-                carouselRef.value.updateSlideWidth();
-            }
-        }, 50);
+
+        refreshCarousel(true);
     }
 }, { immediate: true });
+
+onMounted(async () => {
+    await loadGalleries();
+    setTimeout(() => refreshCarousel(true), 100);
+});
 </script>
 
 <template>
@@ -123,6 +127,7 @@ watch(images, async (newVal) => {
                 <div class="gallery__output">
                     <div class="special__slider model__gallery">
                         <Carousel
+                            :key="carouselKey"
                             ref="carouselRef"
                             id="gallery" 
                             :items-to-show="1" 
