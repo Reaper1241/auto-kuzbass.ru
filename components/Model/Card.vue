@@ -21,7 +21,9 @@ const selectedCar = ref({
 });
 
 const currentModel = computed(() => newStore.model)
-
+onMounted(() => {
+    yandexEcommerce('detail', currentModel.value);
+})
 const tradeSwitch = ref(true)
 const creditSwitch = ref(true)
 const salonSwitch = ref(true)

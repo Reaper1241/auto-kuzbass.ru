@@ -2,7 +2,7 @@
 import { useAppStore } from '/stores/AppStore.js'
 const appStore = useAppStore()
 
-const emits = defineEmits(['closeModal']);
+const emits = defineEmits(['closeModal'])
 
 const props = defineProps({
     modalType: String,
@@ -14,23 +14,30 @@ const props = defineProps({
     callback: Function,
     appType: Number,
     category: String,
-    description: String
+    description: String,
+    isAfk: { type: Boolean, default: false } // флаг AFK
 })
 
 document.body.style.overflow = 'hidden'
+
 function closeModal() {
     document.body.style.overflow = 'auto'
     emits('closeModal')
 }
+
+function handleClose() {
+    closeModal()
+    if (props.car && !props.isAfk) {
+        yandexEcommerce('remove', props.car)
+    }
+}
 </script>
 
 <template>
-    <div class="modal" @click.self="closeModal(), car ? yandexEcommerce('remove', car) : null">
-
+    <div class="modal" @click.self="handleClose">
         <div class="modal__dialog" :class="car && appType == 2 ? '__car' : ''">
             <div class="modal__content" :class="car && appType == 2 ? '__car' : ''">
-                <button class="modal__close" type="button"
-                    @click="closeModal(), car ? yandexEcommerce('remove', car) : null">
+                <button class="modal__close" type="button" @click="handleClose">
                     <span class="close__text">Закрыть</span>
                 </button>
 
@@ -70,7 +77,7 @@ function closeModal() {
 
                 <div class="modal__form">
                     <h2 class="modal__title" v-if="modalTitle">{{ modalTitle }}</h2>
-                    <h3 class="modal__subtitle" v-if="modalSubTitle">{{ modalSubTitle }}</h3>
+                    <h3 class="modal__subtitle" v-if="modalSubTitle" v-html="modalSubTitle"></h3>
                     <FormModalCredit :car="car" :appType="appType" @formSend="emits('closeModal')"
                         v-if="car && appType == 2" :category="category" />
                     <FormModal :appType="appType" @formSend="emits('closeModal')" v-else :category="category" />

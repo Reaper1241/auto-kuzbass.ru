@@ -82,7 +82,7 @@ const computedCar = computed(() => {
 onMounted(() => {
     fetchCar();
 });
-const { idle, lastActive } = useIdle(90000) // Афк модалка появится через 30 секунд
+const { idle, lastActive } = useIdle(45000) // Афк модалка появится через 30 секунд
 
 function modalShow() {
     isOpen.value = !isOpen.value
@@ -108,10 +108,16 @@ watch(idle, (idle) => {
 <template>
     <div v-if="isOpen">
         <BaseModal
-            :modal-title="'Есть сомнения в выборе? Оставьте заявку! Ответим на все ваши вопросы и подберем идеальный автомобиль!'"
-            :modalSubTitle="`Купить новый ${cleanUpTitle(computedCar.brand, computedCar.model)} в кредит от ${makeSpaces(appStore.calcMonthPrice(computedCar))} руб./мес.`"
-            :appType="6" @closeModal="modalShow()" v-if="computedCar" :car="computedCar" />
+            :modal-title="'Есть сомнения в выборе? Оставьте заявку!'"
+            :modalSubTitle="`Купить новый <b>${cleanUpTitle(computedCar.brand, computedCar.model)}</b> в кредит от <b>${makeSpaces(appStore.calcMonthPrice(computedCar))} руб./мес.</b>`"
+            :appType="6"
+            :isAfk="true"
+            @closeModal="modalShow()"
+            v-if="computedCar"
+            :car="computedCar"
+        />
         <BaseModal :modal-title="'Не можете определиться? Закажите обратный звонок!'" :appType="6"
+            :isAfk="true"
             @closeModal="modalShow()" v-else />
     </div>
 </template>
