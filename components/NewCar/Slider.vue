@@ -1,56 +1,76 @@
 <script setup>
-const currentSlide = ref(0)
+const currentSlide = ref(0);
 const props = defineProps({
     images: Array,
     imagesType: Boolean,
     preview: String
 });
-const breakpoints = {
-    0: {
-        itemsToShow: 1.25,
-    },
-    1150: {
-        itemsToShow: 1,
-    },
-}
 
-props.imagesType ? null : props.images.unshift({ url: props.preview });
+const breakpoints = {
+    0: { itemsToShow: 1.25 },
+    1150: { itemsToShow: 1 },
+};
+
+// Создаём вычисляемый список изображений с сортировкой по полю sort
+const imagesList = computed(() => {
+    let sorted = [...props.images].sort((a, b) => a.sort - b.sort);
+    if (!props.imagesType) {
+        // Добавляем превью только если оно ещё не в списке
+        const hasPreview = sorted.some(img => img.url === props.preview);
+        if (!hasPreview) {
+            sorted.unshift({ url: props.preview });
+        }
+    }
+    return sorted;
+});
 
 function slideTo(index) {
-    if (index === props.images.length) {
+    if (index === imagesList.value.length) {
         currentSlide.value = 0;
     } else {
         currentSlide.value = index;
     }
 }
 
-
-
-watch(() => props.images, () => {
-    if (props.images.length) {
-        currentSlide.value = 1;
+watch(imagesList, () => {
+    if (imagesList.value.length) {
+        currentSlide.value = 0;
     }
 });
 
 function slideNext() {
-    slideTo((currentSlide.value + 1) % props.images.length);
+    slideTo((currentSlide.value + 1) % imagesList.value.length);
 }
 
 function slidePrev() {
-    slideTo((currentSlide.value - 1 + props.images.length) % props.images.length);
+    slideTo((currentSlide.value - 1 + imagesList.value.length) % imagesList.value.length);
 }
 </script>
 
 <template>
     <div class="special__slider">
-        <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide" :mouseDrag="false"
-            :breakpoints="breakpoints">
-            <Slide v-for="(slide, index) in props.images" :key="index">
+        <Carousel
+            id="gallery"
+            :items-to-show="1"
+            :wrap-around="false"
+            v-model="currentSlide"
+            :mouseDrag="false"
+            :breakpoints="breakpoints"
+        >
+            <Slide v-for="(slide, index) in imagesList" :key="index">
                 <div class="carousel__item">
                     <div class="slide">
-                        <a data-fancybox="gallery" :href="`${slide.url}`">
-                            <NuxtImg class="main-image" lazy format="webp" quality="80" loading="lazy" :src="`${slide.url}`" alt="car"
-                                style="width: 100%;" />
+                        <a data-fancybox="gallery" :href="slide.url">
+                            <NuxtImg
+                                class="main-image"
+                                lazy
+                                format="webp"
+                                quality="80"
+                                loading="lazy"
+                                :src="slide.url"
+                                alt="car"
+                                style="width: 100%;"
+                            />
                         </a>
                     </div>
                 </div>
@@ -58,34 +78,52 @@ function slidePrev() {
 
             <template #addons>
                 <Pagination />
-                <div class="custom-navigation">
-                    
-                    <!-- <button class="carousel__prev" @click="slidePrev" />
-                    <button class="carousel__next" @click="slideNext" /> -->
-                </div>
             </template>
         </Carousel>
 
         <div class="carousel__custom-thumbnails">
-            <ul class="carousel__custom-thumbnails-list"
-                :style="`transform: translateY(-${props.images.length > 6 ? (currentSlide * 100) : 0}px)`">
-                <!-- Original images -->
-                <li v-for="(slide, index) in props.images" :key="index" class="carousel__item"
-                    :class="{ 'active': currentSlide === index }" @click="slideTo(index)">
-                    <NuxtImg lazy format="webp" quality="90" loading="lazy" :src="slide.url" alt="car"
-                        style="width: 100%;" />
+            <ul
+                class="carousel__custom-thumbnails-list"
+                :style="`transform: translateY(-${imagesList.length > 6 ? (currentSlide * 100) : 0}px)`"
+            >
+                <li
+                    v-for="(slide, index) in imagesList"
+                    :key="'thumb-'+index"
+                    class="carousel__item"
+                    :class="{ 'active': currentSlide === index }"
+                    @click="slideTo(index)"
+                >
+                    <NuxtImg
+                        lazy
+                        format="webp"
+                        quality="90"
+                        loading="lazy"
+                        :src="slide.url"
+                        alt="car"
+                        style="width: 100%;"
+                    />
                 </li>
 
-                <!-- Duplicated first image -->
-                <li v-for="(slide, index) in props.images" :key="index" class="carousel__item"
-                    :class="{ 'active': currentSlide === index }" @click="slideTo(index)">
-                    <NuxtImg lazy format="webp" quality="90" loading="lazy" :src="slide.url" alt="car"
-                        style="width: 100%;" v-if="props.images.length > 6" />
+                <li
+                    v-for="(slide, index) in imagesList"
+                    :key="'dup-'+index"
+                    class="carousel__item"
+                    :class="{ 'active': currentSlide === index }"
+                    @click="slideTo(index)"
+                >
+                    <NuxtImg
+                        lazy
+                        format="webp"
+                        quality="90"
+                        loading="lazy"
+                        :src="slide.url"
+                        alt="car"
+                        style="width: 100%;"
+                        v-if="imagesList.length > 6"
+                    />
                 </li>
             </ul>
         </div>
-
-        <!-- <div class="carousel__pages">{{ currentSlide + 1 }} / {{ props.images.length }}</div> -->
     </div>
 </template>
 
