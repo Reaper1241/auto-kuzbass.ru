@@ -10,7 +10,7 @@
       <Contacts />
       <ContactsMap />
     </div>
-    <!-- <ModalAFK /> -->
+    <ModalAFK />
     <SEO />
 </template>
 

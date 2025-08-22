@@ -13,7 +13,7 @@ definePageMeta({
     <Taxi />
     <BannerTB2 />
 
-    <!-- <ModalAFK /> -->
+    <ModalAFK />
     <BasePageContent />
     <SEO />
 </template>

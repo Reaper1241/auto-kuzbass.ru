@@ -74,7 +74,7 @@ if (brand) {
         <ModelFinance />
         <CarsListNew :id="`catalog`" />
         <BannerEB3 />
-        <!-- <ModalAFK /> -->
+        <ModalAFK />
         <SEO />
     </template>
 </template>

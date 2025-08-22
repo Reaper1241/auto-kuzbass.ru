@@ -20,7 +20,7 @@ function callback(n) {
     <BannerEB3 />
     <CarsHot />
     <BannerCB1/>
-    <!-- <ModalAFK /> -->
+    <ModalAFK />
     <BasePageContent />
     <SEO />
 </template>
