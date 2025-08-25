@@ -37,7 +37,7 @@
     }
 
     .banner {
-        background: url(/images/banner.png) no-repeat 70% 45%;
+        background: url(/images/banner.png) no-repeat 80% 45%;
         background-size: 150%;
         border-radius: var(--border-radius);
         padding: 20px; // Отступы от краев баннера
