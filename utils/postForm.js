@@ -61,50 +61,117 @@ export default function postForm(data, appType, car, category) {
   if (blackList.some(blackListed => clearPhone.startsWith(blackListed))) {
     navigateTo('/thank');
   } else {
-    const { $ym } = useNuxtApp()
-    $ym('reachGoal', 'success-auto-kuzbass')
-    axios.post(`${apiFormNew}`, {
-      phone_number: clearPhone,
-      full_name: formData.name ? formData.name : null,
-      comment: comment.value ? comment.value : null,
+    // Проверяем, был ли уже сегодня заявка с этого IP
+    const today = new Date().toISOString().split('T')[0]; // Получаем текущую дату в формате YYYY-MM-DD
+    const ipKey = `submission_${appStore.ip}_${today}`;
+    
+    // Проверяем в localStorage
+    const hasSubmittedToday = localStorage.getItem(ipKey);
+    
+    // Если уже была заявка сегодня - это дубль
+    if (hasSubmittedToday) {
+      // Сохраняем информацию о дублирующей заявке
+      localStorage.setItem(ipKey, 'duplicate');
+      
+      const { $ym } = useNuxtApp()
+      $ym('reachGoal', 'success-auto-kuzbass')
+      
+      axios.post(`${apiFormNew}`, {
+        phone_number: clearPhone,
+        full_name: formData.name ? formData.name : null,
+        comment: comment.value ? comment.value : null,
 
-      car_id: car ? car.id : null,
-      brand: car ? car.brand : null,
-      model: car ? car.model : null,
-      price: car ? car.price : null,
+        car_id: car ? car.id : null,
+        brand: car ? car.brand : null,
+        model: car ? car.model : null,
+        price: car ? car.price : null,
 
-      send_form: 1,
-      send_page: window.location.origin + window.location.pathname,
-      source: `https://auto-kuzbass.ru/`, // обязательно должен быть / на конце url
+        send_form: 1,
+        send_page: window.location.origin + window.location.pathname,
+        source: `https://auto-kuzbass.ru/`, // обязательно должен быть / на конце url
 
-      referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
-      entry: appStore.entry ? appStore.entry : null,
-      ip: appStore.ip,
-      dealer_id: 329,
+        referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
+        entry: appStore.entry ? appStore.entry : null,
+        ip: appStore.ip,
+        dealer_id: 329,
 
-      application_type_id: appType,
-    }, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Domain': `https://auto-kuzbass.ru`,
-      },
-      withCredentials: true
-    })
-      .then(res => {
-        appStore.orderId = res.data
-        car ? yandexEcommercePurchase(appStore.orderId, car) : null;
-        appStore.formLoading = false;
+        application_type_id: appType,
+        is_duplicate: true, // Добавляем флаг дубликата
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Domain': `https://auto-kuzbass.ru`,
+        },
+        withCredentials: true
       })
-      .catch(err => {
-        appStore.formLoading = false
-        console.log('неудача')
-        console.log(err)
-      })
-      .finally(() => {
-        appStore.formLoading = false
-      })
+        .then(res => {
+          appStore.orderId = res.data
+          car ? yandexEcommercePurchase(appStore.orderId, car) : null;
+          appStore.formLoading = false;
+          // Редирект на страницу для дублей
+          navigateTo('/thank'); // Страница для повторных заявок
+        })
+        .catch(err => {
+          appStore.formLoading = false
+          console.log('неудача')
+          console.log(err)
+          navigateTo('/thank'); // Даже при ошибке редиректим на страницу для дублей
+        })
+        .finally(() => {
+          appStore.formLoading = false
+        })
+    } else {
+      // Первая заявка сегодня
+      localStorage.setItem(ipKey, 'submitted');
+      
+      const { $ym } = useNuxtApp()
+      $ym('reachGoal', 'success-auto-kuzbass')
+      
+      axios.post(`${apiFormNew}`, {
+        phone_number: clearPhone,
+        full_name: formData.name ? formData.name : null,
+        comment: comment.value ? comment.value : null,
 
-    navigateTo('/success-auto-kuzbass');
+        car_id: car ? car.id : null,
+        brand: car ? car.brand : null,
+        model: car ? car.model : null,
+        price: car ? car.price : null,
+
+        send_form: 1,
+        send_page: window.location.origin + window.location.pathname,
+        source: `https://auto-kuzbass.ru/`, // обязательно должен быть / на конце url
+
+        referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
+        entry: appStore.entry ? appStore.entry : null,
+        ip: appStore.ip,
+        dealer_id: 329,
+
+        application_type_id: appType,
+        is_duplicate: false, // Добавляем флаг первой заявки
+      }, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Domain': `https://auto-kuzbass.ru`,
+        },
+        withCredentials: true
+      })
+        .then(res => {
+          appStore.orderId = res.data
+          car ? yandexEcommercePurchase(appStore.orderId, car) : null;
+          appStore.formLoading = false;
+          // Редирект на страницу для первых заявок
+          navigateTo('/success-auto-kuzbass'); // Страница для первых заявок
+        })
+        .catch(err => {
+          appStore.formLoading = false
+          console.log('неудача')
+          console.log(err)
+          navigateTo('/success-auto-kuzbass'); // Даже при ошибке редиректим на страницу для первых заявок
+        })
+        .finally(() => {
+          appStore.formLoading = false
+        })
+    }
   }
 }
 

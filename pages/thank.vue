@@ -1,11 +1,16 @@
 <script setup>
 import { useAppStore } from '/stores/AppStore.js'
 const appStore = useAppStore()
+const router = useRouter()
 
 definePageMeta({
     name: 'thank',
 })
+setTimeout(() => {
+    router.push('/')
+}, 3000)
 </script>
+
 
 <template>
     <Bread />
