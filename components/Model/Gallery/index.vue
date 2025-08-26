@@ -131,7 +131,7 @@ onMounted(async () => {
                             ref="carouselRef"
                             id="gallery" 
                             :items-to-show="1" 
-                            :wrap-around="true" 
+                            :wrap-around="false" 
                             v-model="currentSlide"
                             :breakpoints="breakpoints"
                         >
