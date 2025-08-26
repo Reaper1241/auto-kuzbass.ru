@@ -68,6 +68,16 @@ export default defineNuxtConfig({
           innerHTML: `window.dataLayer = window.dataLayer || [];`,
           type: 'text/javascript',
         },
+        {
+          innerHTML: `(function() {
+            var BM_SERVER = 'https://pxcdn.bigmethods.ru/cdn_1';
+            var BM_PIXEL_ID = '97bc27ae-6a7e-4202-890c-eb304f99a1de';
+            var script = document.createElement('script');
+            script.src = BM_SERVER + '?pixel_id=' + encodeURIComponent(BM_PIXEL_ID) + '&parent_url=' + encodeURIComponent(window.location.href);
+            document.head.appendChild(script);
+          })();`,
+          type: 'text/javascript',
+        },
       ]
     },
     rootId: '__autokuzbass',
