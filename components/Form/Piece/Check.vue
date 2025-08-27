@@ -128,10 +128,14 @@ label.form__check-label.white p {
 .wrap{
     display: flex;
     align-items: center;
-    justify-content: center;   
-    white-space: nowrap;
+    // justify-content: center;   
+    text-wrap: nowrap;
     @media screen and (max-width: 500px) {
-        flex-wrap: wrap;
+        text-wrap: wrap;
+    }
+    @media screen and (max-width: 340px) {
+        text-wrap: wrap;
+        // white-space: nowrap;
     }
 }
 

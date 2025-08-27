@@ -182,6 +182,9 @@ const sections = ref({
     @media screen and (max-width: 540px) {
         padding: 15px 0px;
     }
+    @media screen and (max-width: 340px) {
+        // border: none !important;
+    }
 
     .model-finance__wrapper {
         display: grid;
@@ -202,7 +205,11 @@ const sections = ref({
                 width: 100%;
                 
             }
-
+            @media screen and (max-width: 340px) {
+                padding: 25px 0px;
+                width: 100%;
+                border: none !important;
+            }
             .model-finance__title {
                 font-weight: 600;
                 font-size: 20px;

@@ -5,18 +5,18 @@ import { options, errors } from "@/constants/";
 
 const formFields = shallowRef([
     { component: FormTitle, bindings: { title: '' } },
-    // { 
-    //     name: 'name', 
-    //     component: Input, 
-    //     validation: (value) => value.length > 2 ? null : errors.name, 
-    //     bindings: { 
-    //         label: 'ФИО', 
-    //         placeholder: 'Ваше имя', 
-    //         modelValue: '', 
-    //         class: 'form-input', 
-    //         type: 'text' 
-    //     } 
-    // },
+    { 
+        name: 'name', 
+        component: Input, 
+        validation: (value) => value.length > 2 ? null : errors.name, 
+        bindings: { 
+            label: 'ФИО', 
+            placeholder: 'Ваше имя', 
+            modelValue: '', 
+            class: 'form-input', 
+            type: 'text' 
+        } 
+    },
     { 
         name: 'phone', 
         component: Input, 
@@ -64,5 +64,11 @@ const handleFormSubmit = (formData) => {
         flex-direction: column;
         align-items: normal;
     }
+}
+:deep(.form-input){
+    height: 40px;
+}
+:deep(.base-button){
+    height: 40px;
 }
 </style>
