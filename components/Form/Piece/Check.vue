@@ -21,7 +21,10 @@ function handleFormCheck() {
             <input class="radio__hidden" type="checkbox" v-model="checkedP"
                 @click="checkedP = !checkedP, handleFormCheck()">
             <!-- <span class="radio__img" :class="checkedP ? 'checked' : ''"></span> -->
-            <p class="wrap">Нажимая на кнопку «отправить заявку», вы даете согласие&nbsp; <span><NuxtLink to="/politics/" target="_blank" class="check-link">
+            <p class="wrap">Нажимая на кнопку «оставить заявку», вы даете согласие&nbsp; <span><NuxtLink to="/politics/" target="_blank" class="check-link">
+                на обработку персональных данных</NuxtLink></span>
+            </p>
+            <p class="wrap-mob">Нажимая на кнопку «оставить заявку», вы даете согласие&nbsp; <span><NuxtLink to="/politics/" target="_blank" class="check-link">
                 на обработку персональных данных</NuxtLink></span>
             </p>
         </label>
@@ -132,13 +135,21 @@ label.form__check-label.white p {
     text-wrap: nowrap;
     @media screen and (max-width: 500px) {
         text-wrap: wrap;
+        display: none;
     }
     @media screen and (max-width: 340px) {
         text-wrap: wrap;
+        display: none;
         // white-space: nowrap;
     }
 }
-
+.wrap-mob{
+    display: none;
+    @media screen and (max-width: 500px) {
+        display: grid;
+        // white-space: nowrap;
+    }
+}
 .small {
     p {
         font-size: 10px;
