@@ -122,7 +122,9 @@
 
 .base-form.callback__form {
     min-width: 300px;
-
+    @media screen and (max-width: 350px){
+        min-width: 0px;
+    }
     .base-input {
         .form-input {
             background: transparent;
