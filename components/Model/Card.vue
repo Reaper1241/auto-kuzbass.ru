@@ -99,62 +99,62 @@ const show = ref(0);
                                 ₽
                             </del>
                             <p class="model__diff" v-if="newStore.model.sale">
-                                от
-                                {{ makeSpaces(discountedPrice) }} <!-- Добавлены пробелы -->
-                                ₽
+                                
+                                от {{ makeSpaces((newStore.model.min_price + newStore.model.sale) - newStore.totalSale) }} ₽
+                                
                             </p>
                         </div>
                         <p class="model__credit">
                             Платеж в месяц от:
                             <span>
-                                {{ makeSpaces(appStore.calcMonthPriceModel(0, newStore.model.min_price)) }} руб/мес.
+                                {{ makeSpaces(appStore.calcMonthPriceModel(0, (newStore.model.min_price + newStore.model.sale) - newStore.totalSale)) }} руб/мес.
                             </span>
                         </p>
-                        <div class="complectations-calculator__item trade" :class="{ 'active': tradeSwitch }">
+                        <div class="complectations-calculator__item trade" :class="{ 'active': newStore.tradeSwitch }">
                             <div clas="complectations-calculator__switch">
                                 <div class="switch">
-                                    <input type="checkbox" id="switch" :checked="tradeSwitch"
-                                        @change="tradeSwitch = !tradeSwitch" />  
+                                    <input type="checkbox" id="switch" :checked="newStore.tradeSwitch"
+                                        @change="newStore.tradeSwitch = !newStore.tradeSwitch" />  
                                     <label for="switch"></label>
                                 </div>
                             </div>
-                            <div class="complectations-calculator__text" :class="{ 'active': tradeSwitch }">
+                            <div class="complectations-calculator__text" :class="{ 'active': newStore.tradeSwitch }">
                                 <span class="text">Trade-In</span>
                                 <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
                             </div>
                         </div>
-                        <div class="complectations-calculator__item credit" :class="{ 'active': creditSwitch }">
+                        <div class="complectations-calculator__item credit" :class="{ 'active': newStore.creditSwitch }">
                             <div clas="complectations-calculator__switch">
                                 <div class="switch">
-                                    <input type="checkbox" id="credit" :checked="creditSwitch"
-                                        @change="creditSwitch = !creditSwitch" />
+                                    <input type="checkbox" id="credit" :checked="newStore.creditSwitch"
+                                        @change="newStore.creditSwitch = !newStore.creditSwitch" />
                                     <label for="credit"></label>
                                 </div>
                             </div>
-                            <div class="complectations-calculator__text" :class="{ 'active': creditSwitch }">
+                            <div class="complectations-calculator__text" :class="{ 'active': newStore.creditSwitch }">
                                 <span class="text">Кредит</span>
                                 <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
                             </div>
                         </div>
-                        <div class="complectations-calculator__item salon" :class="{ 'active': salonSwitch }">
+                        <div class="complectations-calculator__item salon" :class="{ 'active': newStore.salonSwitch }">
                             <div clas="complectations-calculator__switch">
                                 <div class="switch">
-                                    <input type="checkbox" id="salon" :checked="salonSwitch"
-                                        @change="salonSwitch = !salonSwitch" />
+                                    <input type="checkbox" id="salon" :checked="newStore.salonSwitch"
+                                        @change="newStore.salonSwitch = !newStore.salonSwitch" />
                                     <label for="salon"></label>
                                 </div>
                             </div>
-                            <div class="complectations-calculator__text" :class="{ 'active': salonSwitch }">
+                            <div class="complectations-calculator__text" :class="{ 'active': newStore.salonSwitch }">
                                 <span class="text">FINANCE</span>
                                 <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
                             </div>
                         </div>
                         <div class="complectations-calculator__total"
-                            :class="{ 'activeTotal': tradeSwitch || creditSwitch || salonSwitch }">
+                            :class="{ 'activeTotal': newStore.tradeSwitch || newStore.creditSwitch || newStore.salonSwitch }">
                             <div class="complectations-calculator__text-max">
                                 <span class="text">Максимальная выгода при покупке до {{ getNextMonday() }}</span>
                                 <span class="complectations-calculator__money">
-                                    {{ makeSpaces(totalSale) }} ₽
+                                    {{ makeSpaces(newStore.totalSale) }} ₽
                                 </span>
                             </div>
                         </div>
