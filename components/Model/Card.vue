@@ -267,7 +267,7 @@ const show = ref(0);
                         <p class="model__credit2">
                             Платеж в месяц от:
                             <span>
-                                {{ makeSpaces(appStore.calcMonthPriceModel(0, newStore.model.min_price)) }} руб/мес.
+                                {{ makeSpaces(appStore.calcMonthPriceModel(0, (newStore.model.min_price + newStore.model.sale) - newStore.totalSale)) }} руб/мес.
                             </span>
                         </p>
                 <!-- <div class="model__buttons">
