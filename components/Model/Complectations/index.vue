@@ -1,151 +1,225 @@
 <script setup>
-import { useNewStore } from '/stores/NewStore.js';
-const newStore = useNewStore();
+import { useNewStore } from '/stores/NewStore.js'
+import { useAppStore } from '/stores/AppStore.js'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
 
-import { useAppStore } from '/stores/AppStore.js';
-const appStore = useAppStore();
+const newStore = useNewStore()
+const appStore = useAppStore()
+const $route = useRoute()
 
-const currentMod = computed(() => findMod(newStore.modification, newStore.model.modifications))
+const currentMod = computed(() =>
+  findMod(newStore.modification, newStore.model.modifications)
+)
 const currentModel = computed(() => newStore.model)
 
-const tradeSwitch = ref(true)
-const creditSwitch = ref(true)
-const salonSwitch = ref(true)
-
-const tradeSale = computed(() => currentModel.value.sale * appStore.tradeCalcPercent)
-const creditSale = computed(() => currentModel.value.sale * appStore.creditCalcPercent)
-const salonSale = computed(() => currentModel.value.sale * appStore.salonCalcPercent)
-
-const totalSale = computed(() => {
-    let total = 0;
-    if (tradeSwitch.value) total += tradeSale.value
-    if (creditSwitch.value) total += creditSale.value
-    if (salonSwitch.value) total += salonSale.value
-    newStore.modelSale = total
-    return total
-})
-
-const modList = computed(() => newStore.model.modifications.filter((mod) => mod.car_complectations.length))
+const modList = computed(() =>
+  newStore.model.modifications.filter((mod) => mod.car_complectations.length)
+)
 </script>
 
 <template>
-    <section class="complectations" v-if="currentMod?.car_complectations.length">
-        <div class="complectations__wrapper">
-            <div class="complectations__body">
-                <div class="complectations-calculator">
-                    <div class="complectations-calculator__item trade" :class="{ 'active': tradeSwitch }">
-                        <div class="complectations-calculator__text" :class="{ 'active': tradeSwitch }">
-                            <span class="text">Скидка при покупке авто в Trade-In</span>
-                            <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
-                        </div>
-                        <div class="complectations-calculator__switch">
-                            <div class="switch">
-                                <input type="checkbox" id="tradeSwitch" v-model="tradeSwitch" hidden>
-                                <label for="tradeSwitch" class="switch-label"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="complectations-calculator__item credit" :class="{ 'active': creditSwitch }">
-                        <div class="complectations-calculator__text" :class="{ 'active': creditSwitch }">
-                            <span class="text">Выгодный кредит со скидкой</span>
-                            <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
-                        </div>
-                        <div class="complectations-calculator__switch">
-                            <div class="switch">
-                                <input type="checkbox" id="creditSwitch" v-model="creditSwitch" hidden>
-                                <label for="creditSwitch" class="switch-label"></label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="complectations-calculator__item salon" :class="{ 'active': salonSwitch }">
-                        <div class="complectations-calculator__text" :class="{ 'active': salonSwitch }">
-                            <span class="text">Скидка от автосалона при покупке авто</span>
-                            <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
-                        </div>
-                        <div class="complectations-calculator__switch">
-                            <div class="switch">
-                                <input type="checkbox" id="salonSwitch" v-model="salonSwitch" hidden>
-                                <label for="salonSwitch" class="switch-label"></label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="complectations-calculator__item total"
-                        :class="{ 'activeTotal': tradeSwitch || creditSwitch || salonSwitch }">
-                        <div class="complectations-calculator__text">
-                            <span class="text">Максимальная выгода при покупке до {{ getNextMonday() }}</span>
-                            <span class="complectations-calculator__money">
-                                до {{ makeSpaces(totalSale) }} ₽
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="complectations__header">
-                    <BaseSectionTitle :title="`Доступные комплектации`" />
-                </div>
-
-                <div class="modifications__list">
-                    <div class="modifications__item" v-for="mod in modList" :key="mod.id">
-                        <div class="modifications__item-head" @click="mod.isOpen = !mod.isOpen">
-                            <span class="mod-title">{{ mod.modification }}</span>
-                            <!-- <span class="price-title">Цена со скидкой</span>
-                            <span class="price-title">Ежемесячный платёж</span> -->
-                            <span class="icon"><i class="fa-solid"
-                                    :class="mod.isOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i></span>
-                        </div>
-
-                        <div class="complectations__list" v-if="!mod.isOpen">
-                            <div class="complectations__item" v-for="item in mod.car_complectations" :key="item.id">
-                                <div class="complectations__item-wrapper">
-                                    <!-- <NuxtImg lazy format="webp" quality="90" loading="lazy"
-                                        :src="currentModel.colored_galleries[newStore.color]?.url" alt="icon"
-                                        class="complectations__item-img" v-if="currentModel.colored_galleries.length" /> -->
-                                    <div class="complectations__item-name">
-                                        <div class="complectations__item-title">
-                                            {{ item.complectation }}
-                                        </div>
-                                        <div class="complectations__item-subtitle">
-                                            {{ mod.modification }}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="complectations__item-price">
-                                    <div class="complectations__item-prices">
-                                        <span class="old" v-if="currentModel.sale && totalSale">
-                                            от {{ makeSpaces(item.price) }} ₽
-                                        </span>
-                                        <span class="current">от {{ makeSpaces(item.price - totalSale) }} ₽</span>
-                                    </div>
-                                    <div class="complectations__item-prices-mobile">
-                                        <span class="current-mobile">от {{ makeSpaces(item.price - totalSale) }} ₽</span>
-                                        <span class="old-mobile" v-if="currentModel.sale && totalSale">
-                                            от {{ makeSpaces(item.price) }} ₽
-                                        </span>
-                                    </div>
-                                    <!-- <div class="complectations__item-month-price">
-                                        в кредит от: <span class="month__price">{{ makeSpaces(appStore.calcMonthPriceModel(totalSale, item.price)) }} ₽/мес.</span>
-                                        
-                                    </div> -->
-                                </div>
-                                <div class="complectations__item-buttons">
-                                    <BaseButtonModal :btn-label="'Подробнее'" :app-type="2" :btn-class="`comp`"
-                                        :modalType="`modalComp`" :comp="item"
-                                        :car="{ price: item.price, sale: totalSale, images: [{ url: '/images/modalModelDefault.webp' }], model: $route.params.model, brand: $route.params.brand }" />
-                                    <!-- <BaseButtonModal class="credit-button" :btn-label="'Купить в кредит'" :app-type="2" :btn-class="`credit`"
-                                        :car="{ price: item.price, sale: totalSale, images: [{ url: '/images/modalModelDefault.webp' }], model: $route.params.model, brand: $route.params.brand }" /> -->
-                                    <BaseButtonModal class="credit-button-mob" :btn-label="`В кредит от ${ makeSpaces(appStore.calcMonthPriceModel(totalSale, item.price)) } ₽/мес`" :app-type="2" :btn-class="`credit`"
-                                        :car="{ price: item.price, sale: totalSale, images: [{ url: '/images/modalModelDefault.webp' }], model: $route.params.model, brand: $route.params.brand }" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <section class="complectations" v-if="currentMod?.car_complectations.length">
+    <div class="complectations__wrapper">
+      <div class="complectations__body">
+        <!-- калькулятор скидок -->
+        <div class="complectations-calculator">
+          <div
+            class="complectations-calculator__item trade"
+            :class="{ active: newStore.tradeSwitch }"
+          >
+            <div
+              class="complectations-calculator__text"
+              :class="{ active: newStore.tradeSwitch }"
+            >
+              <span class="text">Скидка при покупке авто в Trade-In</span>
+              <span class="money">{{ makeSpaces(newStore.tradeSale) }} ₽</span>
             </div>
+            <div class="complectations-calculator__switch">
+              <div class="switch">
+                <input
+                  type="checkbox"
+                  id="tradeSwitch"
+                  v-model="newStore.tradeSwitch"
+                  hidden
+                />
+                <label for="tradeSwitch" class="switch-label"></label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="complectations-calculator__item credit"
+            :class="{ active: newStore.creditSwitch }"
+          >
+            <div
+              class="complectations-calculator__text"
+              :class="{ active: newStore.creditSwitch }"
+            >
+              <span class="text">Выгодный кредит со скидкой</span>
+              <span class="money">{{ makeSpaces(newStore.creditSale) }} ₽</span>
+            </div>
+            <div class="complectations-calculator__switch">
+              <div class="switch">
+                <input
+                  type="checkbox"
+                  id="creditSwitch"
+                  v-model="newStore.creditSwitch"
+                  hidden
+                />
+                <label for="creditSwitch" class="switch-label"></label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="complectations-calculator__item salon"
+            :class="{ active: newStore.salonSwitch }"
+          >
+            <div
+              class="complectations-calculator__text"
+              :class="{ active: newStore.salonSwitch }"
+            >
+              <span class="text">Скидка от автосалона при покупке авто</span>
+              <span class="money">{{ makeSpaces(newStore.salonSale) }} ₽</span>
+            </div>
+            <div class="complectations-calculator__switch">
+              <div class="switch">
+                <input
+                  type="checkbox"
+                  id="salonSwitch"
+                  v-model="newStore.salonSwitch"
+                  hidden
+                />
+                <label for="salonSwitch" class="switch-label"></label>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="complectations-calculator__item total"
+            :class="{
+              activeTotal:
+                newStore.tradeSwitch ||
+                newStore.creditSwitch ||
+                newStore.salonSwitch
+            }"
+          >
+            <div class="complectations-calculator__text">
+              <span class="text"
+                >Максимальная выгода при покупке до
+                {{ getNextMonday() }}</span
+              >
+              <span class="complectations-calculator__money">
+                до {{ makeSpaces(newStore.totalSale) }} ₽
+              </span>
+            </div>
+          </div>
         </div>
-    </section>
+
+        <!-- список комплектаций -->
+        <div class="complectations__header">
+          <BaseSectionTitle :title="`Доступные комплектации`" />
+        </div>
+
+        <div class="modifications__list">
+          <div
+            class="modifications__item"
+            v-for="mod in modList"
+            :key="mod.id"
+          >
+            <div
+              class="modifications__item-head"
+              @click="mod.isOpen = !mod.isOpen"
+            >
+              <span class="mod-title">{{ mod.modification }}</span>
+              <span class="icon"
+                ><i
+                  class="fa-solid"
+                  :class="mod.isOpen ? 'fa-chevron-down' : 'fa-chevron-up'"
+                ></i
+              ></span>
+            </div>
+
+            <div class="complectations__list" v-if="!mod.isOpen">
+              <div
+                class="complectations__item"
+                v-for="item in mod.car_complectations"
+                :key="item.id"
+              >
+                <div class="complectations__item-wrapper">
+                  <div class="complectations__item-name">
+                    <div class="complectations__item-title">
+                      {{ item.complectation }}
+                    </div>
+                    <div class="complectations__item-subtitle">
+                      {{ mod.modification }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="complectations__item-price">
+                  <div class="complectations__item-prices">
+                    <span
+                      class="old"
+                      v-if="currentModel.sale && newStore.totalSale"
+                    >
+                      от {{ makeSpaces(item.price) }} ₽
+                    </span>
+                    <span class="current"
+                      >от {{ makeSpaces(item.price - newStore.totalSale) }} ₽</span
+                    >
+                  </div>
+                  <div class="complectations__item-prices-mobile">
+                    <span class="current-mobile"
+                      >от
+                      {{ makeSpaces(item.price - newStore.totalSale) }} ₽</span
+                    >
+                    <span
+                      class="old-mobile"
+                      v-if="currentModel.sale && newStore.totalSale"
+                    >
+                      от {{ makeSpaces(item.price) }} ₽
+                    </span>
+                  </div>
+                </div>
+
+                <div class="complectations__item-buttons">
+                  <BaseButtonModal
+                    :btn-label="'Подробнее'"
+                    :app-type="2"
+                    :btn-class="`comp`"
+                    :modalType="`modalComp`"
+                    :comp="item"
+                    :car="{
+                      price: item.price,
+                      sale: newStore.totalSale,
+                      images: [{ url: '/images/modalModelDefault.webp' }],
+                      model: $route.params.model,
+                      brand: $route.params.brand
+                    }"
+                  />
+                  <BaseButtonModal
+                    class="credit-button-mob"
+                    :btn-label="`В кредит от ${ makeSpaces(appStore.calcMonthPriceModel(newStore.totalSale, item.price)) } ₽/мес`"
+                    :app-type="2"
+                    :btn-class="`credit`"
+                    :car="{
+                      price: item.price,
+                      sale: newStore.totalSale,
+                      images: [{ url: '/images/modalModelDefault.webp' }],
+                      model: $route.params.model,
+                      brand: $route.params.brand
+                    }"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 

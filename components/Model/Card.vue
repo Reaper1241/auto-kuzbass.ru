@@ -40,6 +40,10 @@ const totalSale = computed(() => {
     newStore.modelSale = total
     return total
 })
+
+const discountedPrice = computed(() => {
+  return (newStore.model.min_price + newStore.model.sale) - totalSale.value;
+});
 const car = computed(() => {
     return ({
         price: selectedCar.value.comp.price,
@@ -51,6 +55,7 @@ const car = computed(() => {
         images: [{ url: '/images/modalModelDefault.webp' }],
     })
 })
+
 const loading = ref(true);
 onMounted(() => {
     loading.value = false
@@ -93,9 +98,9 @@ const show = ref(0);
                                 {{ makeSpaces(newStore.model.min_price + newStore.model.sale) }}
                                 ₽
                             </del>
-                            <p class="model__diff">
+                            <p class="model__diff" v-if="newStore.model.sale">
                                 от
-                                {{ makeSpaces(newStore.model.min_price) }}
+                                {{ makeSpaces(discountedPrice) }} <!-- Добавлены пробелы -->
                                 ₽
                             </p>
                         </div>
@@ -252,14 +257,11 @@ const show = ref(0);
                 </div>
                     <p class="model__price-text2">Цена:</p>
                         <div class="model__row-price2">
-                            <p class="model__diff2">
-                                от
-                                {{ makeSpaces(newStore.model.min_price) }}
-                                ₽
+                                <p class="model__diff2">
+                                от {{ makeSpaces((newStore.model.min_price + newStore.model.sale) - newStore.totalSale) }} ₽
                             </p>
                             <del class="model__price2" v-if="newStore.model.sale">
-                                {{ makeSpaces(newStore.model.min_price + newStore.model.sale) }}
-                                ₽
+                                {{ makeSpaces(newStore.model.min_price + newStore.model.sale) }} ₽
                             </del>
                         </div>
                         <p class="model__credit2">
