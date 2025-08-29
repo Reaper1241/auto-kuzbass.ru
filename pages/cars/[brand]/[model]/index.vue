@@ -69,7 +69,7 @@ if (brand) {
     <template v-else>
         <Bread />
         <ModelCard class="model"/>
-        <ModelTimer />
+        <!-- <ModelTimer /> -->
         <ModelTabs />
         <ModelFinance />
         <CarsListNew :id="`catalog`" />

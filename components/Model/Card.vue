@@ -281,6 +281,7 @@ const show = ref(0);
             </div>
         </div>
     </section>
+    <ModelTimer :car="currentModel"/>
 </template>
 <style lang="scss" scoped>
 .centered-item {

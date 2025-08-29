@@ -109,7 +109,12 @@ onMounted(() => {
     // Проверяем время каждую минуту
     setInterval(checkWorkingHours, 60000);
 });
-
+const props = defineProps({
+  car: {
+    type: Object,
+    required: true
+  }
+})
 onBeforeUnmount(() => {
     clearInterval(timer);
 });
@@ -149,7 +154,7 @@ onBeforeUnmount(() => {
                                 declOfNum(seconds, ["секунда", "секунды", "секунд"])
                             }}</span>
                         </div>
-                        <FormTimer class="form__timer"/>
+                        <FormTimer class="form__timer" :car="car" />
                     </div>
                     <!-- Добавленная кнопка -->
                     <button class="timer__button" @click="modalShow">
@@ -168,7 +173,7 @@ onBeforeUnmount(() => {
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                     <h3 class="modal-title">{{ currentModalTitle }}</h3>
-                    <FormSmall /> <!-- Ваш компонент формы -->
+                    <FormSmall :car="car"/> <!-- Ваш компонент формы -->
                 </div>
             </div>
         </Teleport>

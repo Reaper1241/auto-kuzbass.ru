@@ -80,7 +80,7 @@ function handleClose() {
                     <h3 class="modal__subtitle" v-if="modalSubTitle" v-html="modalSubTitle"></h3>
                     <FormModalCredit :car="car" :appType="appType" @formSend="emits('closeModal')"
                         v-if="car && appType == 2" :category="category" />
-                    <FormModal :appType="appType" @formSend="emits('closeModal')" v-else :category="category" />
+                    <FormModal :car="car" :appType="appType" @formSend="emits('closeModal')" v-else :category="category" />
                 </div>
             </div>
         </div>
