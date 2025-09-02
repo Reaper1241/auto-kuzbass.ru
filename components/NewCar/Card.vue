@@ -328,7 +328,7 @@ onMounted(() => {
 margin-top: 30px;
 margin-right: 5px;
     @media screen and (max-width: 600px) {
-        margin-right: 15px;
+        margin-right: 0px;
         margin-top: 0px;
     }
 }
@@ -417,9 +417,10 @@ margin-right: 5px;
             display: flex;
             flex-direction: column;
             gap: 20px;
-            margin-left: 20px;
+            margin-left:7px;
             @media screen and (max-width: 540px) {
                 gap: 20px;
+                margin-left: 4px;
             }
 
             .car-card__title {
@@ -529,7 +530,7 @@ margin-right: 5px;
 
                 @media screen and (max-width: 768px) {
                     background: white;
-                    padding: 20px 30px;
+                    padding: 0px 21px;
                     margin-right: -20px;
                     margin-left: -20px;
                 }
