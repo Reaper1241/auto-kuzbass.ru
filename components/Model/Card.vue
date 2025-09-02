@@ -219,7 +219,22 @@ const show = ref(0);
                             </div>
                         </div>
                     </div>
-                    <div class="model__main-color">
+                    <!-- <div class="model__main-color">
+                        <div class="color__bar">
+                            <div class="color__bar-item" v-for="(item, index) in newStore.model.colored_galleries"
+                                :key="item.color_id" :style="item.color.hex_plus?.lenght > 1
+                                    ? `background: linear-gradient(90deg, ${item.color.hex} 50%, ${item.color.hex_plus} 50%);`
+                                    : `background: ${item.color.hex};`
+                                    " @click="show = index, newStore.color = index"></div>
+                        </div>
+                        <p class="car__name-color" v-for="(item, index) in newStore.model.colored_galleries"
+                            :key="item.color_id" v-show="show === index">
+                            Цвет: {{ item.color.color }}
+                        </p>
+                    </div> -->
+                </div>
+                <div class="model__right">
+                                        <div class="model__main-color">
                         <div class="color__bar">
                             <div class="color__bar-item" v-for="(item, index) in newStore.model.colored_galleries"
                                 :key="item.color_id" :style="item.color.hex_plus?.lenght > 1
@@ -232,8 +247,6 @@ const show = ref(0);
                             Цвет: {{ item.color.color }}
                         </p>
                     </div>
-                </div>
-                <div class="model__right">
                     <ul class="model__card-list">
                         <li v-if="
                             newStore.model.warranty_year &&
@@ -449,11 +462,13 @@ const show = ref(0);
     .model__container {
         position: relative;
         display: flex;
+        // align-items: center;
         -webkit-box-pack: justify;
         justify-content: space-evenly;
         gap: 30px;
         @media screen and (max-width: 1075px){
             margin-bottom: 400px;
+            // align-items: start;
         }
         @media screen and (max-width: 767px) {
             flex-direction: column;
@@ -617,7 +632,7 @@ const show = ref(0);
         }
 
         .model__right {
-            margin-top: 50px;
+            // margin-top: 50px;
             @media screen and (max-width: 767px) {
                 display: flex;
                 flex-direction: column-reverse;
@@ -800,6 +815,53 @@ const show = ref(0);
 
     }
 }
+.model__main-color {
+                margin-bottom: 22px;
+                @media screen and (max-width: 767px) {
+                    margin-bottom: 10px;;
+                }
+    .car__name-color {
+        margin-top: 15px;
+    }
+    .color__bar {
+        position: relative;
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        scrollbar-width: thin; /* Для Firefox */
+        scrollbar-color: var(--main-color) #f1f1f1; /* Для Firefox */
+        
+        /* Скрываем стандартный скроллбар для WebKit */
+        &::-webkit-scrollbar {
+            height: 4px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 2px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--main-color);
+            border-radius: 2px;
+        }
+        
+        .color__bar-item {
+            flex: 0 0 30px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            border-radius: 33px;
+            border: 1px solid #000;
+            transition: transform 0.2s;
+            
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+}
 .model__row-price2 {
     position: relative;
     z-index: 2;
@@ -898,10 +960,12 @@ const show = ref(0);
 .view__col {
     display: flex;
     flex-direction: column;
-    gap: 30px;              
+    gap: 30px;         
+    margin-top: 90px;     
     @media screen and (max-width: 1200px){
         margin: 10px 0px;
         display: grid;
+        margin-top: 0px;
         gap:120px;
         grid-template-columns: repeat(3, 1fr);
     }

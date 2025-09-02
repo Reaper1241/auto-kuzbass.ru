@@ -1,4 +1,29 @@
 <script setup>
+// Импортируйте store
+import { useNewCarStore } from '/stores/NewCarStore.js'
+import { useAppStore } from '/stores/AppStore.js';
+import { useNewStore } from '/stores/NewStore.js';
+
+const appStore = useAppStore();
+const carStore = useNewCarStore();
+const newStore = useNewStore();
+
+// Теперь используйте данные из store вместо props
+const car = carStore.carData || carStore.car;
+
+// Вычисляемые свойства для скидок (аналогично первому компоненту)
+const tradeSale = computed(() => car.sale * appStore.tradeCalcPercent);
+const creditSale = computed(() => car.sale * appStore.creditCalcPercent);
+const salonSale = computed(() => car.sale * appStore.salonCalcPercent);
+
+const totalSale = computed(() => {
+  let total = 0;
+  if (newStore.tradeSwitch) total += tradeSale.value;
+  if (newStore.creditSwitch) total += creditSale.value;
+  if (newStore.salonSwitch) total += salonSale.value;
+  return total;
+});
+
 function getNextMonday() {
     const now = new Date();
     const nextMonday = new Date(now);
@@ -109,19 +134,108 @@ onMounted(() => {
     // Проверяем время каждую минуту
     setInterval(checkWorkingHours, 60000);
 });
-const props = defineProps({
-  car: {
-    type: Object,
-    required: true
-  }
-})
+
 onBeforeUnmount(() => {
     clearInterval(timer);
 });
 </script>
 
 <template>
+    <div class="complectations-calculator">
+    <div
+            class="complectations-calculator__item trade"
+            :class="{ active: newStore.tradeSwitch }"
+          >
+            <div class="complectations-calculator__switch">
+              <div class="switch">
+                <input
+                  type="checkbox"
+                  id="tradeSwitch"
+                  :checked="newStore.tradeSwitch"
+                  @change="newStore.tradeSwitch = !newStore.tradeSwitch"
+                />
+                <label for="tradeSwitch" class="switch-label"></label>
+              </div>
+            </div>
+            <div
+              class="complectations-calculator__text"
+              :class="{ active: newStore.tradeSwitch }"
+            >
+              <span class="text">Trade-In</span>
+              <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
+            </div>
+          </div>
+
+          <div
+            class="complectations-calculator__item credit"
+            :class="{ active: newStore.creditSwitch }"
+          >
+            <div class="complectations-calculator__switch">
+              <div class="switch">
+                <input
+                  type="checkbox"
+                  id="creditSwitch"
+                  :checked="newStore.creditSwitch"
+                  @change="newStore.creditSwitch = !newStore.creditSwitch"
+                />
+                <label for="creditSwitch" class="switch-label"></label>
+              </div>
+            </div>
+            <div
+              class="complectations-calculator__text"
+              :class="{ active: newStore.creditSwitch }"
+            >
+              <span class="text">Кредит</span>
+              <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
+            </div>
+          </div>
+
+          <div
+            class="complectations-calculator__item salon"
+            :class="{ active: newStore.salonSwitch }"
+          >
+            <div class="complectations-calculator__switch">
+              <div class="switch">
+                <input
+                  type="checkbox"
+                  id="salonSwitch"
+                  :checked="newStore.salonSwitch"
+                  @change="newStore.salonSwitch = !newStore.salonSwitch"
+                />
+                <label for="salonSwitch" class="switch-label"></label>
+              </div>
+            </div>
+            <div
+              class="complectations-calculator__text"
+              :class="{ active: newStore.salonSwitch }"
+            >
+              <span class="text">FINANCE</span>
+              <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
+            </div>
+          </div>
+
+          <div
+            class="complectations-calculator__item total"
+            :class="{
+              activeTotal:
+                newStore.tradeSwitch ||
+                newStore.creditSwitch ||
+                newStore.salonSwitch
+            }"
+          >
+            <div class="complectations-calculator__text">
+              <span class="text"
+                >Максимальная выгода при покупке до
+                {{ getNextMonday() }}</span
+              >
+              <span class="complectations-calculator__money">
+                до {{ makeSpaces(totalSale) }} ₽
+              </span>
+            </div>
+          </div>
+        </div>  
     <section class="express__section section">
+        
         <div class="container bottom__container">
             <h2>
                 <!-- Экспресс-кредит на авто под <span>такси</span> -->
@@ -147,13 +261,153 @@ onBeforeUnmount(() => {
             <div class="red">
 
             </div>
+            <!-- Передаем данные автомобиля из store -->
             <FormTimer class="express__form" :car="car"/>
         </div>
     </section>
 </template>
 
-
 <style scoped lang="scss">
+.complectations-calculator {
+        padding: 20px;
+        display: none;
+        gap: 30px;
+        align-items: center;
+        grid-template-columns: 1fr 1fr 1fr 1.5fr;
+
+        @media screen and (max-width: 1400px) {
+            gap: 15px;
+        }
+
+        @media screen and (max-width: 1000px) {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media screen and (max-width: 768px) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+
+        .complectations-calculator__item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: 1px solid #E5E5E5;
+            transition: 0.3s;
+            height: 100%;
+
+            @media screen and (max-width: 540px) {
+                padding: 10px;
+            }
+
+            .complectations-calculator__text {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                .money {
+                    font-size: var(--large-size);
+                    font-weight: 500;
+                    color: var(--dark-grey);
+                }
+
+                .text {
+                    color: var(--dark-grey);
+
+                    @media screen and (max-width: 768px) {
+                        font-size: var(--standart-size);
+                    }
+                }
+
+                .complectations-calculator__money {
+                    font-weight: 700;
+                    color: var(--main-color);
+                    display: flex;
+                    flex-direction: column;
+                    font-size: 24px;
+
+                    .date {
+                        font-weight: 300;
+                        
+                    }
+
+
+                    @media screen and (max-width: 768px) {
+                        font-size: var(--large-size);
+                    }
+
+                    @media screen and (max-width: 540px) {
+                        font-size: var(--medium-size);
+                    }
+                }
+            }
+
+            &:hover {
+                box-shadow: var(--box-shadow);
+                transition: 0.3s;
+                
+            }
+
+            div {
+                background: transparent;
+            }
+
+            @media screen and (max-width: 1400px) {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+            }
+        }
+
+        .complectations-calculator__item.active {
+            border: 1px solid var(--main-color);
+
+            .money {
+                color: var(--main-color);
+            }
+        }
+
+        .complectations-calculator__item.total {
+            justify-content: center;
+            font-size: var(--big-size);
+            border: none;
+            box-shadow: none;
+
+            .complectations-calculator__text {
+                display: flex;
+                gap: 0;
+                flex-wrap: wrap;
+            }
+        }
+
+        .complectations-calculator__item.activeTotal {
+            color: var(--main-black);
+            border: none;
+
+            &:hover {
+                box-shadow: none;
+            }
+
+            .complectations-calculator__text {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+
+                .text {
+                    color: var(--main-black);
+                }
+            }
+
+            .complectations-calculator__money {
+                color: var(--main-color);
+            }
+        }
+    }
+    
+    
 .banner__card{
     display: flex;
     flex-direction: column;
@@ -164,7 +418,7 @@ onBeforeUnmount(() => {
         height: 50px;
         // width: 100%;
         // align-items: center;
-        text-align: start;
+        text-align: center;
         
     }
 }

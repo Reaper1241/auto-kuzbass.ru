@@ -73,7 +73,7 @@ if (brand) {
         <ModelTabs />
         <ModelFinance />
         <CarsListNew :id="`catalog`" />
-        <BannerEB3 />
+        <BannerEB3 :car="newStore.model" />
         <ModalAFK />
         <SEO />
     </template>

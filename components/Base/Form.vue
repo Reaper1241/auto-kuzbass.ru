@@ -1,28 +1,15 @@
 <script setup>
 import { useAppStore } from '/stores/AppStore.js';
+import postForm from '@/utils/postForm.js'; // путь под твой проект (если у тебя postForm глобально доступен — можно убрать)
 const appStore = useAppStore();
 
 const props = defineProps({
-    fields: {
-        type: Array,
-        required: true,
-    },
-    submitText: {
-        type: String,
-        default: 'Отправить',
-    },
-    appType: {
-        type: Number,
-        default: 3,
-    },
-    car: {
-        type: Object,
-        default: null,
-    },
-    category: {
-        type: String,
-        default: 'new',
-    }
+    fields: { type: Array, required: true },
+    submitText: { type: String, default: 'Отправить' },
+    appType: { type: Number, default: 3 },
+    car: { type: Object, default: null },
+    category: { type: String, default: 'new' },
+    manualSubmit: { type: Boolean, default: false } // <-- новый проп
 });
 
 const emit = defineEmits(['submit']);
@@ -59,10 +46,17 @@ const validate = () => {
 };
 
 const handleSubmit = () => {
-    if (validate()) {
-        postForm(formValues.value, props.appType, props.car, props.category);
+    if (!validate()) return;
+
+    // если форма настроена на ручную отправку — просто эмитим данные наружу
+    if (props.manualSubmit) {
         emit('submit', formValues.value);
+        return;
     }
+
+    // иначе — поведение по умолчанию (авто-отправка)
+    postForm(formValues.value, props.appType, props.car, props.category);
+    emit('submit', formValues.value);
 };
 
 watch(
@@ -75,13 +69,25 @@ const formChecked = ref(true);
 
 <template>
     <form @submit.prevent="handleSubmit" class="base-form">
-        <component v-for="(field, index) in fields" :key="index" :is="field.component" v-model="formValues[field.name]"
-            v-bind="field.bindings" :error="errors[field.name]" />
+        <component
+            v-for="(field, index) in fields"
+            :key="index"
+            :is="field.component"
+            v-model="formValues[field.name]"
+            v-bind="field.bindings"
+            :error="errors[field.name]"
+        />
         <FormPieceCheck @formChecked="formChecked = $event" :appType="appType" />
-        <BaseFormButton type="submit" :label="submitText" class="base-submit" :disabled="!formChecked"
-            :loading="!appStore.formLoading" />
+        <BaseFormButton
+            type="submit"
+            :label="submitText"
+            class="base-submit"
+            :disabled="!formChecked"
+            :loading="!appStore.formLoading"
+        />
     </form>
 </template>
+
 
 
 <style scoped>

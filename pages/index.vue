@@ -13,7 +13,7 @@ function callback(n) {
 
 <template>
     <Slider />
-    <!-- <BannerNB1/> -->
+    <BannerEB2/>
     <Brands />
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentCarsData" />

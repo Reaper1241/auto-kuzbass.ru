@@ -5,5 +5,8 @@ export const useNewCarStore = defineStore("newCarStore", () => {
     const carData = computed(() => car.value)
     const galleries = ref([])
 
-    return { car, carData, galleries }
+    // Добавляем поле для выбранной машины (для формы)
+    const selectedCar = ref(null)
+
+    return { car, carData, galleries, selectedCar }
 });

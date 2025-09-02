@@ -75,11 +75,14 @@ const formChecked = ref(true);
 
 <template>
     <form @submit.prevent="handleSubmit" class="base-form">
-        <component v-for="(field, index) in fields" :key="index" :is="field.component" v-model="formValues[field.name]"
-            v-bind="field.bindings" :error="errors[field.name]" />
+        <div class="row">
+            <component v-for="(field, index) in fields" :key="index" :is="field.component" v-model="formValues[field.name]"
+                v-bind="field.bindings" :error="errors[field.name]" />
+            <FormPieceCheck @formChecked="formChecked = $event" :appType="appType" />
+        </div>    
         <BaseFormButtonTrade type="submit" :label="submitText" class="base-submit" :disabled="!formChecked"
             :loading="!appStore.formLoading" />
-        <FormPieceCheck @formChecked="formChecked = $event" :appType="appType" />
+        
     </form>
 </template>
 
@@ -101,7 +104,15 @@ const formChecked = ref(true);
 .base-form{
     color: black !important;
 }
-
+.row{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    @media screen and (max-width: 768px){
+        flex-direction: column;
+        width: 100%;
+    }
+}
 .error {
     color: red;
     font-size: 0.8em;

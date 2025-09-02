@@ -163,9 +163,16 @@ function slidePrev() {
 
     .carousel__custom-thumbnails {
         position: relative;
+        // position: absolute;
+        top: -55px;
         overflow: hidden;
         max-height: 500px;
-
+        @media screen and (min-width: 1350px){
+            // top: 0px ;
+        }
+        // @media screen and (min-width: 1150px){
+        //     top: 0px !important;
+        // }
         .carousel__custom-thumbnails-list {
             display: grid;
             gap: 10px;

@@ -15,6 +15,7 @@ axios.defaults.withCredentials = true
 //     variant: props.car?.color || null
 //   };
 // });
+
 export default function postForm(data, appType, car, category) {
   const appStore = useAppStore()
 

@@ -1,10 +1,43 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { useAppStore } from '/stores/AppStore.js';
-const appStore = useAppStore();
+import { useNewStore } from '/stores/NewStore.js';
+import { useNewCarStore } from '/stores/NewCarStore.js';
 
+const appStore = useAppStore();
+const newStore = useNewStore();
+const carStore = useNewCarStore();
 const $route = useRoute();
 
+// currentCar теперь покрывает и модель, и отдельную машину (страница car)
+const currentCar = computed(() => {
+  // если страница модели
+  if ($route.name === 'model' && newStore.model) {
+    return {
+      source: 'model',
+      brand: newStore.model.brand,
+      model: newStore.model.model,
+      price: newStore.model.min_price,
+      sale: newStore.model.sale,
+      id: newStore.model.id ?? null
+    };
+  }
+
+  // если страница отдельной машины (new car)
+  if ($route.name === 'car' && carStore.car && Object.keys(carStore.car).length) {
+    return {
+      source: 'car',
+      brand: carStore.car.brand,
+      model: carStore.car.model,
+      price: carStore.car.price ?? carStore.car.min_price ?? null,
+      sale: carStore.car.sale ?? 0,
+      id: carStore.car.id ?? carStore.car.car_id ?? null
+    };
+  }
+
+  // иначе — нет информации о машине
+  return null;
+});
 let showBurger = ref(false);
 const isOpen = ref(false);
 const currentModalTitle = ref("Оставьте заявку и мы перезвоним Вам!");

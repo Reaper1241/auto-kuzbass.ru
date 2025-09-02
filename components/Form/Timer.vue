@@ -40,10 +40,11 @@ const handleFormSubmit = (formData) => {
 </script>
 
 <template>
+
     <BaseFormTimer 
         :fields="formFields" 
         @submit="handleFormSubmit" 
-        :submit-text="`Оставить заявку`" 
+        :submit-text="`Получить максимальную выгоду`" 
         :appType="9"
         class="small" 
     />
@@ -52,12 +53,15 @@ const handleFormSubmit = (formData) => {
 .small {
     display: flex;
     flex-direction: column;
+    // display: block;
     align-items: normal;
     gap: 10px;
-    background: white;
+    // background: white;
+    
     border-radius: 20px;
+    padding: 15px;
     align-items: center;
-    margin-top: 20px;
+    // margin-top: 20px;
     
     @media screen and (max-width: 768px) {
         display: flex;
@@ -65,10 +69,28 @@ const handleFormSubmit = (formData) => {
         align-items: normal;
     }
 }
+:deep(.base-input){
+    height: 40px;
+    // width: 48%;
+}  
 :deep(.form-input){
     height: 40px;
+    background: none;
+    border: 1px solid white;
+    // width: 48%;
+}   
+:deep(input){
+    color: white;
 }
 :deep(.base-button){
+    margin-left: 5px;
     height: 40px;
+    background: var(--main-color);
+    border: none;
+    z-index: 3;
+    @media screen and (max-width: 768px){
+        margin-left: 0px;
+    }
+    // width: 48%;
 }
 </style>

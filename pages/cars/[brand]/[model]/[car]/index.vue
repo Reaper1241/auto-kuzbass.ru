@@ -98,13 +98,20 @@ console.log(`${apiNew}cars/car/${$route.params.car}`)
 
     <template v-else>
         <Bread />
-        <NewCarCard />
+        <NewCarCard @car-updated="handleCarUpdate"/>
+        
         <NewCarTabs />
+        <BannerCB3 :car="carData"/>
+        <ModelFinance  class="finance"/>
         <CarsListNew />
-        <BannerEB3 />
+        <BannerEB3 :car="carStore.car"/>
         <ModalAFK />
         <SEO />
     </template>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.finance{
+    margin-bottom: 10px;
+}
+</style>

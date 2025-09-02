@@ -32,7 +32,7 @@ const sections = ref({
 </script>
 
 <template>
-    <section class="model-finance">
+    <section id="model-finance" class="model-finance">
         <div class="container">
             <ClientOnly v-if="!loading">
                 <div class="model-finance__wrapper">

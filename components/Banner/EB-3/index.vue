@@ -1,7 +1,11 @@
 <script setup>
-// import  Gift  from '@/components/svg/Gift.vue';
-// import  Auto  from '@/components/svg/Auto.vue';
-// import  Clock  from '@/components/svg/Clock.vue';
+defineProps({
+  car: {
+    type: Object,
+    required: false
+  }
+})
+
 import { useAppStore } from '/stores/AppStore.js'
 const appStore = useAppStore();
 </script>
@@ -43,7 +47,7 @@ const appStore = useAppStore();
                             <h3>Оставьте заявку сейчас!</h3>
                         </div>
 
-                        <FormBanner class="banner" />
+                        <FormBanner class="banner" :car="car" />
                     </div>
                     
                     </div>

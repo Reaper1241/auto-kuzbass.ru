@@ -7,44 +7,73 @@ const appStore = useAppStore();
     <section class="express__section section">
         <div class="container bottom__container">
             <h2>
-                Экспресс-кредит на авто под <span>такси</span>
+                <!-- Экспресс-кредит на авто под <span>такси</span> -->
             </h2>
             <p>
-                <span>Ставка от {{ appStore.creditPercent }}%</span>
-                <span>Первый взнос 0%</span>
-                <span>Одобрение более 95%</span>
-                <span>КАСКО в подарок</span>
+                <div class="banner__card">
+                    <img class="banner-img" src="/public/images/kasko.svg" alt="">
+                    <span>Каско в подарок</span>
+                </div>
+                <div class="banner__card">
+                    <img class="banner-img" src="/public/images/kashback.svg" alt="">
+                    <span>Кэшбек 100% на 4 платежа</span>
+                </div>
+                <div class="banner__card">
+                    <img class="banner-img" src="/public/images/stavka.svg" alt="">
+                    <span>Льготная ставка от {{ appStore.creditPercent }}%</span>
+                </div>
+                <div class="banner__card">
+                    <img class="banner-img" src="/public/images/banki.svg" alt="">
+                    <span>Более 15 банков-партнеров</span>
+                </div>
             </p>
-            <FormBanner class="express__form" />
+            <FormTimer class="express__form" />
         </div>
     </section>
 </template>
 
 
 <style scoped lang="scss">
+.banner__card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    span{
+        display: flex;
+        height: 50px;
+        // width: 100%;
+        // align-items: center;
+        text-align: center;
+        
+    }
+}
 .express__section {
-    background: url(/images/taxi__form-bg.webp) no-repeat 50% 50%;
+    background: url(/public/images/banner_form.jpg) no-repeat 50% 1%;
     background-size: cover;
-    max-width: 1920px;
+    max-width: 1400px;
     width: 100%;
-    margin: 30px auto;
+    margin: 10px auto;
     color: var(--bg-light);
-
+    border-radius: 4px;
     @media screen and (max-width: 540px) {
-        background: url(/img/taxi__form-bg.webp) no-repeat 31% 100%;
+        background: url(/public/images/banner_form.jpg) no-repeat 31% 100%;
         background-size: auto;
     }
 
     .bottom__container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         height: 100%;
         gap: 30px;
-
+        @media screen and (max-width: 768px){
+            gap: 0px;
+            flex-direction: column;
+        }
         .express__form {
             display: flex;
             align-items: self-start;
-
+            flex-direction: column;
             @media screen and (max-width: 1000px) {
                 flex-direction: column;
             }
@@ -79,7 +108,7 @@ const appStore = useAppStore();
             }
 
             &::before {
-                content: "";
+                // content: "";
                 position: absolute;
                 top: calc(50% - 2px);
                 left: -265px;
@@ -93,10 +122,10 @@ const appStore = useAppStore();
             }
 
             & span {
-                position: relative;
-                display: inline-block;
-                color: var(--taxi);
-                padding-right: 42px;
+                // position: relative;
+                // display: inline-block;
+                // color: var(--taxi);
+                // padding-right: 42px;
 
                 @media screen and (max-width: 540px) {
                     padding-right: 0;
@@ -109,7 +138,7 @@ const appStore = useAppStore();
                     right: 0;
                     width: 40px;
                     height: 16px;
-                    background: url(/svg/taxi.svg) no-repeat center;
+                    // background: url(/public/images/kasko.png) no-repeat center;
                     background-size: contain;
 
                     @media screen and (max-width: 540px) {
@@ -129,7 +158,7 @@ const appStore = useAppStore();
             justify-content: space-between;
             align-items: center;
             gap: 10px;
-            margin-top: 30px;
+            margin-top: 0px;
 
             @media screen and (max-width: 1200px) {
                 font-size: 16px;
@@ -138,36 +167,50 @@ const appStore = useAppStore();
             }
 
             @media screen and (max-width: 1023px) {
-                flex-wrap: wrap;
-                justify-content: flex-end;
+                // flex-wrap: wrap;
+                // justify-content: flex-end;
             }
 
             @media screen and (max-width: 767px) {
-                display: none;
+                display: flex;
+                margin: 0 20px;
+                flex-direction: row;
+            }
+            @media screen and (max-width: 600px) {
+                display: grid;
+                // margin: 0 20px;
+                grid-template-columns: repeat(2,2fr);
+                margin: 0;
+            }
+            @media screen and (max-width: 400px) {
+                display: grid;
+                // margin: 0 20px;
+                grid-template-columns: repeat(2,2fr);
+                margin: 0 10px;
             }
 
             & span {
-                position: relative;
-                padding-left: 50px;
+                // position: relative;
+                // padding-left: 50px;
 
                 @media screen and (max-width: 1200px) {
-                    padding-left: 40px;
+                    // padding-left: 40px;
                 }
 
                 &::before {
-                    content: "";
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    background: url(/svg/star.svg) no-repeat center;
-                    background-size: contain;
-                    width: 40px;
-                    height: 40px;
+                    // content: "";
+                    // position: absolute;
+                    // top: 0;
+                    // left: 0;
+                    // // background: url(/svg/star.svg) no-repeat center;
+                    // background-size: contain;
+                    // width: 40px;
+                    // height: 40px;
 
-                    @media screen and (max-width: 1200px) {
-                        width: 30px;
-                        height: 30px;
-                    }
+                    // @media screen and (max-width: 1200px) {
+                    //     width: 30px;
+                    //     height: 30px;
+                    // }
                 }
             }
         }
@@ -277,5 +320,43 @@ const appStore = useAppStore();
             }
         }
     }
+}
+.banner-img{
+    width: 60px;
+    height: 60px;
+}
+.red{
+    background: white;
+    position: absolute;
+    opacity: 0.3;
+    width: 665px;
+    right: 270px;
+    height: 250px;
+    border-radius: 25px;
+    z-index: 0;
+}
+:deep(.form__check){
+    background: none;
+    color: white;
+}
+:deep(.wrap){
+    background: none;
+    color: white !important;
+    text-wrap: wrap;
+    display: grid;
+    @media screen and (max-width: 768px){
+        display: flex;
+    }
+    @media screen and (max-width: 500px) {
+        display: none;
+        margin: 0 20px;
+        flex-direction: row;
+    }
+}
+:deep(.wrap-mob){
+    color: white !important;
+}
+:deep(.check-link){
+    color: white !important;
 }
 </style>

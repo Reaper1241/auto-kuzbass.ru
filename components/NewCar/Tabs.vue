@@ -10,15 +10,6 @@ const car = ref(carStore.car || {}); // Защита от undefined
 // Активная вкладка (Опции / Характеристики)
 const activeTab = ref(0);
 
-// Состояния для аккордеона (открыто/закрыто)
-const safetyOpen = ref(false);
-const exteriorOpen = ref(false);
-const interiorOpen = ref(false);
-const comfortOpen = ref(false);
-const overviewOpen = ref(true);
-const multimediaOpen = ref(true);
-const protectionOpen = ref(true);
-
 /**
  * Фильтрует характеристики, удаляя пустые, нулевые и undefined значения.
  * @returns {Object} - Отфильтрованные данные из `car.modification`.
@@ -46,6 +37,29 @@ const hasComplectationData = (section) => {
   const value = car.value.complectation[section];
   return value && value.trim() !== "" && value !== "0" && value !== "Нет данных";
 };
+
+// Создаем два массива для разделения на две колонки
+const complectationSections = computed(() => {
+  const sections = [
+    { key: 'safety', title: 'Безопасность' },
+    { key: 'exterior', title: 'Экстерьер' },
+    { key: 'interior', title: 'Интерьер' },
+    { key: 'comfort', title: 'Комфорт' },
+    { key: 'overview', title: 'Обзор' },
+    { key: 'multimedia', title: 'Мультимедиа' },
+    { key: 'сar_theft_protection', title: 'Защита от угона' }
+  ];
+  
+  // Фильтруем только те секции, у которых есть данные
+  const validSections = sections.filter(section => hasComplectationData(section.key));
+  
+  // Разделяем на две колонки
+  const midIndex = Math.ceil(validSections.length / 2);
+  const firstColumn = validSections.slice(0, midIndex);
+  const secondColumn = validSections.slice(midIndex);
+  
+  return { firstColumn, secondColumn };
+});
 </script>
 
 <template>
@@ -62,84 +76,23 @@ const hasComplectationData = (section) => {
         </div>
       </div>
 
-      <!-- Блок с опциями (аккордеон) -->
-      <div class="accordion" :class="{ hide: activeTab != 0 }">
-        <div class="accordion__content option__content">
-          <!-- Безопасность -->
-          <div class="accordion__item" v-if="hasComplectationData('safety')">
-            <div class="accordion__item-head" @click="safetyOpen = !safetyOpen">
-              <span class="accordion__title">Безопасность</span>
-              <span class="icon">
-                <i class="fa-solid" :class="safetyOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
+      <!-- Блок с опциями (две колонки) -->
+      <div class="options-container" :class="{ hide: activeTab != 0 }">
+        <div class="options-columns">
+          <!-- Первая колонка -->
+          <div class="options-column">
+            <div v-for="section in complectationSections.firstColumn" :key="section.key" class="option-block">
+              <h3 class="option-title">{{ section.title }}</h3>
+              <ul class="option-list" v-htmlSanitizer="car.complectation[section.key]"></ul>
             </div>
-            <ul class="accordion__list" v-if="safetyOpen" v-htmlSanitizer="car.complectation.safety"></ul>
           </div>
-
-          <!-- Экстерьер -->
-          <div class="accordion__item" v-if="hasComplectationData('exterior')">
-            <div class="accordion__item-head" @click="exteriorOpen = !exteriorOpen">
-              <span class="accordion__title">Экстерьер</span>
-              <span class="icon">
-                <i class="fa-solid" :class="exteriorOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
+          
+          <!-- Вторая колонка -->
+          <div class="options-column">
+            <div v-for="section in complectationSections.secondColumn" :key="section.key" class="option-block">
+              <h3 class="option-title">{{ section.title }}</h3>
+              <ul class="option-list" v-htmlSanitizer="car.complectation[section.key]"></ul>
             </div>
-            <ul class="accordion__list" v-if="exteriorOpen" v-htmlSanitizer="car.complectation.exterior"></ul>
-          </div>
-
-          <!-- Интерьер -->
-          <div class="accordion__item" v-if="hasComplectationData('interior')">
-            <div class="accordion__item-head" @click="interiorOpen = !interiorOpen">
-              <span class="accordion__title">Интерьер</span>
-              <span class="icon">
-                <i class="fa-solid" :class="interiorOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
-            </div>
-            <ul class="accordion__list" v-if="interiorOpen" v-htmlSanitizer="car.complectation.interior"></ul>
-          </div>
-
-          <!-- Комфорт -->
-          <div class="accordion__item" v-if="hasComplectationData('comfort')">
-            <div class="accordion__item-head" @click="comfortOpen = !comfortOpen">
-              <span class="accordion__title">Комфорт</span>
-              <span class="icon">
-                <i class="fa-solid" :class="comfortOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
-            </div>
-            <ul class="accordion__list" v-if="comfortOpen" v-htmlSanitizer="car.complectation.comfort"></ul>
-          </div>
-
-          <!-- Обзор -->
-          <div class="accordion__item" v-if="hasComplectationData('overview')">
-            <div class="accordion__item-head" @click="overviewOpen = !overviewOpen">
-              <span class="accordion__title">Обзор</span>
-              <span class="icon">
-                <i class="fa-solid" :class="overviewOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
-            </div>
-            <ul class="accordion__list" v-if="overviewOpen" v-htmlSanitizer="car.complectation.overview"></ul>
-          </div>
-
-          <!-- Мультимедиа -->
-          <div class="accordion__item" v-if="hasComplectationData('multimedia')">
-            <div class="accordion__item-head" @click="multimediaOpen = !multimediaOpen">
-              <span class="accordion__title">Мультимедиа</span>
-              <span class="icon">
-                <i class="fa-solid" :class="multimediaOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
-            </div>
-            <ul class="accordion__list" v-if="multimediaOpen" v-htmlSanitizer="car.complectation.multimedia"></ul>
-          </div>
-
-          <!-- Защита от угона -->
-          <div class="accordion__item" v-if="hasComplectationData('сar_theft_protection')">
-            <div class="accordion__item-head" @click="protectionOpen = !protectionOpen">
-              <span class="accordion__title">Защита от угона</span>
-              <span class="icon">
-                <i class="fa-solid" :class="protectionOpen ? 'fa-chevron-down' : 'fa-chevron-up'"></i>
-              </span>
-            </div>
-            <ul class="accordion__list" v-if="protectionOpen" v-htmlSanitizer="car.complectation.сar_theft_protection"></ul>
           </div>
         </div>
       </div>
@@ -222,6 +175,7 @@ const hasComplectationData = (section) => {
     margin-left: 0px;
     margin-bottom: 40px;
     justify-content: center;
+    
     @media screen and (max-width: 767px) {
         flex-wrap: wrap;
         gap: 10px;
@@ -246,6 +200,7 @@ const hasComplectationData = (section) => {
         width: 49%;
         height: 40px;
         border: 2px solid #7f7f7f;
+        
         @media screen and (max-width: 767px) {
             font-size: 16px;
             line-height: 18px;
@@ -264,61 +219,79 @@ const hasComplectationData = (section) => {
     .title__show-list.active {
         color: var(--main-color);
         border: 2px solid var(--main-color);
+        
         @media screen and (max-width: 767px) {
             border: 1px solid var(--main-color);
         }
     }
 }
 
-.accordion {
+.options-container {
     display: block;
+    
+    .options-columns {
+        display: flex;
+        gap: 30px;
+        align-items: flex-start;
+        
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+    
+    .options-column {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+    
+    .option-block {
+        border: 1px solid #E5E5E5;
+        border-radius: 4px;
+        overflow: hidden;
+        padding: 20px;
+        background: #fff;
+        width: 100%;
+    }
+    
+    .option-title {
+        font-weight: 500;
+        font-size: 18px;
+        margin: 0 0 15px 0;
+        color: var(--main-color);
+        padding-bottom: 10px;
+        border-bottom: 1px solid #E5E5E5;
+    }
+    
+    .option-list {
+        columns: 1;
+        padding: 0;
+        margin: 0;
+        
+        &:deep(li) {
+            position: relative;
+            line-height: 20px;
+            margin-bottom: 8px;
+            break-inside: avoid;
+            page-break-inside: avoid;
 
-    .accordion__content {
-        .accordion__item {
-            margin-bottom: 10px;
-            border: 1px solid #E5E5E5;
-            border-radius: 4px;
-            overflow: hidden;
-
-            .accordion__item-head {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 15px 20px;
-                background: #f5f5f5;
-                cursor: pointer;
-                
-                .accordion__title {
-                    font-weight: 500;
-                    font-size: 18px;
-                    margin: 0;
-                }
-
-                .icon {
-                    transition: transform 0.3s;
-                }
-            }
-
-            .accordion__list {
-                padding: 15px 20px;
-                -webkit-columns: 3;
-                -moz-columns: 3;
-                columns: 3;
-
-                @media screen and (max-width: 768px) {
-                    -webkit-columns: 2;
-                    -moz-columns: 2;
-                    columns: 2;
-                }
-
-                @media screen and (max-width: 580px) {
-                    -webkit-columns: 1;
-                    -moz-columns: 1;
-                    columns: 1;
-                }
+            &::before {
+                content: "\f192";
+                font-family: "Font Awesome 6 Free";
+                font-size: 8px;
+                font-weight: 900;
+                color: var(--main-color2);
+                margin-right: 10px;
             }
         }
     }
+}
+
+.accordion {
+    display: block;
 
     .tech__content {
         display: flex;
@@ -404,23 +377,7 @@ const hasComplectationData = (section) => {
     }
 }
 
-.accordion.hide {
+.hide {
     display: none;
 }
-
-.accordion__list {
-    &:deep(li) {
-        position: relative;
-        line-height: 20px;
-
-        &::before {
-            content: "\f192";
-            font-family: "Font Awesome 6 Free";
-            font-size: 8px;
-            font-weight: 900;
-            color: var(--main-color2);
-            margin-right: 10px;
-        }
-    }
-}
-</style>  
+</style>
