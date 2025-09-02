@@ -45,7 +45,10 @@ const appStore = useAppStore();
         // width: 100%;
         // align-items: center;
         text-align: center;
-        
+                    @media screen and (max-width: 767px){
+                        font-size: 12px;
+                height: 30px;
+            }
     }
 }
 .express__section {
@@ -159,11 +162,12 @@ const appStore = useAppStore();
             align-items: center;
             gap: 10px;
             margin-top: 0px;
-
+            
             @media screen and (max-width: 1200px) {
                 font-size: 16px;
                 line-height: 30px;
                 gap: 15px;
+                margin: 0;
             }
 
             @media screen and (max-width: 1023px) {
@@ -173,8 +177,9 @@ const appStore = useAppStore();
 
             @media screen and (max-width: 767px) {
                 display: flex;
-                margin: 0 20px;
+                // margin: 0 20px;
                 flex-direction: row;
+                margin: 0;
             }
             @media screen and (max-width: 600px) {
                 display: grid;
@@ -186,7 +191,7 @@ const appStore = useAppStore();
                 display: grid;
                 // margin: 0 20px;
                 grid-template-columns: repeat(2,2fr);
-                margin: 0 10px;
+                // margin: 0 10px;
             }
 
             & span {
@@ -324,6 +329,10 @@ const appStore = useAppStore();
 .banner-img{
     width: 60px;
     height: 60px;
+    @media screen and (max-width: 767px){
+        width: 30px;
+        height: 30px;
+    }
 }
 .red{
     background: white;

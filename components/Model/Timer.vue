@@ -165,6 +165,10 @@ onBeforeUnmount(() => {
         // width: 100%;
         // align-items: center;
         text-align: start;
+        @media screen and (max-width: 767px){
+                        font-size: 12px;
+                height: 30px;
+            }
         
     }
 }
@@ -284,6 +288,7 @@ onBeforeUnmount(() => {
                 font-size: 16px;
                 line-height: 30px;
                 gap: 15px;
+                margin: 0;
             }
 
             @media screen and (max-width: 1023px) {
@@ -306,7 +311,7 @@ onBeforeUnmount(() => {
                 display: grid;
                 // margin: 0 20px;
                 grid-template-columns: repeat(2,2fr);
-                margin: 0 10px;
+                margin: 0 0px;
             }
 
             & span {
@@ -444,6 +449,10 @@ onBeforeUnmount(() => {
 .banner-img{
     width: 60px;
     height: 60px;
+    @media screen and (max-width: 767px){
+        width: 30px;
+        height: 30px;
+    }
 }
 .red{
     // background: white;

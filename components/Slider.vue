@@ -144,6 +144,11 @@ onMounted(() => {
 
 
 <style scoped lang="scss">
+.container{
+    @media screen and (max-width: 768px){
+        padding: 0 !important;
+    }
+}
 .carousel__prev,
 .carousel__next {
   pointer-events: auto !important;
@@ -198,7 +203,7 @@ onMounted(() => {
         width: 100%;
         height: 400px;
         @media screen and (max-width: 768px) {
-            height: 400px;
+            height: 300px;
         }    
         &::before {
             content: "";

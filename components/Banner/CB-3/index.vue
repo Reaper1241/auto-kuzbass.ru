@@ -419,7 +419,10 @@ onBeforeUnmount(() => {
         // width: 100%;
         // align-items: center;
         text-align: center;
-        
+@media screen and (max-width: 767px){
+                        font-size: 12px;
+                height: 30px;
+            }
     }
 }
 .express__section {
@@ -698,6 +701,10 @@ onBeforeUnmount(() => {
 .banner-img{
     width: 60px;
     height: 60px;
+    @media screen and (max-width: 767px){
+        width: 30px;
+        height: 30px;
+    }
 }
 .red{
     // background: white;
