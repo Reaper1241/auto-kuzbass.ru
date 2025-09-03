@@ -34,11 +34,15 @@ const filteredSpecs = computed(() => {
  */
 const hasComplectationData = (section) => {
   if (!car.value.complectation || !car.value.complectation[section]) return false;
+
   const value = car.value.complectation[section];
-  return value && value.trim() !== "" && value !== "0" && value !== "Нет данных";
+
+  // Отсеиваем "пустые" значения
+  const excludedValues = [null, undefined, "", "0", "-", "—", "Нет данных"];
+
+  return !excludedValues.includes(value?.trim?.() || value);
 };
 
-// Создаем два массива для разделения на две колонки
 const complectationSections = computed(() => {
   const sections = [
     { key: 'safety', title: 'Безопасность' },
@@ -49,16 +53,14 @@ const complectationSections = computed(() => {
     { key: 'multimedia', title: 'Мультимедиа' },
     { key: 'сar_theft_protection', title: 'Защита от угона' }
   ];
-  
-  // Фильтруем только те секции, у которых есть данные
+
   const validSections = sections.filter(section => hasComplectationData(section.key));
-  
-  // Разделяем на две колонки
+
   const midIndex = Math.ceil(validSections.length / 2);
-  const firstColumn = validSections.slice(0, midIndex);
-  const secondColumn = validSections.slice(midIndex);
-  
-  return { firstColumn, secondColumn };
+  return {
+    firstColumn: validSections.slice(0, midIndex),
+    secondColumn: validSections.slice(midIndex),
+  };
 });
 </script>
 
@@ -89,7 +91,7 @@ const complectationSections = computed(() => {
           
           <!-- Вторая колонка -->
           <div class="options-column">
-            <div v-for="section in complectationSections.secondColumn" :key="section.key" class="option-block">
+            <div v-for="section in complectationSections.firstColumn" :key="section.key" class="option-block">
               <h3 class="option-title">{{ section.title }}</h3>
               <ul class="option-list" v-htmlSanitizer="car.complectation[section.key]"></ul>
             </div>

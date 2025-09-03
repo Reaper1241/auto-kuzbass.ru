@@ -633,6 +633,9 @@ const show = ref(0);
 
         .model__right {
             // margin-top: 50px;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
             @media screen and (max-width: 767px) {
                 display: flex;
                 flex-direction: column-reverse;
@@ -650,7 +653,7 @@ const show = ref(0);
                 z-index: 1;
                 border: 1px solid var(--main-color);
                 border-radius: 4px;
-                padding: 25px 15px;
+                padding: 15px 15px;
                 padding-right: 0;
                 display: grid;
                 grid-template-columns: repeat(1, 1fr);
@@ -961,7 +964,7 @@ const show = ref(0);
     display: flex;
     flex-direction: column;
     gap: 30px;         
-    margin-top: 90px;     
+    margin-top: 100px;     
     @media screen and (max-width: 1200px){
         margin: 10px 0px;
         display: grid;

@@ -1,50 +1,67 @@
 <script setup>
+import { ref, computed, watch } from "vue";
+
 const currentSlide = ref(0);
+const thumbIndex = ref(0);
+const visibleThumbs = 6;
+
 const props = defineProps({
-    images: Array,
-    imagesType: Boolean,
-    preview: String
+  images: Array,
+  imagesType: Boolean,
+  preview: String,
 });
 
 const breakpoints = {
-    0: { itemsToShow: 1.25 },
-    1150: { itemsToShow: 1 },
+  0: { itemsToShow: 1.25 },
+  1150: { itemsToShow: 1 },
 };
 
-// Создаём вычисляемый список изображений с сортировкой по полю sort
+// список изображений
 const imagesList = computed(() => {
-    let sorted = [...props.images].sort((a, b) => a.sort - b.sort);
-    if (!props.imagesType) {
-        // Добавляем превью только если оно ещё не в списке
-        const hasPreview = sorted.some(img => img.url === props.preview);
-        if (!hasPreview) {
-            sorted.unshift({ url: props.preview });
-        }
+  let sorted = [...props.images].sort((a, b) => a.sort - b.sort);
+  if (!props.imagesType) {
+    const hasPreview = sorted.some((img) => img.url === props.preview);
+    if (!hasPreview) {
+      sorted.unshift({ url: props.preview });
     }
-    return sorted;
+  }
+  return sorted;
 });
 
+// переход к слайду
 function slideTo(index) {
-    if (index === imagesList.value.length) {
-        currentSlide.value = 0;
-    } else {
-        currentSlide.value = index;
-    }
+  currentSlide.value = (index + imagesList.value.length) % imagesList.value.length;
+
+  // если текущая картинка вышла за пределы видимых миниатюр → сдвигаем окно
+  if (currentSlide.value < thumbIndex.value) {
+    thumbIndex.value = currentSlide.value;
+  } else if (currentSlide.value >= thumbIndex.value + visibleThumbs) {
+    thumbIndex.value = currentSlide.value - visibleThumbs + 1;
+  }
 }
 
-watch(imagesList, () => {
-    if (imagesList.value.length) {
-        currentSlide.value = 0;
-    }
+// основной слайдер кнопками
+function slideNext() {
+  slideTo(currentSlide.value + 1);
+}
+function slidePrev() {
+  slideTo(currentSlide.value - 1);
+}
+
+// только 6 миниатюр в окне
+const visibleThumbnails = computed(() => {
+  return imagesList.value
+    .slice(thumbIndex.value, thumbIndex.value + visibleThumbs)
+    .map((img, i) => ({ ...img, index: thumbIndex.value + i }));
 });
 
-function slideNext() {
-    slideTo((currentSlide.value + 1) % imagesList.value.length);
-}
-
-function slidePrev() {
-    slideTo((currentSlide.value - 1 + imagesList.value.length) % imagesList.value.length);
-}
+// сброс при смене картинок
+watch(imagesList, () => {
+  if (imagesList.value.length) {
+    currentSlide.value = 0;
+    thumbIndex.value = 0;
+  }
+});
 </script>
 
 <template>
@@ -81,24 +98,24 @@ function slidePrev() {
       </template>
     </Carousel>
 
-    <!-- Миниатюры снизу + кнопки -->
+    <!-- Миниатюры снизу -->
     <div class="carousel__custom-thumbnails">
       <button class="thumb-btn prev" @click="slidePrev">‹</button>
 
       <ul class="carousel__custom-thumbnails-list">
         <li
-          v-for="(slide, index) in imagesList"
-          :key="'thumb-'+index"
+          v-for="thumb in visibleThumbnails"
+          :key="'thumb-'+thumb.index"
           class="carousel__item"
-          :class="{ 'active': currentSlide === index }"
-          @click="slideTo(index)"
+          :class="{ 'active': currentSlide === thumb.index }"
+          @click="slideTo(thumb.index)"
         >
           <NuxtImg
             lazy
             format="webp"
             quality="90"
             loading="lazy"
-            :src="slide.url"
+            :src="thumb.url"
             alt="car"
           />
         </li>
@@ -108,7 +125,6 @@ function slidePrev() {
     </div>
   </div>
 </template>
-
 
 
 <style scoped lang="scss">
