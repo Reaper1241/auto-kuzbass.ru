@@ -63,7 +63,15 @@ onMounted(() => {
       <div class="car-card__wrapper">
         <div class="car-card__header section__header">
           <BasePageTitle />
-
+            <!-- <div class="car-card__stickers">
+                    <div class="car-card__credit">
+                    <span>В кредит от {{
+                        makeSpaces(appStore.calcMonthPrice(car))
+                    }} ₽/мес.</span>
+                    </div>
+                    <span class="sticker discount" v-if="car.sale">Скидка до {{ makeSpaces(car.sale) }} ₽</span>
+                    <img class="calculator" src="/public/images/calculator.png" @click="scrollToFinance"/>
+                </div>   -->
         </div>
         
         <ClientOnly v-if="!loading">
@@ -139,6 +147,10 @@ onMounted(() => {
               <div class="complectations-block">
               <!-- Плашка Trade-In -->
                 <div class="complectations-calculator__item trade" :class="{ 'active': newStore.tradeSwitch }">
+                    <div class="complectations-calculator__text" :class="{ 'active': newStore.tradeSwitch }">
+                    <span class="text">Trade-In</span>
+                    <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
+                    </div>
                     <div class="complectations-calculator__switch">
                     <div class="switch">
                         <input type="checkbox" id="switch" :checked="newStore.tradeSwitch"
@@ -146,29 +158,31 @@ onMounted(() => {
                         <label for="switch"></label>
                     </div>
                     </div>
-                    <div class="complectations-calculator__text" :class="{ 'active': newStore.tradeSwitch }">
-                    <span class="text">Trade-In</span>
-                    <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
-                    </div>
+                    
                 </div>
                 
                 <!-- Плашка Кредит -->
                 <div class="complectations-calculator__item credit" :class="{ 'active': newStore.creditSwitch }">
-                    <div class="complectations-calculator__switch">
+                                        <div class="complectations-calculator__text" :class="{ 'active': newStore.creditSwitch }">
+                    <span class="text">Кредит</span>
+                    <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
+                    </div>
+                    <div class="complectations-calculator__switch">    
                     <div class="switch">
                         <input type="checkbox" id="credit" :checked="newStore.creditSwitch"
                         @change="newStore.creditSwitch = !newStore.creditSwitch" />
                         <label for="credit"></label>
                     </div>
                     </div>
-                    <div class="complectations-calculator__text" :class="{ 'active': newStore.creditSwitch }">
-                    <span class="text">Кредит</span>
-                    <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
-                    </div>
+
                 </div>
                 
                 <!-- Плашка Finance -->
                 <div class="complectations-calculator__item salon" :class="{ 'active': newStore.salonSwitch }">
+                    <div class="complectations-calculator__text" :class="{ 'active': newStore.salonSwitch }">
+                    <span class="text">FINANCE</span>
+                    <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
+                    </div>
                     <div class="complectations-calculator__switch">
                     <div class="switch">
                         <input type="checkbox" id="salon" :checked="newStore.salonSwitch"
@@ -176,10 +190,7 @@ onMounted(() => {
                         <label for="salon"></label>
                     </div>
                     </div>
-                    <div class="complectations-calculator__text" :class="{ 'active': newStore.salonSwitch }">
-                    <span class="text">FINANCE</span>
-                    <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
-                    </div>
+                    
                     
                 </div>
                 
@@ -215,7 +226,7 @@ onMounted(() => {
                     }} ₽/мес.</span>
                     </div>
                     <span class="sticker discount" v-if="car.sale">Скидка до {{ makeSpaces(car.sale) }} ₽</span>
-                    <img class="calculator" src="/public/images/calculator.png" @click="scrollToFinance"/>
+                    <!-- <img class="calculator" src="/public/images/calculator.png" @click="scrollToFinance"/> -->
                 </div>      
                 
               <NewCarSlider :images="car.images.length ? car.images : carStore.galleries"
@@ -332,7 +343,16 @@ margin-right: 5px;
         margin-top: 0px;
     }
 }
-
+:deep(.trade){
+    span{
+        font-size: 18px;
+    }
+}
+:deep(.credit){
+    span{
+        font-size: 18px;
+    }
+}
 .car-card {
     padding-bottom: 20px;
     padding-top: 0;
@@ -362,6 +382,7 @@ margin-right: 5px;
         .car-card__body-slider {
             position: relative;
             display: flex;
+            top: -14px;
             gap: 20px;
             flex-direction: column;
             // align-items: center;

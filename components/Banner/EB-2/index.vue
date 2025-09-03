@@ -34,19 +34,36 @@ const appStore = useAppStore();
 
 
 <style scoped lang="scss">
+:deep(.small){
+    padding: 0px 0px 15px 0;
+    @media screen and (max-width: 767px){
+        padding: 0px 15px 15px 15px;
+    }
+}
 .banner__card{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    @media screen and (max-width: 767px){
+        flex-direction: row;
+        gap: 30px;
+    }
     span{
         display: flex;
         height: 50px;
+        align-items: center;
         // width: 100%;
         // align-items: center;
         text-align: center;
                     @media screen and (max-width: 767px){
-                        font-size: 12px;
+                        font-size: 20px;
+                        // width: 100px;
+                height: 30px;
+            }
+            @media screen and (max-width: 380px){
+                        font-size: 14px;
+                        // width: 100px;
                 height: 30px;
             }
     }
@@ -75,6 +92,7 @@ const appStore = useAppStore();
         }
         .express__form {
             display: flex;
+            
             align-items: self-start;
             flex-direction: column;
             @media screen and (max-width: 1000px) {
@@ -162,12 +180,12 @@ const appStore = useAppStore();
             align-items: center;
             gap: 10px;
             margin-top: 0px;
-            
+            padding-bottom: 12px;
             @media screen and (max-width: 1200px) {
                 font-size: 16px;
                 line-height: 30px;
                 gap: 15px;
-                margin: 0;
+                
             }
 
             @media screen and (max-width: 1023px) {
@@ -184,16 +202,18 @@ const appStore = useAppStore();
             @media screen and (max-width: 600px) {
                 display: grid;
                 // margin: 0 20px;
-                grid-template-columns: repeat(2,2fr);
-                margin: 0;
+                grid-template-columns: repeat(1,2fr);
+                margin: 0 20px;
             }
             @media screen and (max-width: 400px) {
                 display: grid;
                 // margin: 0 20px;
-                grid-template-columns: repeat(2,2fr);
+                grid-template-columns: repeat(1,2fr);
                 // margin: 0 10px;
             }
-
+            @media screen and (max-width: 350px){
+                margin: 0 20px;
+            }
             & span {
                 // position: relative;
                 // padding-left: 50px;
@@ -327,8 +347,8 @@ const appStore = useAppStore();
     }
 }
 .banner-img{
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     @media screen and (max-width: 767px){
         width: 30px;
         height: 30px;

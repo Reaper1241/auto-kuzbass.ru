@@ -92,6 +92,7 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
+
 .button {
     display: grid;
     grid-template-columns: 1fr max-content;

@@ -18,7 +18,7 @@ fetchClientWrapper(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&ca
         <div class="container">
             <div class="cars-hot__wrapper">
                 <div class="cars-hot__header">
-                    <BaseTitle :title="`Горячее предложение`" />
+                    <BaseTitle :title="`Популярные`" />
                 </div>
 
                 <div class="cars-hot__body cars-template" v-if="!loading">

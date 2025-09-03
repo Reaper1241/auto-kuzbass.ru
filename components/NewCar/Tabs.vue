@@ -169,6 +169,7 @@ const complectationSections = computed(() => {
 </template>
 
 <style scoped lang="scss">
+
 .buttons__show-list {
     display: flex;
     gap: 20px;
