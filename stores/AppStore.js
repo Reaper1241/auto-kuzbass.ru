@@ -343,6 +343,12 @@ export const useAppStore = defineStore("appStore", () => {
       percent: 8,
       image: '/images/banks/zenit.png',
     },
+    {
+      id: 17,
+      name: 'Драйв Клик Банк',
+      percent: 0.01,
+      image: '/images/banks/drive-click.png',
+    },
   ]);
   const selectedBankId = ref(false);
 
