@@ -321,7 +321,7 @@ onMounted(() => {
                 }
 
                 .slider__item {
-                    height: 200px;
+                    height: 225px;
                     width: 100%;
                     padding: 0 0px;
                     display: flex;
