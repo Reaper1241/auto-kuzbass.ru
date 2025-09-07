@@ -327,7 +327,18 @@ onMounted(() => {
                     display: flex;
                     align-items: flex-end; /* Это выровняет изображение по нижнему краю */
                     overflow: hidden;
-                    
+                    @media screen and (max-width: 1250px){
+                        height: 260px;
+                    }
+                    @media screen and (max-width: 1130px){
+                        height: 230px;
+                    }
+                    @media screen and (max-width: 1050px){
+                        height: 330px;
+                    }
+                    @media screen and (max-width: 600px){
+                        height: 200px;
+                    }
                     img {
                         width: 100%;
                         height: auto;
