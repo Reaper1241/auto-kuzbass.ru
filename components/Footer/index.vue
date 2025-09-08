@@ -42,6 +42,7 @@ onMounted(() => {
 </script>
 
 <template>
+    <BannerEB1/>
     <footer class="footer">
       <div class="container">
         <section class="footer__top">

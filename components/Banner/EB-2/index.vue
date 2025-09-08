@@ -9,7 +9,7 @@ const appStore = useAppStore();
             <h2>
                 <!-- Экспресс-кредит на авто под <span>такси</span> -->
             </h2>
-            <p>
+            <div class="cont">
                 <div class="banner__card">
                     <img class="banner-img" src="/public/images/kasko.svg" alt="">
                     <span>Каско в подарок</span>
@@ -26,7 +26,7 @@ const appStore = useAppStore();
                     <img class="banner-img" src="/public/images/banki.svg" alt="">
                     <span>Более 15 банков-партнеров</span>
                 </div>
-            </p>
+            </div>
             <FormTimer class="express__form" />
         </div>
     </section>
@@ -170,7 +170,7 @@ const appStore = useAppStore();
             }
         }
 
-        p {
+        .cont {
             font-weight: 500;
             font-size: 20px;
             line-height: 40px;

@@ -10,10 +10,10 @@ const appStore = useAppStore();
                 <!-- Экспресс-кредит на авто под <span>такси</span> -->
             </h2>
             <div class="banners">
-                <span>Без первоначального взноса.</span>
-                <span>Одобрение в 96%</span>
-                <span>Каско или зимняя резина в подарок</span>
-                <span>От 6 месяцев до 7 лет</span>
+                <span>Оценка по рыночной стоимости</span>
+                <span>Как первый взнос по автокредиту</span>
+                <span>Скидка до 300 000₽</span>
+                <span>Оформление сделки за 3 часа</span>
             </div>
             <!-- <FormBanner class="express-brand__form" /> -->
         </div>

@@ -21,6 +21,7 @@ function callback(n) {
     <!-- <CarsPopular/> -->
     <CarsHot />
     <BannerCB1/>
+    <!-- <Sales/> -->
     <ModalAFK />
     <BasePageContent />
     <SEO />

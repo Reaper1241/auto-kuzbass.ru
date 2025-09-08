@@ -298,7 +298,7 @@ onBeforeUnmount(() => {
 
             @media screen and (max-width: 767px) {
                 display: flex;
-                margin: 0 20px;
+                margin: 0 0px;
                 flex-direction: row;
             }
             @media screen and (max-width: 600px) {

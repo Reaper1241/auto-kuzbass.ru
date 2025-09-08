@@ -2,6 +2,7 @@
 
 <template>
     <Bread />
+    <!-- <BannerB2/> -->
     <Trade />
     <!-- <BannerSB1 /> -->
     <BannerCB1 />

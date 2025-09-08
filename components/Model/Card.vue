@@ -396,7 +396,7 @@ const show = ref(0);
     @media screen and (max-width: 1075px) {
         position: absolute;
         width: 92%;
-        top: 540px;
+        top: 390px;
         left: 30px;   
     }
     @media screen and (max-width: 767px) {

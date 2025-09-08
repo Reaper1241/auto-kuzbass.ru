@@ -1,276 +1,568 @@
-<script setup></script>
+<script setup>
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+
+const reviews = ref([
+  { 
+    id: 1, 
+    name: "Ca Do ",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Работают до последнего клиента. Три дня мучений со мной и 4 часа до 23.00 и вуаля. Автомобиль в кредит мой. Менеджеру Ивана особая боагодарность за терпение. ",
+    date: "3 июля 2024"
+  },
+  { 
+    id: 2, 
+    name: "Татьяна Карпова",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Отличный автосалон,мне всё очень понравилось: интерьер, сервис. сотрудники помогли мне с выбором. вежливые, доброжелательные,в такое место хочется вернуться ещё не один раз. всем советую!!",
+    date: "6 августа 2025"
+  },
+  { 
+    id: 3, 
+    name: "afrin",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "В Карплазе менеджер был очень вежлив и внимателен. Помог выбрать подходящий автомобиль и подробно ответил на все вопросы. Предложил чай , пока оформляли документы",
+    date: "20 августа 2025"
+  },
+  { 
+    id: 4, 
+    name: "Василиса Бойко",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Это лучший уровень сервиса который я встречала, ездила в несколько сервисов где столкнулась с ужасным отношением ко мне и какого же было удивление когда приехав в карплаз мне ответили на все интересующие вопросы, общались профессионально и качественно, курила новое авто и безумно рада!",
+    date: "23 августа 2025"
+  },
+  { 
+    id: 5, 
+    name: "Георгий",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Спасибо огромное за новое авто, все отлично, езжу уже 4 месяца,намека на некачественный автомобиль даже нет, спасибо.",
+    date: "2 сентября 2025"
+  },
+  { 
+    id: 6, 
+    name: "Дарина",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Мой выбор пал на модель кия, и я абсолютно в восторге! Авто выглядит стильно и современно, а внутри все организовано максимально удобно. Управлять им — одно удовольствие.",
+    date: "25 августа 2025"
+  },
+  { 
+    id: 7, 
+    name: "Азалия Гарифуллина ",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Купила автомобиль у карплаза и не разу не ошиблась в своем выборе! Все прошло отлично, без лишних нервов и сил, менеджер Сергей, приятный и компетентный, огромное спасибо!",
+    date: "21 августа 2025"
+  },
+  { 
+    id: 8, 
+    name: "Михаил Петров",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Купил свой первый новый автомобиль, и это было лучшее решение! Процесс покупки прошел гладко, менеджеры были вежливы и компетентны. Огромное спасибо. ",
+    date: "6 сентября 2025"
+  },
+  { 
+    id: 9, 
+    name: "Guzya Y.",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Спасибо большое консультанту за помощь! Покупка прошла на ура, все документы оформили быстро и без каких-либо сложностей. Отдельное спасибо за то, что оформить кредит оказалось так просто! ",
+    date: "1 августа 2025"
+  },
+  { 
+    id: 10, 
+    name: "Daria Glazkova",
+    avatar: "/images/avatar.png",
+    rating: 5,
+    text: "Брала себе автомобиль для работы и в принципе города, не смотря на все сомнения, менеджер Иван сделал все отлично, подобрал автомобиль по всем моим желаниям и критериям, огромное спасибо!",
+    date: "3 сентября 2025"
+  },
+]);
+
+const carouselRef = ref(null);
+const currentSlide = ref(0);
+const expandedReviews = ref([]);
+const windowWidth = ref(0);
+
+// Общая статистика
+const totalRating = computed(() => {
+  return (reviews.value.reduce((sum, review) => sum + review.rating, 0) / reviews.value.length).toFixed(1);
+});
+
+const totalReviews = computed(() => {
+  return reviews.value.length;
+});
+
+// Отслеживаем изменение размера окна
+const updateWindowWidth = () => {
+  if (typeof window !== 'undefined') {
+    windowWidth.value = window.innerWidth;
+  }
+};
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    windowWidth.value = window.innerWidth;
+    window.addEventListener('resize', updateWindowWidth);
+  }
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('resize', updateWindowWidth);
+  }
+});
+
+// Вычисляем количество видимых слайдов
+const itemsToShow = computed(() => {
+  if (windowWidth.value === 0) return 1;
+  if (windowWidth.value < 768) return 1;
+  if (windowWidth.value < 1150) return 2;
+  return 3;
+});
+
+// Функция для переключения expanded состояния
+const toggleExpand = (id) => {
+  const index = expandedReviews.value.indexOf(id);
+  if (index > -1) {
+    expandedReviews.value.splice(index, 1);
+  } else {
+    expandedReviews.value.push(id);
+  }
+};
+
+// Функции навигации
+const next = () => {
+  if (carouselRef.value) {
+    carouselRef.value.next();
+  }
+};
+
+const prev = () => {
+  if (carouselRef.value) {
+    carouselRef.value.prev();
+  }
+};
+</script>
 
 <template>
-    <section class="express__section section">
-        <div class="container">
-            <div class="express__mob-img"></div>
-
-            <div class="express__content">
-                <div class="form__block">
-                    <div class="express__title">
-                        <h2>Экспресс-кредит по двум документам</h2>
-                    </div>
-
-                    <div class="express__benefits">
-                        <span>Ставка от 4.9%</span>
-                        <span>Первый взнос 0%</span>
-                    </div>
-
-                    <FormBanner class="express__form" />
-                </div>
+  <section class="reviews" v-if="reviews.length">
+    <div class="reviews__container">
+      <h2 class="title">Отзывы наших клиентов</h2>
+      
+      <!-- Блок с общей оценкой -->
+      <div class="reviews__overview">
+        <div class="overview__rating">
+          <div class="rating__title">
+            <span class="rating__value">4.9</span>
+            <div class="rating__stars">
+              <span v-for="star in 5" :key="star" class="star filled">★</span>
             </div>
+          </div>  
+          <span class="rating__count">207 отзывов</span>
         </div>
-    </section>
+      </div>
+
+      <div class="reviews__wrapper">
+        <!-- Кастомные стрелки навигации -->
+        <button class="custom-nav custom-nav--prev" @click="prev">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        
+        <Carousel
+          ref="carouselRef"
+          v-model="currentSlide"
+          :items-to-show="itemsToShow"
+          :wrap-around="true"
+          snap-align="start"
+          :transition="500"
+        >
+          <Slide v-for="review in reviews" :key="review.id">
+            <div class="reviews__item" :class="{ expanded: expandedReviews.includes(review.id) }">
+              <div class="review__header">
+                <div class="review__user">
+                  <img :src="review.avatar" :alt="review.name" class="review__avatar" />
+                  <span class="review__name">{{ review.name }}</span>
+                </div>
+                <div class="review__rating">
+                  <span v-for="star in 5" :key="star" class="star" :class="{ filled: star <= review.rating }">★</span>
+                </div>
+              </div>
+              <div class="review__content">
+                <p class="review__text">{{ review.text }}</p>
+                <div class="review__fade" v-if="!expandedReviews.includes(review.id)"></div>
+              </div>
+              <div class="review__footer">
+                <span class="review__date">{{ review.date }}</span>
+                <button 
+                  class="review__expand-btn" 
+                  @click="toggleExpand(review.id)"
+                >
+                  {{ expandedReviews.includes(review.id) ? 'Свернуть' : 'Читать далее' }}
+                </button>
+              </div>
+            </div>
+          </Slide>
+
+          <template #addons>
+            <Pagination class="reviews__pagination" />
+          </template>
+        </Carousel>
+        
+        <!-- Кастомные стрелки навигации -->
+        <button class="custom-nav custom-nav--next" @click="next">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped lang="scss">
-.express__section {
+.title{
+    max-width: 1430px;
+    margin: 0 auto;
+    font-size: 22px;
+    padding-bottom: 20px;
+}
+
+.reviews__overview {
+  display: flex;
+  margin-bottom: 30px;
+  
+  .overview__rating {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    .rating__title{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .rating__value {
+      font-size: 32px;
+      font-weight: bold;
+      color: var(--main-color);
+    }
+    
+    .rating__stars {
+      display: flex;
+      
+      .star {
+        color: #ffc107;
+        font-size: 20px;
+      }
+    }
+    
+    .rating__count {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+.reviews {
+  padding: 40px 20px;
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
     position: relative;
-    background: url(/images/bottom__form-bg.webp) no-repeat center;
-    background-size: cover;
+    overflow: hidden;
+  }
+
+  &__wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  &__item {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 10px 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: height 0.3s ease;
+    
+    &.expanded {
+      height: auto;
+    }
+  }
+
+  .custom-nav {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+    color: black;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    z-index: 10;
+    border: none;
+    cursor: pointer;
+    // background: rgba(255, 255, 255, 0.8);
+    // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      // background: var(--main-color);
+      color: black;
+    }
+
+    &--prev {
+      left: -15px;
+    }
+    
+    &--next {
+      right: -15px;
+    }
+    
+    @media (max-width: 768px) {
+      width: 32px;
+      height: 32px;
+      
+      &--prev {
+        left: -15px;
+      }
+      
+      &--next {
+        right: -15px;
+      }
+    }
+  }
+
+  .review {
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 15px;
+    }
+
+    &__user {
+      display: flex;
+      align-items: center;
+    }
+
+    &__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+
+    &__name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    &__rating {
+      display: flex;
+    }
+
+    &__content {
+      flex: 1;
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    &__text {
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-align: start;
+      
+      .expanded & {
+        display: block;
+        -webkit-line-clamp: unset;
+      }
+    }
+
+    &__fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 100%);
+      
+      .expanded & {
+        display: none;
+      }
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__date {
+      font-size: 12px;
+      color: #666;
+    }
+
+    &__expand-btn {
+      background: none;
+      border: none;
+      color: var(--main-color);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .star {
+    color: #ddd;
+    font-size: 16px;
+    
+    &.filled {
+      color: #ffc107;
+    }
+  }
+
+  /* Пагинация */
+  .reviews__pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+
+    :deep(.carousel__pagination-button) {
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border-radius: 50%;
+      background-color: transparent;
+      border: 1px solid var(--main-color);
+      opacity: 0.4;
+      transition: all 0.3s ease;
+      
+      &::after {
+        display: none;
+      }
+      
+      &.carousel__pagination-button--active {
+        opacity: 1;
+        background-color: var(--main-color);
+      }
+    }
+  }
+}
+
+/* Стили для мобильных устройств */
+@media (max-width: 768px) {
+  .reviews {
+    padding: 40px 15px;
+    
+    &__container {
+      padding: 0 10px;
+    }
+    
+    &__wrapper {
+      margin: 0 -10px;
+    }
+    
+    &__item {
+      padding: 15px;
+      margin: 0 8px;
+      height: 180px;
+    }
+  }
+  
+  .reviews__overview {
+    .overview__rating {
+      .rating__value {
+        font-size: 28px;
+      }
+      
+      .rating__stars {
+        .star {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  
+  /* Убедимся, что карусель занимает всю ширину на мобильных */
+  :deep(.carousel) {
     width: 100%;
-    margin: 30px auto;
-    color: var(--bg-light);
+  }
+  
+  :deep(.carousel__viewport) {
+    overflow: visible;
+  }
+  
+  :deep(.carousel__track) {
+    margin: 0;
+  }
+  
+  :deep(.carousel__slide) {
+    width: calc(100% - 16px) !important;
+    margin: 0 8px;
+  }
+}
 
-    .express__benefits {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        gap: 20px;
-
-        span {
-            position: relative;
-            font-size: 16px;
-            line-height: 30px;
-            padding-left: 50px;
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: 50%;
-                left: 0;
-                transform: translateY(-50%);
-                background: url(/svg/star.svg) no-repeat center;
-                background-size: contain;
-                width: 40px;
-                height: 40px;
-            }
-        }
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+  .reviews {
+    padding: 30px 10px;
+    
+    &__item {
+      margin: 0 5px;
+      padding: 12px;
+      height: 200px;
     }
-
-    .express__content {
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-        align-items: center;
-
-        .form__block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-        }
-
-        .express__title {
-            display: flex;
-            flex-direction: column;
-            align-items: start;
-            margin-bottom: 10px;
-
-            h2 {
-                margin-bottom: 10px;
-            }
-
-            h3 {
-                font-weight: normal;
-            }
-        }
+  }
+  
+  :deep(.carousel__slide) {
+    width: calc(100% - 10px) !important;
+    margin: 0 5px;
+  }
+  
+  .custom-nav {
+    width: 28px !important;
+    height: 28px !important;
+    
+    &--prev {
+      left: -10px !important;
     }
-
-    @media screen and (max-width: 540px) {
-        background: #000;
+    
+    &--next {
+      right: -10px !important;
     }
-
-    & .container {
-        height: 100%;
-
-        @media screen and (max-width: 767px) {
-            display: flex;
-            flex-direction: column;
-        }
-
-        @media screen and (max-width: 540px) {
-            padding: 0 10px;
-        }
-
-        .express__mob-img {
-            display: none;
-
-            @media screen and (max-width: 540px) {
-                display: block;
-                background: url(/images/bottom__form-bg.webp) no-repeat 80% 50%;
-                background-size: cover;
-                height: 260px;
-                margin-left: -20px;
-                margin-right: -20px;
-            }
-
-            @media screen and (max-width: 425px) {
-                height: 200px;
-            }
-
-            @media screen and (max-width: 375px) {
-                height: 180px;
-                margin-left: -10px;
-                margin-right: -10px;
-            }
-        }
-
-        .express__form {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            max-width: max-content;
-            align-items: self-start;
-            width: 100%;
-            height: 100%;
-
-            @media screen and (max-width: 1000px) {
-                flex-direction: column;
-            }
-
-            @media screen and (max-width: 767px) {
-                max-width: 100%;
-                padding: 20px 0;
-            }
-
-            @media screen and (max-width: 540px) {
-                align-items: center;
-            }
-
-            & h2 {
-                font-weight: 800;
-                font-size: 32px;
-                line-height: 42px;
-
-                @media screen and (max-width: 767px) {
-                    font-size: 20px;
-                    line-height: 24px;
-                }
-
-                @media screen and (max-width: 425px) {
-                    font-size: 18px;
-                    line-height: 22px;
-                    text-align: center;
-                }
-
-                @media screen and (max-width: 375px) {
-                    font-size: 16px;
-                    line-height: 20px;
-                }
-            }
-
-            & p {
-                line-height: 20px;
-                background: transparent;
-                margin: 8px 0 18px;
-
-                @media screen and (max-width: 425px) {
-                    margin: 5px 0 10px;
-                    text-align: center;
-                }
-
-                @media screen and (max-width: 375px) {
-                    font-size: 12px;
-                }
-            }
-
-            .express__form-input {
-                max-width: 420px;
-                width: 100%;
-                height: 56px;
-                color: var(--bg-light);
-                background: transparent;
-                border: 1px solid var(--bg-light);
-                border-radius: 12px;
-                padding: 0 20px;
-                margin-bottom: 20px;
-
-                @media screen and (max-width: 540px) {
-                    max-width: 100%;
-                }
-
-                @media screen and (max-width: 425px) {
-                    height: 40px;
-                    border-radius: 38px;
-                    margin-bottom: 16px;
-                }
-            }
-
-            .express__form-input::-webkit-input-placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .express__form-input::-moz-placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .express__form-input::-ms-input-placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .express__form-input::placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .express__form-input:-moz-placeholder-shown {
-                color: var(--bg-light);
-            }
-
-            .express__form-input:placeholder-shown {
-                color: var(--bg-light);
-            }
-
-            .express__form-input:focus {
-                color: var(--bg-light);
-            }
-
-            .express__form-btn {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                max-width: 420px;
-                width: 100%;
-                height: 66px;
-                font-weight: 500;
-                font-size: 15px;
-                line-height: 18px;
-                color: var(--bg-light);
-                background: var(--secondary-color);
-                border: 1px solid var(--secondary-color);
-                border-radius: 12px;
-                margin-top: 4px;
-                transition: all 0.3s ease;
-
-                @media screen and (max-width: 540px) {
-                    max-width: 100%;
-                }
-
-                @media screen and (max-width: 425px) {
-                    height: 48px;
-                    border-radius: 46px;
-                }
-
-                &:hover {
-                    color: var(--secondary-color);
-                    background: transparent;
-                }
-            }
-        }
+    
+    svg {
+      width: 18px;
+      height: 18px;
     }
+  }
 }
 </style>
