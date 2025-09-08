@@ -190,7 +190,7 @@ onBeforeUnmount(() => {
         flex-direction: row;
         height: 100%;
         gap: 30px;
-        @media screen and (max-width: 768px){
+        @media screen and (max-width: 1050px){
             gap: 0px;
             flex-direction: column;
         }
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
                 font-size: 16px;
                 line-height: 30px;
                 gap: 15px;
-                margin: 0;
+                margin: 0px;
             }
 
             @media screen and (max-width: 1023px) {

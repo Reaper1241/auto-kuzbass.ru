@@ -86,7 +86,7 @@ const appStore = useAppStore();
         flex-direction: row;
         height: 100%;
         gap: 30px;
-        @media screen and (max-width: 768px){
+        @media screen and (max-width: 1050px){
             gap: 0px;
             flex-direction: column;
         }
@@ -199,7 +199,7 @@ const appStore = useAppStore();
                 flex-direction: row;
                 margin: 0;
             }
-            @media screen and (max-width: 600px) {
+            @media screen and (max-width: 766px) {
                 display: grid;
                 // margin: 0 20px;
                 grid-template-columns: repeat(1,2fr);

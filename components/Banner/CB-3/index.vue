@@ -443,7 +443,7 @@ onBeforeUnmount(() => {
         flex-direction: row;
         height: 100%;
         gap: 30px;
-        @media screen and (max-width: 768px){
+        @media screen and (max-width: 1000px){
             gap: 0px;
             flex-direction: column;
         }
