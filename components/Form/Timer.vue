@@ -75,12 +75,12 @@ const handleFormSubmit = (formData) => {
 }  
 :deep(.form-input){
     height: 40px;
-    background: none;
+    background: white;
     border: 1px solid white;
     // width: 48%;
 }   
 :deep(input){
-    color: white;
+    color: black;
 }
 :deep(.base-button){
     margin-left: 5px;

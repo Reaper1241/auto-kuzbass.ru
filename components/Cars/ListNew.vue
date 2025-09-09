@@ -187,6 +187,7 @@ const canLoadMore = computed(() => {
     scroll-margin-top: 15vh;
 
     .cars__content {
+        margin-top: 15px;
         display: flex;
         flex-direction: column;
 

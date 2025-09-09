@@ -16,7 +16,7 @@ const appStore = useAppStore();
                 </div>
                 <div class="banner__card">
                     <img class="banner-img" src="/public/images/kashback.svg" alt="">
-                    <span>Кэшбек 100% на 4 платежа</span>
+                    <span>3 платежа в подарок</span>
                 </div>
                 <div class="banner__card">
                     <img class="banner-img" src="/public/images/stavka.svg" alt="">
