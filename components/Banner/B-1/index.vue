@@ -1,309 +1,232 @@
 <script setup>
+import { ref, computed } from 'vue';
+import { useNewStore } from '/stores/NewStore.js';
 import { useAppStore } from '/stores/AppStore.js';
+
+const newStore = useNewStore();
 const appStore = useAppStore();
+
+const currentModel = computed(() => newStore.model);
+
+// Состояния переключателей
+const tradeSwitch = ref(true);
+const creditSwitch = ref(true);
+const salonSwitch = ref(true);
+
+// Вычисляемые скидки
+const tradeSale = computed(() => currentModel.value.sale * appStore.tradeCalcPercent);
+const creditSale = computed(() => currentModel.value.sale * appStore.creditCalcPercent);
+const salonSale = computed(() => currentModel.value.sale * appStore.salonCalcPercent);
+
+// Общая скидка с сохранением в хранилище
+const totalSale = computed(() => {
+    let total = 0;
+    if (tradeSwitch.value) total += tradeSale.value;
+    if (creditSwitch.value) total += creditSale.value;
+    if (salonSwitch.value) total += salonSale.value;
+    newStore.modelSale = total; // Сохраняем в хранилище
+    return total;
+});
+
+// Функции для переключения скидок
+const toggleTrade = () => {
+    tradeSwitch.value = !tradeSwitch.value;
+};
+
+const toggleCredit = () => {
+    creditSwitch.value = !creditSwitch.value;
+};
+
+const toggleSalon = () => {
+    salonSwitch.value = !salonSwitch.value;
+};
+
+// Форматирование чисел
+const makeSpaces = (number) => {
+    return number ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : '0';
+};
+
+// Получение даты следующего понедельника
+const getNextMonday = () => {
+    const today = new Date();
+    const nextMonday = new Date(today);
+    nextMonday.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7));
+    return nextMonday.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+};
 </script>
 
 <template>
-    <section class="express-brand__section section">
-        <div class="container bottom__container">
-            <h2>
-                <!-- Экспресс-кредит на авто под <span>такси</span> -->
-            </h2>
-            <div class="banners">
-                <span>Без первоначального взноса.</span>
-                <span>Одобрение в 96%</span>
-                <span>Каско или зимняя резина в подарок</span>
-                <span>От 6 месяцев до 7 лет</span>
+    <div class="sale-calculator">
+        <!-- Trade-In скидка -->
+        <div class="sale-calculator__item trade">
+            <div class="sale-calculator__text" :class="{ 'active': tradeSwitch }">
+                <span class="text">Скидка при покупке авто в Trade-In</span>
+                <span class="money">{{ makeSpaces(tradeSale) }} ₽</span>
             </div>
-            <!-- <FormBanner class="express-brand__form" /> -->
+            <div class="sale-calculator__switch" :class="{ 'active': tradeSwitch }" @click="toggleTrade">
+                <div class="switch" :class="{ 'active': tradeSwitch }" @click="toggleTrade">
+                    <input type="checkbox" id="switch" :checked="tradeSwitch" hidden />
+                    <label for="switch" class="switch-label" :class="{ 'active': tradeSwitch }" @click="toggleTrade"></label>
+                </div>
+            </div>
         </div>
-    </section>
+
+        <!-- Кредитная скидка -->
+        <div class="sale-calculator__item credit">
+            <div class="sale-calculator__text" :class="{ 'active': creditSwitch }">
+                <span class="text">Скидка при покупке авто в кредит</span>
+                <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
+            </div>
+            <div class="sale-calculator__switch" :class="{ 'active': creditSwitch }" @click="toggleCredit">
+                <div class="switch" :class="{ 'active': creditSwitch }" @click="toggleCredit">
+                    <input type="checkbox" id="credit" :checked="creditSwitch" hidden />
+                    <label for="credit" class="switch-label" :class="{ 'active': creditSwitch }" @click="toggleCredit"></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Скидка салона -->
+        <div class="sale-calculator__item salon">
+            <div class="sale-calculator__text" :class="{ 'active': salonSwitch }">
+                <span class="text">Скидка от автосалона при покупке авто</span>
+                <span class="money">{{ makeSpaces(salonSale) }} ₽</span>
+            </div>
+            <div class="sale-calculator__switch" :class="{ 'active': salonSwitch }" @click="toggleSalon">
+                <div class="switch" :class="{ 'active': salonSwitch }" @click="toggleSalon">
+                    <input type="checkbox" id="salon" :checked="salonSwitch" hidden />
+                    <label for="salon" class="switch-label" :class="{ 'active': salonSwitch }" @click="toggleSalon"></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Итоговая скидка -->
+        <div class="sale-calculator__item total" :class="{ 'activeTotal': tradeSwitch || creditSwitch || salonSwitch }">
+            <div class="sale-calculator__text">
+                Итоговая скидка: <span class="sale-calculator__money">{{ makeSpaces(totalSale) }} ₽</span>
+                <span class="date">
+                    до {{ getNextMonday() }}
+                </span>
+            </div>
+        </div>
+    </div>
 </template>
-
-
-<style scoped lang="scss">
-.express-brand__section {
-    background: url(/public/images/china__bg.webp) no-repeat 50% 50%;
-    background-size: cover;
-    max-width: 1920px;
+<style lang="scss" scoped>
+.sale-calculator {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 30px;
     width: 100%;
-    margin: 30px auto;
-    color: var(--bg-light);
-
-    @media screen and (max-width: 540px) {
-        background: url(/public/images/china__bg.webp) no-repeat 31% 50%;
-        background-size: cover;
-    }
-
-    .bottom__container {
+    @media screen and (max-width: 1400px) {
         display: flex;
         flex-direction: column;
-        height: 100%;
-        gap: 30px;
+        gap: 5px;
+        margin-top: 30px;
 
-        .express-brand__form {
-            display: flex;
-            align-items: self-start;
+    }
 
-            @media screen and (max-width: 1000px) {
-                flex-direction: column;
+    @media screen and (max-width: 1150px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media screen and (max-width: 768px) {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 0px;
+    }
+}
+
+.switch {
+    input:checked+label {
+        background-color: var(--main-color);
+    }
+
+    input:focus+label {
+        box-shadow: 0 0 1px var(--main-color);
+    }
+}
+
+.sale-calculator__item {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    align-items: center;
+    padding: 10px 15px;
+    justify-content: space-between;
+    border-radius: 2px;
+    border: 1px solid var(--main-color);
+
+    .sale-calculator__text {
+        display: flex;
+        flex-direction: column;
+        white-space: nowrap;
+        gap: 0;
+        color: var(--dark-grey);
+        
+        @media screen and (max-width: 768px) {
+            white-space: wrap;
+        }
+        .sale-calculator__money {
+            font-size: var(--large-size);
+            font-weight: 600;
+            color: inherit;
+        }
+
+        .text {
+            font-size: var(--standart-size);
+        
+            color: inherit;
+            @media screen and (max-width: 420px){
+                width: 200px;
+            }
+            @media screen and (max-width: 357px){
+                width: 100%;
             }
         }
 
-        h2 {
-            position: relative;
-            font-weight: 800;
-            font-size: 32px;
-            line-height: 42px;
-            margin-top: 74px;
-
-            @media screen and (max-width: 1023px) {
-                font-size: 28px;
-                line-height: 30px;
-                margin-top: 40px;
-            }
-
-            @media screen and (max-width: 767px) {
-                font-size: 19px;
-                line-height: 22px;
-                margin-top: 30px;
-            }
-
-            @media screen and (max-width: 540px) {
-                line-height: 30px;
-                max-width: 320px;
-            }
-
-            @media screen and (max-width: 425px) {
-                max-width: 250px;
-            }
-
-            &::before {
-                content: "";
-                position: absolute;
-                top: calc(50% - 2px);
-                left: -265px;
-                width: 250px;
-                height: 4px;
-                background: var(--bg-light);
-
-                @media screen and (max-width: 1600px) {
-                    content: none;
-                }
-            }
-
-            & span {
-                position: relative;
-                display: inline-block;
-                // color: var(--taxi);
-                padding-right: 42px;
-
-                @media screen and (max-width: 540px) {
-                    padding-right: 0;
-                }
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: -5px;
-                    right: 0;
-                    width: 40px;
-                    height: 16px;
-                    // background: url(/svg/taxi.svg) no-repeat center;
-                    background-size: contain;
-
-                    @media screen and (max-width: 540px) {
-                        top: 0;
-                        right: -42px;
-                    }
-                }
-            }
-        }
-
-        .banners {
-            position: relative;
-            top: 40px;
+        .money {
+            font-size: var(--large-size);
             font-weight: 500;
-            font-size: 20px;
-            line-height: 40px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            margin-top: 30px;
-            
-            @media screen and (max-width: 1200px) {
-                font-size: 16px;
-                line-height: 30px;
-                gap: 15px;
-            }
-
-            // @media screen and (max-width: 1023px) {
-            //     flex-wrap: wrap;
-            //     justify-content: flex-end;
-            // }
-
-            @media screen and (max-width: 1023px) {
-                display:grid;
-                top: 30px;
-                grid-template-columns: repeat(2,1fr);
-                justify-content: center;
-            }
-            @media screen and (max-width: 616px) {
-                display:grid;
-                // top: 0px;
-                align-items: center;
-                top: -45px;
-                grid-template-columns: repeat(1,1fr);
-                justify-content: center;
-            }
-
-            & span {
-                position: relative;
-                padding-left: 50px;
-                display: flex;
-                background: var(--main-color);
-                padding: 20px 20px 20px 20px;
-                align-items: center;
-                border-radius: 4px;
-                @media screen and (max-width: 1200px) {
-                    padding-left: 40px;
-                }
-                @media screen and (max-width: 767px){
-                    width: 100%;
-                    text-wrap: nowrap;
-                }
-                @media screen and (max-width: 616px){
-                    width: 100%;
-                    text-wrap: wrap;
-                }
-
-                &::before {
-                    content: "";
-                    position: absolute;
-                    top: 10px;
-                    
-                    left: 5px;
-                    display: flex;
-                    align-items: center;
-                    // background: url(/svg/star.svg) no-repeat center;
-                    background-size: contain;
-                    width: 40px;
-                    height: 40px;
-
-                    @media screen and (max-width: 1200px) {
-                        width: 30px;
-                        height: 30px;
-                    }
-                }
-            }
+            color: inherit;
         }
+    }
 
-        .bottom__form {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 19px;
-            width: 100%;
-            margin-top: auto;
-            margin-bottom: 78px;
-
-            @media screen and (max-width: 1023px) {
-                gap: 15px;
-                margin-bottom: 40px;
-            }
-
-            @media screen and (max-width: 767px) {
-                flex-direction: column;
-                max-width: 300px;
-                margin-left: auto;
-                margin-bottom: 30px;
-            }
-
-            @media screen and (max-width: 540px) {
-                max-width: 100%;
-            }
-
-            .bottom__form-input {
-                width: 100%;
-                height: 56px;
-                color: var(--bg-light);
-                background: transparent;
-                border: 1px solid var(--bg-light);
-                border-radius: 12px;
-                padding: 0 20px;
-
-                @media screen and (max-width: 767px) {
-                    max-width: 100%;
-                    height: 44px;
-                }
-
-                @media screen and (max-width: 540px) {
-                    background: #000;
-                }
-            }
-
-            .bottom__form-input::-webkit-input-placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-input::-moz-placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-input::-ms-input-placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-input::placeholder {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-inputt:-moz-placeholder-shown {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-input:placeholder-shown {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-input:focus {
-                color: var(--bg-light);
-                opacity: 1;
-            }
-
-            .bottom__form-btn {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                height: 56px;
-                font-weight: 500;
-                font-size: 15px;
-                line-height: 18px;
-                background: var(--taxi);
-                border: 1px solid var(--taxi);
-                border-radius: 12px;
-                transition: all 0.3s ease;
-
-                @media screen and (max-width: 767px) {
-                    height: 44px;
-                    border-radius: 12px;
-                }
-
-                &:hover {
-                    color: var(--taxi);
-                    background: transparent;
-                }
-            }
+    .sale-calculator__text.active {
+        .money {
+            color: var(--main-color);
         }
+    }
+
+    @media screen and (max-width: 540px) {
+
+        // flex-direction: column;
+        align-items: start;
+        gap: 10px;
+    }
+
+}
+
+.sale-calculator__item.active {
+    border: 1px solid var(--main-color);
+}
+
+.sale-calculator__item.activeTotal {
+    background-color: var(--main-color);
+    color: white;
+    border: 1px solid var(--main-color);
+
+    .sale-calculator__text {
+        color: inherit;
+    }
+}
+
+.sale-calculator__item.total {
+    align-items: center;
+    justify-content: start;
+    
+    @media screen and (max-width: 540px) {
+        justify-content: center;
     }
 }
 </style>

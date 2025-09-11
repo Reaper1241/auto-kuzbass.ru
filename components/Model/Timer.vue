@@ -164,7 +164,7 @@ onBeforeUnmount(() => {
         height: 50px;
         // width: 100%;
         // align-items: center;
-        text-align: start;
+        text-align: center;
         @media screen and (max-width: 767px){
                         font-size: 12px;
                 height: 30px;
