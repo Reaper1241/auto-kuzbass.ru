@@ -32,46 +32,46 @@ const currentPromotion = ref(null);
 const promotions = ref([
     {
         id: 1,
-        title: "Подарок на выбор",
-        type: "Акция",
-        image: "/images/slider/image1.png",
-        description: "Покупая новый автомобиль в нашем автосалоне мы предлагаем КАСКО, зимнюю резину или дополнительный аксессуар."
+        title: "“Комплект зимней резины в подарок”",
+        type: "“Комплект зимней резины в подарок”",
+        image: "/images/sale1.png",
+        description: "Поторопитесь воспользоваться специальным предложением! При приобретении любого автомобиля в нашем автосалоне вы получаете в подарок комплект надежной зимней резины. Не упустите шанс заранее подготовить машину к зимнему сезону и сэкономить. Все детали акции уточняйте у наших специалистов."
     },
     {
         id: 2,
-        title: "\"Первый автомобиль\"",
-        type: "Госпрограмма",
-        image: "/images/slider/image1.png",
-        description: "Программа 'Первый автомобиль' была разработана для оказания поддержки начинающим водителям в приобретении их первого транспортного средства. Она предоставляет выгодные условия льготного автокредитования. Участники программы получают скидку в размере 20% на покупку автомобиля, однако данная выгода действует только при оформлении кредита на автомобиль. Это способствует стимулированию спроса на автомобили отечественного производства и машины, собранные на территории России. Данная инициатива была запущена в 2009 году и продолжает успешно работать по сей день."
+        title: "“Семейный автомобиль”",
+        type: "“Семейный автомобиль”",
+        image: "/images/sale2.png",
+        description: "Юридическая основа этой программы была закреплена поправками, внесенными Постановлением Правительства РФ № 870 от 26.07.2018. В рамках программы предусмотрена компенсация в размере 10% от стоимости нового автомобиля. В результате семья с двумя детьми сможет приобрести автомобиль на 10% дешевле его официальной рыночной цены. При этом общая цена машины с учетом дополнительных опций и страховки не должна превышать 1 миллион рублей."
     },
     {
         id: 3,
-        title: "\"Семейный автомобиль\"",
-        type: "Госпрограмма",
-        image: "/images/slider/image1.png",
-        description: "Наш автосалон предлагает семьям с детьми скидку 20-25% на покупку нового автомобиля. Доступны различные модели автомобилей, новые китайские модели и другие. Все банки, прикрепленные к программе, сотрудничают с нашим автосалоном."
+        title: "“Отечественные авто”",
+        type: "“Отечественные авто”",
+        image: "/images/sale3.png",
+        description: "Хотите приобрести новый автомобиль, но бюджет не позволяет? В нашем автосалоне действует эксклюзивное предложение — российские автомобили стоимостью до 2 миллионов рублей! Большой ассортимент качественных и удобных автомобилей от проверенных отечественных брендов по государственной программе. Не упустите шанс, количество машин по акции ограничено."
     },
     {
         id: 4,
-        title: "Внедорожник",
-        type: "Акция",
-        image: "/images/slider/image1.png",
-        description: "СКИДКА НА АВТОКРЕДИТ - Купите новый автомобиль в кредит, и мы предоставим вам скидку до 300 000 руб. Поскольку мы сотрудничаем с крупнейшими банками России, то гарантируем 96% одобрения на автокредит."
+        title: "“Первый автомобиль”",
+        type: "“Первый автомобиль”",
+        image: "/images/sale4.png",
+        description: "Программа «Первый автомобиль в 2025 году» представляет собой специальную инициативу, предоставляющую возможность оформить государственный кредит на приобретение транспорта. Она предлагает привлекательные условия, включая скидку до 20% от полной стоимости автомобиля. Благодаря таким льготам автокредитование становится особенно выгодным, что позволяет покупателям приобрести машину на оптимальных финансовых условиях. Данная программа способствует развитию спроса на автомобили, произведённые на территории России. Аналогичная инициатива была запущена в 2009 году и продолжает успешно работать по сей день."
     },
-    {
-        id: 5,
-        title: "Седан",
-        type: "Акция",
-        image: "/images/slider/image1.png",
-        description: "БЕЗ ПЕРВОГО ВЗНОСА - Автокредит в нашем салоне доступен без первого взноса, оставьте заявку на сайте и наши банки-партнеры одобрят вашу заявку в течение 30 минут."
-    },
-    {
-        id: 6,
-        title: "Трейд-Ин",
-        type: "Акция",
-        image: "/images/slider/image2.png",
-        description: "При покупке нового авто по программе Trade-In клиенты могут получить выгоду до 250 000 ₽. Оценка, выкуп и полное сопровождение сделки предоставляются бесплатно."
-    }
+    // {
+    //     id: 5,
+    //     title: "Седан",
+    //     type: "Акция",
+    //     image: "/images/slider/image1.png",
+    //     description: "БЕЗ ПЕРВОГО ВЗНОСА - Автокредит в нашем салоне доступен без первого взноса, оставьте заявку на сайте и наши банки-партнеры одобрят вашу заявку в течение 30 минут."
+    // },
+    // {
+    //     id: 6,
+    //     title: "Трейд-Ин",
+    //     type: "Акция",
+    //     image: "/images/slider/image2.png",
+    //     description: "При покупке нового авто по программе Trade-In клиенты могут получить выгоду до 250 000 ₽. Оценка, выкуп и полное сопровождение сделки предоставляются бесплатно."
+    // }
 ]);
 
 // Функции для открытия модальных окон
@@ -115,7 +115,7 @@ const closeInfoModal = () => {
                     <img :src="promotion.image" :alt="promotion.title">
                     <div class="sale__text-container">
                         <p class="sale__img-title">{{ promotion.type }}</p>
-                        <p class="sale__img-text">{{ promotion.title }}</p>
+                        <!-- <p class="sale__img-text">{{ promotion.title }}</p> -->
                     </div>
                 </div>
                 <div class="sale__form">
@@ -145,7 +145,7 @@ const closeInfoModal = () => {
                     <button class="modal-close" @click="closeInfoModal">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
-                    <h3 class="modal-title">{{ currentPromotion?.type }}: {{ currentPromotion?.title }}</h3>
+                    <h3 class="modal-title">{{ currentPromotion?.title }}</h3>
                     <div class="modal-description">
                         <p>{{ currentPromotion?.description }}</p>
                     </div>
@@ -176,21 +176,25 @@ const closeInfoModal = () => {
 
 .sale__block {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 15px;
+    @media screen and (max-width: 1200px) {
+        // padding: 0 10px;
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .sale__card {
     display: flex;
     flex-direction: column;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    // box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.3s ease;
-    
+    gap: 20px;
     &:hover {
         transform: translateY(-5px);
     }
@@ -198,14 +202,26 @@ const closeInfoModal = () => {
 
 .sale__img {
     position: relative;
-    
+    &::before {
+            content: "";
+            position: absolute;
+            border-radius: 10px;
+            top: 0px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.55) 39%, rgba(0, 0, 0, 0) 90%);
+            z-index: 0;
+            pointer-events: none;
+        }
     img {
         width: 100%;
-        height: 500px;
+        height: 200px;
         object-fit: cover;
+        border-radius:8px;
         
         @media (max-width: 767px) {
-            height: 400px;
+            height: 200px;
         }
     }
 }
@@ -228,7 +244,7 @@ const closeInfoModal = () => {
     left: 10px;
     padding: 10px;
     border-radius: 15px;
-    border: 1px solid white;
+    // border: 1px solid white;
     top: 10px;
     font-size: 18px;
     font-weight: 300;
@@ -255,8 +271,8 @@ const closeInfoModal = () => {
 
     .button-info {
         background: white;
-        border: 1px solid black;
-        border-radius: 0 0px 8px 0px;
+        // border: 1px solid black;
+        border-radius: 8px;
         color: black;
         display: flex;
         justify-content: center;
@@ -275,8 +291,8 @@ const closeInfoModal = () => {
         background: var(--main-color);
         color: white;
         display: flex;
-        border: 1px solid black;
-        border-radius: 0 0px 0px 8px;
+        // border: 1px solid black;
+        border-radius: 8px;
         justify-content: center;
         align-items: center;
         width: 65%;
@@ -285,7 +301,7 @@ const closeInfoModal = () => {
         transition: background-color 0.3s;
         
         &:hover {
-            background-color: var(--main-color-dark);
+            background-color: var(--main-color);
         }
     }
 }

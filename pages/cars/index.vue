@@ -13,10 +13,12 @@ function callback(n) {
 <template>
     <Bread />
     <Brands />
+    
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentQuary" />
-
+    <CarsPopular/>
     <BannerEB3 />
+    
     <SEO />
 </template>
 

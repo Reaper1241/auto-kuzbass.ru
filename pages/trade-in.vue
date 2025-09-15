@@ -2,7 +2,7 @@
 
 <template>
     <Bread />
-    <!-- <BannerB2/> -->
+    <BannerB4/>
     <Trade />
     <!-- <BannerSB1 /> -->
     <BannerCB1 />

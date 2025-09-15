@@ -22,8 +22,9 @@ const currentBank = computed(() => {
 
 <template>
     <Bread />
+    <BannerB2/>
     <h2 class="title">Заявка на автокредит от {{ currentBank.percent }}%</h2>
-    <!-- <BannerB1/> -->
+
     <Credit />
     <!-- <BannerSB1 /> -->
     <BannerCB1/>
@@ -35,7 +36,7 @@ const currentBank = computed(() => {
     .title{
         max-width: 1440px;
         margin: 0 auto;
-        padding:0 20px ;
+        padding:30px 20px 0px 20px;
         @media screen and (max-width: 540px) {
             padding: 0 10px;
         }

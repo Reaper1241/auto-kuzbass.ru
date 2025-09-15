@@ -18,10 +18,10 @@ function callback(n) {
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentCarsData" />
     <BannerEB3 />
-    <!-- <CarsPopular/> -->
+    <CarsPopular/>
     <CarsHot />
     <BannerCB1/>
-    <!-- <Sales/> -->
+    <Sales/>
     <ModalAFK />
     <BasePageContent />
     <SEO />
