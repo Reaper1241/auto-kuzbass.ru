@@ -15,7 +15,6 @@ axios.defaults.withCredentials = true
 //     variant: props.car?.color || null
 //   };
 // });
-
 export default function postForm(data, appType, car, category) {
   const appStore = useAppStore()
 
@@ -63,15 +62,12 @@ export default function postForm(data, appType, car, category) {
     navigateTo('/thank');
   } else {
     // Проверяем, был ли уже сегодня заявка с этого IP
-    const today = new Date().toISOString().split('T')[0]; // Получаем текущую дату в формате YYYY-MM-DD
+    const today = new Date().toISOString().split('T')[0];
     const ipKey = `submission_${appStore.ip}_${today}`;
     
-    // Проверяем в localStorage
     const hasSubmittedToday = localStorage.getItem(ipKey);
     
-    // Если уже была заявка сегодня - это дубль
     if (hasSubmittedToday) {
-      // Сохраняем информацию о дублирующей заявке
       localStorage.setItem(ipKey, 'duplicate');
       
       const { $ym } = useNuxtApp()
@@ -82,6 +78,7 @@ export default function postForm(data, appType, car, category) {
         full_name: formData.name ? formData.name : null,
         comment: comment.value ? comment.value : null,
 
+        // Корректная обработка car объекта (может содержать только brand)
         car_id: car ? car.id : null,
         brand: car ? car.brand : null,
         model: car ? car.model : null,
@@ -89,7 +86,7 @@ export default function postForm(data, appType, car, category) {
 
         send_form: 1,
         send_page: window.location.origin + window.location.pathname,
-        source: `https://auto-kuzbass.ru/`, // обязательно должен быть / на конце url
+        source: `https://auto-kuzbass.ru/`,
 
         referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
         entry: appStore.entry ? appStore.entry : null,
@@ -97,7 +94,7 @@ export default function postForm(data, appType, car, category) {
         dealer_id: 329,
 
         application_type_id: appType,
-        is_duplicate: true, // Добавляем флаг дубликата
+        is_duplicate: true,
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -107,22 +104,23 @@ export default function postForm(data, appType, car, category) {
       })
         .then(res => {
           appStore.orderId = res.data
-          car ? yandexEcommercePurchase(appStore.orderId, car) : null;
+          // Проверяем, есть ли достаточно данных для yandexEcommercePurchase
+          if (car && car.id && car.price) {
+            yandexEcommercePurchase(appStore.orderId, car);
+          }
           appStore.formLoading = false;
-          // Редирект на страницу для дублей
-          navigateTo('/thank'); // Страница для повторных заявок
+          navigateTo('/thank');
         })
         .catch(err => {
           appStore.formLoading = false
           console.log('неудача')
           console.log(err)
-          navigateTo('/thank'); // Даже при ошибке редиректим на страницу для дублей
+          navigateTo('/thank');
         })
         .finally(() => {
           appStore.formLoading = false
         })
     } else {
-      // Первая заявка сегодня
       localStorage.setItem(ipKey, 'submitted');
       
       const { $ym } = useNuxtApp()
@@ -133,6 +131,7 @@ export default function postForm(data, appType, car, category) {
         full_name: formData.name ? formData.name : null,
         comment: comment.value ? comment.value : null,
 
+        // Корректная обработка car объекта (может содержать только brand)
         car_id: car ? car.id : null,
         brand: car ? car.brand : null,
         model: car ? car.model : null,
@@ -140,7 +139,7 @@ export default function postForm(data, appType, car, category) {
 
         send_form: 1,
         send_page: window.location.origin + window.location.pathname,
-        source: `https://auto-kuzbass.ru/`, // обязательно должен быть / на конце url
+        source: `https://auto-kuzbass.ru/`,
 
         referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
         entry: appStore.entry ? appStore.entry : null,
@@ -148,7 +147,7 @@ export default function postForm(data, appType, car, category) {
         dealer_id: 329,
 
         application_type_id: appType,
-        is_duplicate: false, // Добавляем флаг первой заявки
+        is_duplicate: false,
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -158,16 +157,18 @@ export default function postForm(data, appType, car, category) {
       })
         .then(res => {
           appStore.orderId = res.data
-          car ? yandexEcommercePurchase(appStore.orderId, car) : null;
+          // Проверяем, есть ли достаточно данных для yandexEcommercePurchase
+          if (car && car.id && car.price) {
+            yandexEcommercePurchase(appStore.orderId, car);
+          }
           appStore.formLoading = false;
-          // Редирект на страницу для первых заявок
-          navigateTo('/success-auto-kuzbass'); // Страница для первых заявок
+          navigateTo('/success-auto-kuzbass');
         })
         .catch(err => {
           appStore.formLoading = false
           console.log('неудача')
           console.log(err)
-          navigateTo('/success-auto-kuzbass'); // Даже при ошибке редиректим на страницу для первых заявок
+          navigateTo('/success-auto-kuzbass');
         })
         .finally(() => {
           appStore.formLoading = false
@@ -175,7 +176,6 @@ export default function postForm(data, appType, car, category) {
     }
   }
 }
-
 
 
 // import axios from 'axios'

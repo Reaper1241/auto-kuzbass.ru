@@ -1,7 +1,9 @@
 <script setup>
 import Input from '@/components/Base/Input.vue';
-
 import { options, name, errors } from "@/constants/";
+import { useNewStore } from '/stores/NewStore.js';
+
+const newStore = useNewStore();
 
 const formFields = shallowRef([
     { 
@@ -14,7 +16,6 @@ const formFields = shallowRef([
             class: 'form-input', 
             type: 'text', 
             maska: name,
-            
         } 
     },
     { 
@@ -28,20 +29,44 @@ const formFields = shallowRef([
             class: 'form-input', 
             type: 'tel', 
             maska: options,
-            
+        } 
+    },
+    // скрытое поле для марки
+    { 
+        name: 'brand', 
+        component: 'input', 
+        bindings: { 
+            type: 'hidden',
+            modelValue: newStore?.brand?.brand || '' 
         } 
     },
 ]);
 
+// Создаем объект car только с брендом
+const car = computed(() => {
+  return newStore?.brand?.brand ? {
+    brand: newStore.brand.brand,
+    id: null,
+    model: null,
+    price: null
+  } : null;
+});
+
 const handleFormSubmit = (formData) => {
+    // сюда прилетят все данные включая brand
     console.log('Форма отправлена!', formData);
 };
 </script>
 
 <template>
-    <BaseForm :fields="formFields" @submit="handleFormSubmit" :submit-text="`Оставить заявку`" :appType="9" />
+    <BaseForm 
+        :fields="formFields" 
+        @submit="handleFormSubmit" 
+        :submit-text="`Оставить заявку`" 
+        :appType="9"
+        :car="car" 
+    />
 </template>
-
 <style scoped lang="scss">
 .contact__form-form {
     display: grid;
