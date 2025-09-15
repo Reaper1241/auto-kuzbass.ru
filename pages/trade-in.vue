@@ -6,6 +6,7 @@
     <Trade />
     <!-- <BannerSB1 /> -->
     <BannerCB1 />
+    <Sales/>
     <ModalAFK />
     <SEO />
 </template>

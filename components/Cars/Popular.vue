@@ -1,159 +1,131 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
+import { apiNew } from '@/constants'
+import { useAppStore } from '/stores/AppStore.js'
+// import CarSmallC1 from '@/components/CarSmallC1.vue'
 
-const router = useRouter();
-const currentIndex = ref(0);
-const visibleSlides = ref(4);
-const trackRef = ref(null);
-const startX = ref(0);
-const currentX = ref(0);
-const isDragging = ref(false);
+// store
+const appStore = useAppStore()
+const router = useRouter()
 
-// Массив авто с ссылкой на страницу
-const cars = ref([
-  { brand: 'Haval',model:'New Jolion', image: '/images/jolion.png', link: '/cars/haval/jolion_new' },
-  { brand: 'ВАЗ (Lada)',model:'XRay', image: '/images/xray.png', link: '/cars/lada/xray' },
-  { brand: 'Москвич',model:'3', image: '/images/3.png', link: '/cars/Москвич/3' },
-  { brand: 'Kia',model:'Rio', image: '/images/rio.png', link: '/cars/kia/rio' },
-  { brand: 'Kia',model:'Seltos', image: '/images/seltos.png', link: '/cars/kia/seltos' },
-]);
+// данные
+const cars = ref([])
+const loading = ref(true)
 
-// Переключение слайдов с зацикливанием
+fetchClientWrapper(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&car_tag_id=2`)
+  .then(res => res.json())
+  .then(data => cars.value = data.cars.data)
+  .then(() => loading.value = false)
+
+// состояние слайдера
+const currentIndex = ref(0)
+const visibleSlides = ref(4)
+const trackRef = ref(null)
+const startX = ref(0)
+const currentX = ref(0)
+const isDragging = ref(false)
+
+// переключение
 const nextSlide = () => {
   if (currentIndex.value < cars.value.length - visibleSlides.value) {
-    currentIndex.value++;
+    currentIndex.value++
   } else {
-    currentIndex.value = 0; // Возвращаемся к началу
+    currentIndex.value = 0
   }
-};
+}
 
 const prevSlide = () => {
   if (currentIndex.value > 0) {
-    currentIndex.value--;
+    currentIndex.value--
   } else {
-    // Переходим к последней возможной позиции
-    currentIndex.value = Math.max(0, cars.value.length - visibleSlides.value);
+    currentIndex.value = Math.max(0, cars.value.length - visibleSlides.value)
   }
-};
+}
 
-// Стиль трансформации карусели
+// стили
 const trackStyle = computed(() => ({
   transform: `translateX(calc(-${currentIndex.value * (100 / visibleSlides.value)}% + ${isDragging.value ? currentX.value - startX.value : 0}px))`,
   transition: isDragging.value ? 'none' : 'transform 0.4s ease'
-}));
+}))
 
-// Изменяем количество видимых слайдов
+// responsive
 const setVisibleSlides = (count) => {
-  visibleSlides.value = count;
-  // Корректируем текущий индекс при изменении количества видимых слайдов
+  visibleSlides.value = count
   if (currentIndex.value > cars.value.length - visibleSlides.value) {
-    currentIndex.value = Math.max(0, cars.value.length - visibleSlides.value);
+    currentIndex.value = Math.max(0, cars.value.length - visibleSlides.value)
   }
-};
+}
 
-// Функция для обновления видимых слайдов
 const updateVisibleSlides = () => {
-  const width = window.innerWidth;
+  const width = window.innerWidth
+  if (width < 768) setVisibleSlides(1)
+  else if (width < 1024) setVisibleSlides(2)
+  else if (width < 1280) setVisibleSlides(3)
+  else setVisibleSlides(4)
+}
 
-  if (width < 768) setVisibleSlides(1);
-  else if (width < 1024) setVisibleSlides(2);
-  else if (width < 1280) setVisibleSlides(3);
-  else setVisibleSlides(4);
-};
-
-// Обработчики для свайпа
+// свайпы
 const handleTouchStart = (e) => {
-  if (window.innerWidth >= 768) return; // Только для мобильных
-  
-  isDragging.value = true;
-  startX.value = e.touches[0].clientX;
-  currentX.value = e.touches[0].clientX;
-};
+  if (window.innerWidth >= 768) return
+  isDragging.value = true
+  startX.value = e.touches[0].clientX
+  currentX.value = e.touches[0].clientX
+}
 
 const handleTouchMove = (e) => {
-  if (!isDragging.value || window.innerWidth >= 768) return;
-  
-  currentX.value = e.touches[0].clientX;
-  e.preventDefault(); // Предотвращаем скролл страницы
-};
+  if (!isDragging.value || window.innerWidth >= 768) return
+  currentX.value = e.touches[0].clientX
+  e.preventDefault()
+}
 
 const handleTouchEnd = () => {
-  if (!isDragging.value || window.innerWidth >= 768) return;
-  
-  isDragging.value = false;
-  const diff = currentX.value - startX.value;
-  const threshold = 50; // Минимальное расстояние для свайпа
-
+  if (!isDragging.value || window.innerWidth >= 768) return
+  isDragging.value = false
+  const diff = currentX.value - startX.value
+  const threshold = 50
   if (Math.abs(diff) > threshold) {
-    if (diff > 0) {
-      // Свайп вправо - предыдущий слайд
-      prevSlide();
-    } else {
-      // Свайп влево - следующий слайд
-      nextSlide();
-    }
+    diff > 0 ? prevSlide() : nextSlide()
   }
-};
+}
 
-// Обработчики для мыши (для тестирования на десктопе)
+// мышь
 const handleMouseDown = (e) => {
-  if (window.innerWidth >= 768) return;
-  
-  isDragging.value = true;
-  startX.value = e.clientX;
-  currentX.value = e.clientX;
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseUp);
-};
+  if (window.innerWidth >= 768) return
+  isDragging.value = true
+  startX.value = e.clientX
+  currentX.value = e.clientX
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+}
 
 const handleMouseMove = (e) => {
-  if (!isDragging.value) return;
-  
-  currentX.value = e.clientX;
-};
+  if (!isDragging.value) return
+  currentX.value = e.clientX
+}
 
 const handleMouseUp = () => {
-  if (!isDragging.value) return;
-  
-  isDragging.value = false;
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-  
-  const diff = currentX.value - startX.value;
-  const threshold = 50;
-
+  if (!isDragging.value) return
+  isDragging.value = false
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+  const diff = currentX.value - startX.value
+  const threshold = 50
   if (Math.abs(diff) > threshold) {
-    if (diff > 0) {
-      prevSlide();
-    } else {
-      nextSlide();
-    }
+    diff > 0 ? prevSlide() : nextSlide()
   }
-};
+}
 
 onMounted(() => {
-  updateVisibleSlides();
-  window.addEventListener('resize', updateVisibleSlides);
-});
+  updateVisibleSlides()
+  window.addEventListener('resize', updateVisibleSlides)
+})
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateVisibleSlides);
-  document.removeEventListener('mousemove', handleMouseMove);
-  document.removeEventListener('mouseup', handleMouseUp);
-});
-
-const goToCarPage = (link) => {
-  router.push(link)
-    .then(() => {
-      window.location.reload();
-    })
-    .catch(error => {
-      if (error.name !== 'NavigationDuplicated') {
-        window.location.href = link;
-      }
-    });
-};
+  window.removeEventListener('resize', updateVisibleSlides)
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+})
 </script>
 
 <template>
@@ -162,7 +134,7 @@ const goToCarPage = (link) => {
       <div class="cars-hot__wrapper">
         <h2 class="cars-hot__title">Популярные авто</h2>
 
-        <div class="carousel">
+        <div class="carousel" v-if="!loading">
           <button class="arrow left" @click="prevSlide">‹</button>
 
           <div class="carousel-window">
@@ -177,26 +149,36 @@ const goToCarPage = (link) => {
             >
               <div 
                 class="car" 
-                v-for="(car, index) in cars" 
-                :key="index"
+                v-for="car in cars" 
+                :key="car.id"
                 :style="{ flex: `0 0 ${100 / visibleSlides}%` }"
               >
-                <div class="car-card">
-                  <h3 class="car-name">{{ car.brand }}</h3>
-                  <h3 class="car-model">{{ car.model }}</h3>
-                  <img class="car-image" :src="car.image" :alt="car.brand + ' ' + car.model">
-                  <button class="car-btn" @click="goToCarPage(car.link)">Подробнее</button>
-                </div>
+                <!-- твоя готовая карточка -->
+                <CarSmallC2 :car="car" />
               </div>
             </div>
           </div>
 
           <button class="arrow right" @click="nextSlide">›</button>
         </div>
+
+        <div v-else class="carousel-window">
+          <div class="carousel-track">
+            <div class="car" v-for="n in appStore.currentPerPage" :key="n">
+              <div class="skeleton-car">
+                <div class="image skeleton" />
+                <div class="small-text skeleton" />
+                <div class="text skeleton" />
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 </template>
+
 
 <style scoped lang="scss">
 .cars-hot {

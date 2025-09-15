@@ -28,6 +28,7 @@ const currentBank = computed(() => {
     <Credit />
     <!-- <BannerSB1 /> -->
     <BannerCB1/>
+    <Sales/>
     <ModalAFK />
     <SEO />
 </template>
