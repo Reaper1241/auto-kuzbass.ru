@@ -89,8 +89,8 @@ onBeforeUnmount(() => {
         <!-- Левый блок -->
         <div class="timer__block">
           <h2 class="timer__title">
-            Дополнительная скидка при покупке авто в кредит +
-            <span>КАСКО в подарок.</span> Акция ограничена!
+            Мы сохранили старые цены, успейте до повышения
+            <span>ставок! </span>
           </h2>
           <div class="timer" :data-time="targetDate">
             <div class="time-count__item time-count__days">
