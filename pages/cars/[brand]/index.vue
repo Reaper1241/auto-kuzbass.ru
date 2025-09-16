@@ -60,7 +60,7 @@ if (brand) {
             </div>
           
         <BannerMB4 />
-        <BannerB3/>  
+        <!-- <BannerB3/>   -->
         <NewModels />
         <BannerCB2 />
         <CarsListNew />
