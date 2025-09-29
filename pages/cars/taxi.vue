@@ -6,7 +6,7 @@ definePageMeta({
 
 <template>
     <div class="title">
-        <BasePageTitle />
+        <!-- <BasePageTitle /> -->
     </div>
     <Bread />
     <TaxiBanner />

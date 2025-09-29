@@ -91,6 +91,7 @@ function setSeo() {
                 "cars-used": "Каталог автомобилей c пробегом",
                 "cars": "Каталог автомобилей",
                 "banks": "Банки-партнеры",
+                "sales": "Акции",
                 "reviews": "Отзывы",
                 "comparison": "Сравнение",
                 "favorites": "Избранное",
@@ -352,14 +353,18 @@ function setSeo() {
         }
 
         useHead({
-            title: `${cleanUpTitle(title.value)}`,
+            title: cleanUpTitle(title.value),
             meta: [
-                { name: 'description', content: `${cleanUpTitle(description.value)}` },
-                { name: 'og:title', content: `${cleanUpTitle(title.value)}` },
-                { name: 'og:description', content: `${cleanUpTitle(description.value)}` },
-                { name: 'og:url', content: `${appStore.siteUrl}${$route.path}` },
-                { name: 'og:url', content: `${appStore.siteUrl}${$route.path}` },
-                { name: 'canonical', content: `${appStore.siteUrl}${$route.path}` }
+                { name: 'description', content: cleanUpTitle(description.value) },
+                { property: 'og:title', content: cleanUpTitle(title.value) },
+                { property: 'og:description', content: cleanUpTitle(description.value) },
+                { property: 'og:url', content: `${appStore.siteUrl}${$route.path}` },
+            ],
+            link: [
+                {
+                    rel: 'canonical',
+                    href: `${appStore.siteUrl}${$route.path}`,
+                },
             ],
             script: [
                 {
@@ -374,12 +379,16 @@ function setSeo() {
                     type: 'application/ld+json',
                     innerHTML: schemaBread.value,
                 },
-                schemaProduct.value ? {
-                    type: 'application/ld+json',
-                    innerHTML: schemaProduct.value,
-                } : '',
+                ...(schemaProduct.value
+                ? [
+                    {
+                        type: 'application/ld+json',
+                        innerHTML: schemaProduct.value,
+                    },
+                    ]
+                : []),
             ],
-        })
+        });
     } catch (error) {
         console.log(error)
     }

@@ -23,7 +23,7 @@ const currentBank = computed(() => {
 <template>
     <Bread />
     <BannerB2/>
-    <h2 class="title">Заявка на автокредит от {{ currentBank.percent }}%</h2>
+    <!-- <h2 class="title">Заявка на автокредит от {{ currentBank.percent }}%</h2> -->
 
     <Credit />
     <!-- <BannerSB1 /> -->
