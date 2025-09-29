@@ -125,17 +125,17 @@ watch($route, () => showBurger.value = false)
             <div class="container">
                 <div class="header__top-content">
                     <div class="header__top-adress">
-                        <img src="/svg/Vector4.svg" class="svg__logo" alt="" />
+                        <img src="/svg/Vector4.svg" class="svg__logo" alt="Vector" />
                         {{ appStore.address }}
                     </div>
                     <div class="header__top-phone">
                         <!-- Для мобильных - звонок (если рабочее время), для десктопа - модалка -->
                         <a v-if="isMobile && isWorkingHours" :href="`tel:${appStore.phone.replace(/[^0-9+]/g, '')}`" class="header__top-phone-link">
-                            <img src="/svg/Vector5.svg" class="svg__logo" alt="" />
+                            <img src="/svg/Vector5.svg" class="svg__logo" alt="Vector" />
                             {{ appStore.phone }}
                         </a>
                         <button v-else class="header__top-phone-link" @click="handlePhoneClick">
-                            <img src="/svg/Vector5.svg" class="svg__logo" alt="" />
+                            <img src="/svg/Vector5.svg" class="svg__logo" alt="Vector" />
                             {{ appStore.phone }}
                         </button>
                     </div>
@@ -182,10 +182,10 @@ watch($route, () => showBurger.value = false)
                         <div class="header__call">
                             <!-- Иконка телефона - на мобилке звонок (если рабочее время), на десктопе модалка -->
                             <a v-if="isMobile && isWorkingHours" :href="`tel:${appStore.phone.replace(/[^0-9+]/g, '')}`" class="header__call-link">
-                                <img src="/svg/Vector5.svg" alt="" />
+                                <img src="/svg/Vector5.svg" alt="Vector" />
                             </a>
                             <button v-else class="header__call-link" @click="handlePhoneClick">
-                                <img src="/svg/Vector5.svg" alt="" />
+                                <img src="/svg/Vector5.svg" alt="Vector" />
                             </button>
                         </div>
                         <div class="header__menu mobile-menu" @click="toggleBurger()" :class="{ 'active': showBurger }">

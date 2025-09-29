@@ -8,8 +8,8 @@ const props = defineProps(['complectation', 'image'])
 <template>
     <div class="complectations__card section" v-if="complectation">
         <div class="complectations__card-img">
-            <NuxtImg lazy format="webp" quality="90" loading="lazy" :src="`${image}`" alt="" v-if="image" />
-            <NuxtImg lazy format="webp" quality="90" loading="lazy" src="/images/no_image.webp" alt="" v-else />
+            <NuxtImg lazy format="webp" quality="90" loading="lazy" :src="`${image}`" alt="Vector" v-if="image" />
+            <NuxtImg lazy format="webp" quality="90" loading="lazy" src="/images/no_image.webp" alt="Vector" v-else />
         </div>
         <div class="complectations__card-header">
             <div class="complectations__card-title">

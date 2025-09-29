@@ -48,7 +48,7 @@ function modalShow() {
                     <h2 class="modal__title">Отчет от {{ getCurrentData() }}</h2>
                     <div class="modal__head">
                         <div class="modal__head-image">
-                            <NuxtImg lazy format="webp" quality="90" :src="`${props.carInfo.images[0].url}`" alt="" />
+                            <NuxtImg lazy format="webp" quality="90" :src="`${props.carInfo.images[0].url}`" alt="Vector" />
                         </div>
                         <div class="modal__head-info">
                             <h3 class="modal__subtitle">

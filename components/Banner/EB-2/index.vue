@@ -11,19 +11,19 @@ const appStore = useAppStore();
             </h2>
             <div class="cont">
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/kasko.svg" alt="">
+                    <img class="banner-img" src="/public/images/kasko.svg" alt="Vector">
                     <span>Каско в подарок</span>
                 </div>
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/kashback.svg" alt="">
+                    <img class="banner-img" src="/public/images/kashback.svg" alt="Vector">
                     <span>3 платежа в подарок</span>
                 </div>
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/stavka.svg" alt="">
+                    <img class="banner-img" src="/public/images/stavka.svg" alt="Vector">
                     <span>Льготная ставка от {{ appStore.creditPercent }}%</span>
                 </div>
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/banki.svg" alt="">
+                    <img class="banner-img" src="/public/images/banki.svg" alt="Vector">
                     <span>Более 15 банков-партнеров</span>
                 </div>
             </div>

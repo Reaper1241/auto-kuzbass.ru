@@ -2,7 +2,7 @@
 
 <template>
     <Bread />
-    <h2 class="title">Заявка на автокредит в БАНК</h2>
+    <!-- <h2 class="title">Заявка на автокредит в БАНК</h2> -->
     <Banks />
     <!-- <BannerSB1 /> -->
     <BannerEB3 />

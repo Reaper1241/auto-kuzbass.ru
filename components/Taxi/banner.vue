@@ -16,7 +16,7 @@ const appStore = useAppStore();
                         в кредит от <span>{{ appStore.creditPercent }}%</span> -->
                     </h2>
                     <div class="content__gift">
-                        <img src="/svg/gift1.svg" class="svg__logo" alt="" />
+                        <img src="/svg/gift1.svg" class="svg__logo" alt="Vector" />
                         <p class="content__main-p">Оклейка авто в подарок
                            <br> при покупке авто в креди</p>
                     </div>

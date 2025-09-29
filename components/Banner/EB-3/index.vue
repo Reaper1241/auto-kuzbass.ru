@@ -24,19 +24,19 @@ const appStore = useAppStore();
                         <p>и узнайте лучшие условия от <span class="text__red">4,9%</span> от банков-партнёров!</p>
                         <div class="express__text-list">
                             <ul class="express__text-ul">
-                                <img src="/svg/clockMob.svg"  alt="" />
+                                <img src="/svg/clockMob.svg"  alt="Vector" />
                                 <li class="express__text-item">
                                     Решение за <br>30 минут.
                                 </li>
                             </ul>
                             <ul class="express__text-ul">
-                                <img src="/svg/car-insuranceMob.svg" class="gar" alt="" />
+                                <img src="/svg/car-insuranceMob.svg" class="gar" alt="Vector" />
                                 <li class="express__text-item">
                                     Все авто с <br>гарантией.
                                 </li>
                             </ul>
                             <ul class="express__text-ul">
-                                <img src="/svg/giftMob.svg" class="kas" alt="" />
+                                <img src="/svg/giftMob.svg" class="kas" alt="Vector" />
                                 <li class="express__text-item">
                                     КАСКО и комплект зимней резины - в <br>подарок!
                                 </li>
