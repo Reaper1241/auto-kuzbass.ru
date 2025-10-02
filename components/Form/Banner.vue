@@ -2,8 +2,10 @@
 import Input from '@/components/Base/Input.vue';
 import { options, name, errors } from "@/constants/";
 import { useNewStore } from '/stores/NewStore.js';
+import { useAppStore } from '/stores/AppStore.js';
 
 const newStore = useNewStore();
+const appStore = useAppStore();
 
 const formFields = shallowRef([
     { 
@@ -31,29 +33,32 @@ const formFields = shallowRef([
             maska: options,
         } 
     },
-    // скрытое поле для марки
-    { 
-        name: 'brand', 
-        component: 'input', 
-        bindings: { 
-            type: 'hidden',
-            modelValue: newStore?.brand?.brand || '' 
-        } 
-    },
 ]);
 
-// Создаем объект car только с брендом
+// Создаем упрощенный объект car только с нужными полями
 const car = computed(() => {
-  return newStore?.brand?.brand ? {
-    brand: newStore.brand.brand,
-    id: null,
-    model: null,
-    price: null
-  } : null;
+  // Сначала пробуем взять из текущей модели
+  if (newStore.model) {
+    return {
+      brand: newStore.model.brand,
+      model: newStore.model.name || newStore.model.model,
+      price: newStore.model.min_price
+    };
+  }
+  
+  // Если нет текущей модели, берем из первой модели в списке
+  if (newStore.models && newStore.models.length > 0) {
+    return {
+      brand: newStore.brand?.brand,
+      model: newStore.models[0].name || newStore.models[0].model,
+      price: newStore.models[0].min_price
+    };
+  }
+  
+  return null;
 });
 
 const handleFormSubmit = (formData) => {
-    // сюда прилетят все данные включая brand
     console.log('Форма отправлена!', formData);
 };
 </script>

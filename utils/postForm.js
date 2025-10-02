@@ -82,7 +82,7 @@ export default function postForm(data, appType, car, category) {
         car_id: car ? car.id : null,
         brand: car ? car.brand : null,
         model: car ? car.model : null,
-        price: car ? car.price : null,
+        price: car ? (car.price ?? car.min_price ?? null) : null,
 
         send_form: 1,
         send_page: window.location.origin + window.location.pathname,
@@ -135,7 +135,7 @@ export default function postForm(data, appType, car, category) {
         car_id: car ? car.id : null,
         brand: car ? car.brand : null,
         model: car ? car.model : null,
-        price: car ? car.price : null,
+        price: car ? (car.price ?? car.min_price ?? null) : null,
 
         send_form: 1,
         send_page: window.location.origin + window.location.pathname,

@@ -1,4 +1,5 @@
 <script setup>
+
 function getNextMonday() {
     const now = new Date();
     const nextMonday = new Date(now);
@@ -86,7 +87,7 @@ function modalShow() {
   checkWorkingHours(); // Проверяем время перед открытием
   
   if (!isWorkingHours.value) {
-    currentModalTitle.value = "Мы работаем с 9:00 до 20:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона «CARPLAZA»";
+    currentModalTitle.value = "Мы работаем с 9:00 до 20:00. Оставьте заявку и мы перезвоним Вам в рабочее время! С уважением, команда Автосалона «Varshauto»";
     currentAppType.value = 1;
   } else {
     currentModalTitle.value = "Оставьте заявку и мы перезвоним вам в течение 30 минут!";
@@ -115,6 +116,20 @@ const props = defineProps({
     required: true
   }
 })
+
+// Исправляем объект car для отправки
+const carForSubmit = computed(() => {
+  // Создаем копию объекта car из props
+  const carData = { ...props.car };
+  
+  // Если у машины есть min_price, используем его как price
+  if (carData.min_price) {
+    carData.price = carData.min_price;
+  }
+  
+  return carData;
+});
+
 onBeforeUnmount(() => {
     clearInterval(timer);
 });
@@ -128,30 +143,30 @@ onBeforeUnmount(() => {
             </h2>
             <div class="cards">
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/kasko.svg" alt="Vector">
+                    <img class="banner-img" src="/public/images/kasko.svg" alt="banner">
                     <span>Каско в подарок</span>
                 </div>
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/kashback.svg" alt="Vector">
+                    <img class="banner-img" src="/public/images/kashback.svg" alt="banner">
                     <span>3 платежа в подарок</span>
                 </div>
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/stavka.svg" alt="Vector">
+                    <img class="banner-img" src="/public/images/stavka.svg" alt="banner">
                     <span>Льготная ставка от 4.9%</span>
                 </div>
                 <div class="banner__card">
-                    <img class="banner-img" src="/public/images/banki.svg" alt="Vector">
+                    <img class="banner-img" src="/public/images/banki.svg" alt="banner">
                     <span>Более 15 банков-партнеров</span>
                 </div>
             </div>
             <div class="red">
 
             </div>
-            <FormTimer class="express__form" :car="car"/>
+            <!-- Передаем исправленный объект car -->
+            <FormTimer class="express__form" :car="carForSubmit"/>
         </div>
     </section>
 </template>
-
 
 <style scoped lang="scss">
 .banner__card{

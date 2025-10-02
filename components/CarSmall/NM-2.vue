@@ -4,6 +4,17 @@ const appStore = useAppStore();
 
 const props = defineProps(['model'])
 const model = computed(() => props.model)
+
+// Функция для получения car данных для отправки
+const getCarForSubmit = () => {
+  return {
+    brand: model.value.brand, // Просто brand, не url_brand
+    model: model.value.name || model.value.model, // Просто model, не url_model
+    price: model.value.min_price + model.value.min_sale,
+    sale: model.value.min_sale,
+    preview: model.value.preview
+  }
+}
 </script>
 
 <template>
@@ -55,13 +66,21 @@ const model = computed(() => props.model)
 
         <div class="model__controls">
             <BaseButtonModal
-                :car="{ brand: model.url_brand, model: model.url_model, price: model.min_price + model.min_sale, sale: model.min_sale, preview: model.preview }"
-                :btn-label="'Купить в кредит'" :app-type="2"
-                :modal-title="`Купить в кредит ${cleanUpTitle(model.url_brand, model.url_model)}`"
-                :btn-class="`classic credit`" category="new" />
-            <BaseButtonModal :car="car" :btn-label="'Заказать обратный звонок'"  :app-type="8"
+                :car="getCarForSubmit()"
+                :btn-label="'Купить в кредит'" 
+                :app-type="2"
+                :modal-title="`Купить в кредит ${cleanUpTitle(model.brand, model.name || model.model)}`"
+                :btn-class="`classic credit`" 
+                category="new" />
+                
+            <BaseButtonModal 
+                :car="getCarForSubmit()" 
+                :btn-label="'Заказать обратный звонок'"  
+                :app-type="8"
                 :modal-title="`Закажите обратный звонок и наш специалист перезвонит Вам в течение 15 минут!`"
-                :btn-class="`classic trade`" category="new" :btnIcon="`fa-solid fa-phone`"/>                
+                :btn-class="`classic trade`" 
+                category="new" 
+                :btnIcon="`fa-solid fa-phone`"/>                
         </div>
     </div>
 </template>

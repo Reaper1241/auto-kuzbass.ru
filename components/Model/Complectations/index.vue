@@ -16,6 +16,34 @@ const currentModel = computed(() => newStore.model)
 const modList = computed(() =>
   newStore.model.modifications.filter((mod) => mod.car_complectations.length)
 )
+
+// Функция для получения car данных (оригинальная цена для отображения)
+const getCarData = (item, mod) => {
+  return {
+    brand: currentModel.value.brand?.name || currentModel.value.brand,
+    model: currentModel.value.name || currentModel.value.model,
+    price: item.price, // Оригинальная цена для отображения
+    sale: newStore.totalSale,
+    modification: mod?.modification || '',
+    complectation: item?.complectation || '',
+    images: [{ url: '/images/modalModelDefault.webp' }]
+  }
+}
+
+// Функция для получения car с финальной ценой (только для отправки)
+const getCarDataForSubmit = (item, mod) => {
+  const finalPrice = item.price - newStore.totalSale
+  
+  return {
+    brand: currentModel.value.brand?.name || currentModel.value.brand,
+    model: currentModel.value.name || currentModel.value.model,
+    price: finalPrice, // Финальная цена только для отправки
+    sale: newStore.totalSale,
+    modification: mod?.modification || '',
+    complectation: item?.complectation || '',
+    images: [{ url: '/images/modalModelDefault.webp' }]
+  }
+}
 </script>
 
 <template>
@@ -191,26 +219,16 @@ const modList = computed(() =>
                     :btn-class="`comp`"
                     :modalType="`modalComp`"
                     :comp="item"
-                    :car="{
-                      price: item.price,
-                      sale: newStore.totalSale,
-                      images: [{ url: '/images/modalModelDefault.webp' }],
-                      model: $route.params.model,
-                      brand: $route.params.brand
-                    }"
+                    :car="getCarData(item, mod)"
+                    :car-for-submit="getCarDataForSubmit(item, mod)"
                   />
                   <BaseButtonModal
                     class="credit-button-mob"
-                    :btn-label="`В кредит от ${ makeSpaces(appStore.calcMonthPriceModel(newStore.totalSale, item.price)) } ₽/мес`"
+                    :btn-label="`Купить в кредит от ${ makeSpaces(appStore.calcMonthPriceModel(newStore.totalSale, item.price)) } ₽/мес`"
                     :app-type="2"
                     :btn-class="`credit`"
-                    :car="{
-                      price: item.price,
-                      sale: newStore.totalSale,
-                      images: [{ url: '/images/modalModelDefault.webp' }],
-                      model: $route.params.model,
-                      brand: $route.params.brand
-                    }"
+                    :car="getCarData(item, mod)"
+                    :car-for-submit="getCarDataForSubmit(item, mod)"
                   />
                 </div>
               </div>

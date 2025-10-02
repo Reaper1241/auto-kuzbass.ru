@@ -41,7 +41,7 @@ const validateForm = () => {
     const categoty = props.category
     const car = {
         brand: props.model.brand,
-        model: props.model.url_model,
+        model: props.model.model,
         price: currentComplectation.value.price - modelSale.value
     }
 
