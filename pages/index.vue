@@ -16,10 +16,11 @@ function callback(n) {
     <Slider />
     <BannerEB2/>
     <Brands />
+    <CarsPopular/>
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentCarsData" />
     <BannerEB3 />
-    <!-- <CarsPopular/> -->
+    
     <CarsHot />
     <BannerCB1/>
     <Sales/>

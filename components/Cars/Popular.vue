@@ -13,7 +13,7 @@ const router = useRouter()
 const cars = ref([])
 const loading = ref(true)
 
-fetchClientWrapper(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&car_tag_id=2`)
+fetchClientWrapper(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&car_tag_id=13`)
   .then(res => res.json())
   .then(data => cars.value = data.cars.data)
   .then(() => loading.value = false)
@@ -62,7 +62,7 @@ const updateVisibleSlides = () => {
   if (width < 768) setVisibleSlides(1)
   else if (width < 1024) setVisibleSlides(2)
   else if (width < 1280) setVisibleSlides(3)
-  else setVisibleSlides(4)
+  else setVisibleSlides(3)
 }
 
 // свайпы
@@ -132,7 +132,7 @@ onBeforeUnmount(() => {
   <section class="section cars-hot">
     <div class="container">
       <div class="cars-hot__wrapper">
-        <h2 class="cars-hot__title">Популярные авто</h2>
+        <h2 class="cars-hot__title">Акции недели!</h2>
 
         <div class="carousel" v-if="!loading">
           <button class="arrow left" @click="prevSlide">‹</button>
@@ -196,11 +196,12 @@ onBeforeUnmount(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-
+    gap: 10px;
     .arrow {
       background: white;
       border: 1px solid #ddd;
       border-radius: 50%;
+      
       width: 40px;
       height: 40px;
       font-size: 24px;

@@ -14,7 +14,7 @@ function callback(n) {
     <BannerEB4/>
     <Bread />
     <Brands />
-    
+    <CarsPopular/>
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentQuary" />
     <!-- <CarsPopular/> -->

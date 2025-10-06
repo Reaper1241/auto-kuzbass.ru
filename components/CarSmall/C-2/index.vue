@@ -52,11 +52,39 @@ onMounted(() => {
 
 <template>
     <div class="car c-1" :class="{ 'current-car': car.id == $route.params.car }">
-
+        <div class="car__stickers">
+            <div class="car__title">
+                <span class="name">
+                    {{ cleanUpTitle(car.brand) }}
+                </span>
+                <div class="price">
+                    <div class="car__price-current">
+                            от {{ makeSpaces(car.price - car?.sale) }} ₽
+                    </div>
+                    <div class="car__price-old" v-if="car.sale">
+                            от {{ makeSpaces(car.price) }} ₽
+                    </div>
+                </div>  
+                <!-- <span class="model">
+                    {{ cleanUpTitle(car.model) }}
+                </span> -->
+                <!-- <div class="configuration" v-if="car.complectation || car.modification"> -->
+                    <!-- <span class="complectation__span">{{ car.complectation }}</span> -->
+                    <!-- <span>{{ car.modification }}</span> -->
+                <!-- </div> -->
+            </div>  
+            <div class="price-mob">
+                    <div class="car__price-current">
+                            от {{ makeSpaces(car.price - car?.sale) }} ₽
+                    </div>
+                    <div class="car__price-old" v-if="car.sale">
+                            от {{ makeSpaces(car.price) }} ₽
+                    </div>
+                </div>  
         <div class="car__img" ref="targetElement">
             <div class="car__slider" v-if="isVisible">
                 <div class="car__slider-wrapper" v-if="car.images.length && !isMobile">
-                    <NuxtLink :to="`/cars/${car.url_brand}/${car.url_model}/${car.id}`">
+                    <NuxtLink :to="`/cars/${car.url_brand}`">
                         <div class="slider__overflow">
                             <div class="slider__overflow-list">
                                 <div class="slider__overflow-item"
@@ -76,12 +104,12 @@ onMounted(() => {
                             quality="30" class="lazy-load-image" placeholder="/images/spinner.svg" />
                     </div>
                     <div class="slider__item" v-else>
-                        <NuxtLink :to="`/cars/${car.url_brand}/${car.url_model}/${car.id}`">Нет фото</NuxtLink>
+                        <NuxtLink :to="`/cars/${car.url_brand}`">Нет фото</NuxtLink>
                     </div>
                 </div>
 
                 <div class="car__slider-wrapper" v-else>
-                    <NuxtLink :to="`/cars/${car.url_brand}/${car.url_model}/${car.id}`">
+                    <NuxtLink :to="`/cars/${car.url_brand}`">
                         <div class="slider__item second">
                             <img :src="`${car.preview}`" alt="car" />
                         </div>
@@ -92,26 +120,14 @@ onMounted(() => {
                     <Slider :carInfo="car" />
                 </div>
                 <div class="car__slider-wrapper mobile" v-else>
-                    <NuxtLink :to="`/cars/${car.url_brand}/${car.url_model}/${car.id}`">
+                    <NuxtLink :to="`/cars/${car.url_brand}`">
                         <div class="slider__item second">
                             <NuxtImg lazy format="webp" quality="90" loading="lazy" :src="`${car.preview}`" alt="car" />
                         </div>
                     </NuxtLink>
                 </div>
             </div>
-            <div class="car__stickers">
-              <div class="car__title">
-                <span class="name">
-                    {{ cleanUpTitle(car.brand) }}
-                </span>
-                <span class="model">
-                    {{ cleanUpTitle(car.model) }}
-                </span>
-                <!-- <div class="configuration" v-if="car.complectation || car.modification"> -->
-                    <!-- <span class="complectation__span">{{ car.complectation }}</span> -->
-                    <!-- <span>{{ car.modification }}</span> -->
-                <!-- </div> -->
-            </div>
+            
                 <!-- <div class="sticker available">В наличии</div> -->
                 <!-- <div class="sticker sale" v-if="car.sale">-{{ Math.round((car.sale / car.price) * 100) }}%</div> -->
                 <!-- <div class="sticker garantee" v-if="car.warranty_year">Гарантия {{ car.warranty_year }}</div> -->
@@ -163,9 +179,9 @@ onMounted(() => {
 
 
         <div class="car__controls">
-            <BaseButtonModal :car="car" :btn-label="'Купить в кредит'" :app-type="2"
+            <!-- <BaseButtonModal :car="car" :btn-label="'Купить в кредит'" :app-type="2"
                 :modal-title="`Купить в кредит ${cleanUpTitle(car.url_brand, car.url_model)}`"
-                :btn-class="`classic credit`" category="new" />
+                :btn-class="`classic credit`" category="new" /> -->
 
             <!-- <BaseButtonModal :car="car" :btn-label="'Заказать обратный звонок'"  :app-type="8"
                 :modal-title="`Закажите обратный звонок и наш специалсит перезвонит Вам в течение 15 минут!`"
@@ -175,7 +191,48 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-
+.price-mob{
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding:0px 10px 10px 10px;
+    // justify-content: space-between;
+    @media screen and (max-width: 1401px){
+        display: flex;
+    }
+    .car__price-current{
+        color: red;
+        font-weight: 900;
+        font-size: 20px;
+    }
+    .car__price-old{
+        color: grey;
+        font-size: 16px;
+        text-decoration: line-through;
+    }
+}
+.price{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding:0px 10px 10px 10px;
+    // justify-content: space-between;
+    @media screen and (max-width: 1401px){
+        display: none;
+    }
+    .car__price-current{
+        color: red;
+        font-weight: 900;
+        font-size: 20px;
+    }
+    .car__price-old{
+        color: grey;
+        font-size: 16px;
+        text-decoration: line-through;
+    }
+}
 
 .car {
     cursor: pointer;
@@ -190,6 +247,7 @@ onMounted(() => {
     position: relative;
     background: #F7F7F7;
     gap: 10px;
+    padding: 0px !important;
 
     &:hover {
         box-shadow: var(--box-shadow);
@@ -284,7 +342,7 @@ onMounted(() => {
     }
 
     .car__controls {
-        padding: 0 15px 15px 15px;
+        padding: 0 10px 15px 10px;
         width: 100%;
         display: grid;
         flex-direction: column;
@@ -298,6 +356,7 @@ onMounted(() => {
         width: 100%;
         overflow: hidden;
         height: auto;
+        padding: 0px 10px;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         
@@ -384,7 +443,7 @@ onMounted(() => {
             display: flex;
             justify-content: space-between;
             width: 100%;
-            position: absolute;
+            // position: absolute;
             z-index: 10;
             top: 10px;
             left: 0;
@@ -451,11 +510,17 @@ onMounted(() => {
 .car__title {
             line-height: normal;
             display: flex;
-            flex-direction: column;
-            height: 70px;
+            align-items: center;
+            // justify-content: space-between;
+            padding: 10px 10px 0px 10px;
+            flex-direction: row;
+            margin-bottom: 10px;
+            // height: 70px;
             .name {
                 font-weight: bold;
-                font-size: 18px;
+                color: red;
+
+                font-size: 20px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;

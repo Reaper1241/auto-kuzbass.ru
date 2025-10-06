@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
             <div class="cards">
                 <div class="banner__card">
                     <img class="banner-img" src="/public/images/kasko.svg" alt="Vector">
-                    <span>Каско в подарок</span>
+                    <span>КАСКО в подарок</span>
                 </div>
                 <div class="banner__card">
                     <img class="banner-img" src="/public/images/kashback.svg" alt="Vector">
