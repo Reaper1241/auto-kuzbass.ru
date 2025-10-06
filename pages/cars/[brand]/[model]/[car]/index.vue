@@ -86,6 +86,7 @@ console.log(`${apiNew}cars/car/${$route.params.car}`)
 
 
 <template>
+    <BannerEB4/>
     <div v-if="loading" class="container">
         <div class="skeleton-car">
             <div class="skeleton image"></div>

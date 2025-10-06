@@ -11,6 +11,7 @@ function callback(n) {
 </script>
 
 <template>
+    <BannerEB4/>
     <Bread />
     <Brands />
     

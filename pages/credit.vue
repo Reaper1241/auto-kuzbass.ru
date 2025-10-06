@@ -21,7 +21,9 @@ const currentBank = computed(() => {
 </script>
 
 <template>
+  <BannerEB4/>
     <Bread />
+    
     <BannerB2/>
     <!-- <h2 class="title">Заявка на автокредит от {{ currentBank.percent }}%</h2> -->
 

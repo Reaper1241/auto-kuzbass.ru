@@ -1,6 +1,7 @@
 <script setup></script>
 
 <template>
+    <BannerEB4/>
     <Bread />
     <!-- <h2 class="title">Заявка на автокредит в БАНК</h2> -->
     <Banks />

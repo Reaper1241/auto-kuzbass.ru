@@ -42,6 +42,7 @@ if (brand) {
 </script>
 
 <template>
+    <BannerEB4/>
     <div v-if="loading" class="container">
         <div class="skeleton-car">
             <div class="skeleton image"></div>
@@ -50,7 +51,7 @@ if (brand) {
             <div class="skeleton"></div>
         </div>
     </div>
-
+    
     <template v-else>
         <Bread />
             <div class="container">

@@ -2,6 +2,7 @@
 </script>
 
 <template>
+    <BannerEB4/>
     <Bread />
     <div class="contact-title">
         <BasePageTitle class="title"/>
