@@ -202,8 +202,8 @@ onMounted(() => {
         display: flex;
     }
     .car__price-current{
-        color: red;
-        font-weight: 900;
+        color: #be001d;
+        font-weight: 700;
         font-size: 20px;
     }
     .car__price-old{
@@ -215,7 +215,8 @@ onMounted(() => {
 .price{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    flex-direction: column;
     gap: 10px;
     padding:0px 10px 10px 10px;
     // justify-content: space-between;
@@ -223,8 +224,8 @@ onMounted(() => {
         display: none;
     }
     .car__price-current{
-        color: red;
-        font-weight: 900;
+        color: #be001d;
+        font-weight: 700;
         font-size: 20px;
     }
     .car__price-old{
@@ -366,7 +367,7 @@ onMounted(() => {
                 display: flex;
                 position: relative;
                 height: auto;
-                
+                padding: 0px 20px 20px 20px;
                 @media screen and (max-width: 768px) {
                     display: none;
                     height: auto;
@@ -380,13 +381,13 @@ onMounted(() => {
                     align-items: flex-end; /* Это выровняет изображение по нижнему краю */
                     overflow: hidden;
                     @media screen and (max-width: 1250px){
-                        height: 260px;
+                        height: 200px;
                     }
                     @media screen and (max-width: 1130px){
-                        height: 230px;
+                        height: 150px;
                     }
                     @media screen and (max-width: 1050px){
-                        height: 330px;
+                        height: 150px;
                     }
                     @media screen and (max-width: 600px){
                         height: 200px;
@@ -510,21 +511,24 @@ onMounted(() => {
 .car__title {
             line-height: normal;
             display: flex;
+            justify-content: center;
             align-items: center;
             // justify-content: space-between;
             padding: 10px 10px 0px 10px;
-            flex-direction: row;
-            margin-bottom: 10px;
+            flex-direction: column;
+            // margin-bottom: 10px;
             // height: 70px;
             .name {
                 font-weight: bold;
-                color: red;
-
+                color: #be001d;
+                display: flex;
+                font-weight: 700;
+                align-items: center;
                 font-size: 20px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-bottom: 5px;
+                margin-bottom: 19.5px;
             }
 
             .model{
