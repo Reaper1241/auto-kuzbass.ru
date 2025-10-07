@@ -267,7 +267,9 @@ onBeforeUnmount(() => {
     .car {
       padding: 10px;
       box-sizing: border-box;
-      
+      @media (max-width: 767px){
+        padding: 15px;
+      }
       .car-card {
         background: #fff;
         border-radius: 12px;
@@ -354,20 +356,20 @@ onBeforeUnmount(() => {
       width: 32px;
       height: 32px;
       font-size: 20px;
-      background: white;
-      border: 1px solid #ddd;
+      background: none;
+      border: none;
       border-radius: 50%;
       align-items: center;
       justify-content: center;
-      opacity: 0.7;
+      opacity: 1;
     }
 
     .arrow.left {
-      left: 15px;
+      left: -15px;
     }
 
     .arrow.right {
-      right: 15px;
+      right: -15px;
     }
   
       

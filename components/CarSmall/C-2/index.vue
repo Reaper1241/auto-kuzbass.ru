@@ -371,7 +371,7 @@ onMounted(() => {
                 display: flex;
                 position: relative;
                 height: auto;
-                padding: 0px 20px 20px 20px;
+                padding: 0px 20px 0px 20px;
                 @media screen and (max-width: 768px) {
                     display: none;
                     height: auto;
