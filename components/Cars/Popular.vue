@@ -15,8 +15,22 @@ const loading = ref(true)
 
 fetchClientWrapper(`${apiNew}filters/cars?page=1&per_page=8&sorting=price_asc&car_tag_id=13`)
   .then(res => res.json())
-  .then(data => cars.value = data.cars.data)
+  .then(data => {
+    const allowedBrands = ['Haval', 'ВАЗ (LADA)', 'Chery','Kaiyi', 'BAIC']
+    let filteredCars = data.cars.data.filter(car => {
+      const brand = car.brand?.toLowerCase() || ''
+      return allowedBrands.some(b => brand.includes(b.toLowerCase()))
+    })
+    filteredCars.sort((a, b) => {
+      const indexA = allowedBrands.findIndex(bName => a.brand.toLowerCase().includes(bName.toLowerCase()))
+      const indexB = allowedBrands.findIndex(bName => b.brand.toLowerCase().includes(bName.toLowerCase()))
+      return indexA - indexB
+    })
+
+    cars.value = filteredCars
+  })
   .then(() => loading.value = false)
+
 
 // состояние слайдера
 const currentIndex = ref(0)
@@ -225,7 +239,7 @@ onBeforeUnmount(() => {
       
       // Скрываем стрелки на мобильных
       @media (max-width: 767px) {
-        display: none;
+        display: flex;
       }
     }
 
@@ -331,9 +345,31 @@ onBeforeUnmount(() => {
     }
     
     .carousel {
-      .arrow {
-        display: none; // Скрываем стрелки на мобильных
-      }
+    .arrow {
+      display: flex !important; // 🔥 теперь точно не пропадут
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 32px;
+      height: 32px;
+      font-size: 20px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+    }
+
+    .arrow.left {
+      left: 15px;
+    }
+
+    .arrow.right {
+      right: 15px;
+    }
+  
       
       .car .car-card {
         padding: 12px;

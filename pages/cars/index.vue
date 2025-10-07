@@ -12,6 +12,7 @@ function callback(n) {
 
 <template>
     <Bread />
+    <BannerEB2/>
     <Brands />
     <CarsPopular/>
     <FilterNew @showCars="callback" />

@@ -55,8 +55,10 @@ onMounted(() => {
         <div class="car__stickers">
             <div class="car__title">
                 <span class="name">
-                    {{ cleanUpTitle(car.brand) }}
+                    <p>{{ cleanUpTitle(car.brand) }}</p>
+                    <NuxtLink :to="`/cars/${car.url_brand}`">Подробнее ></NuxtLink>
                 </span>
+                
                 <div class="price">
                     <div class="car__price-current">
                             от {{ makeSpaces(car.price - car?.sale) }} ₽
@@ -202,34 +204,36 @@ onMounted(() => {
         display: flex;
     }
     .car__price-current{
-        color: #be001d;
+        color: white;
         font-weight: 700;
         font-size: 20px;
     }
     .car__price-old{
-        color: grey;
+        color: rgb(184, 184, 184);
         font-size: 16px;
         text-decoration: line-through;
     }
 }
 .price{
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    // justify-content: left;
     flex-direction: column;
     gap: 10px;
-    padding:0px 10px 10px 10px;
+    width: 100%;
+    padding: 0px 10px;
+    // padding:0px 10px 10px 10px;
     // justify-content: space-between;
     @media screen and (max-width: 1401px){
         display: none;
     }
     .car__price-current{
-        color: #be001d;
+        color: white;
         font-weight: 700;
         font-size: 20px;
     }
     .car__price-old{
-        color: grey;
+        color: rgb(184, 184, 184);
         font-size: 16px;
         text-decoration: line-through;
     }
@@ -243,11 +247,11 @@ onMounted(() => {
     width: 100%;
     min-width: 280px;
     border-radius: 4px;
-    border: 1px solid #9F9F9F;
+    border: 1px solid #2d4b56;
     transition: 0.3s;
     position: relative;
-    background: #F7F7F7;
-    gap: 10px;
+    background: #2d4b56;
+    // gap: 10px;
     padding: 0px !important;
 
     &:hover {
@@ -511,24 +515,37 @@ onMounted(() => {
 .car__title {
             line-height: normal;
             display: flex;
-            justify-content: center;
+            // justify-content: center;
             align-items: center;
             // justify-content: space-between;
-            padding: 10px 10px 0px 10px;
+            // padding: 0px 10px 0px 10px;
             flex-direction: column;
             // margin-bottom: 10px;
             // height: 70px;
             .name {
                 font-weight: bold;
-                color: #be001d;
+                color: white;
                 display: flex;
-                font-weight: 700;
+                justify-content: space-between;
+                font-weight: 300;
                 align-items: center;
-                font-size: 20px;
+                font-size: 14px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-bottom: 19.5px;
+                margin-bottom: 9.5px;
+                background: var(--main-color);
+                width: 100%;
+                padding: 10px;
+                a{
+                    text-decoration: underline;
+                }
+                // text-decoration: underline;
+                // justify-content: center;
+                p{
+                    font-weight: 700;
+                    font-size: 20px;
+                }
             }
 
             .model{
