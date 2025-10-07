@@ -1,7 +1,6 @@
 <script setup></script>
 
 <template>
-    <BannerEB4/>
     <Bread />
     <BannerB4/>
     <Trade />

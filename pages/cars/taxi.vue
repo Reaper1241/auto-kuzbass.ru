@@ -5,7 +5,6 @@ definePageMeta({
 </script>
 
 <template>
-    <BannerEB4/>
     <div class="title">
         <!-- <BasePageTitle /> -->
     </div>

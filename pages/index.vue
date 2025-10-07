@@ -12,7 +12,6 @@ function callback(n) {
 </script>
 
 <template>
-    <BannerEB4/>
     <Slider />
     <BannerEB2/>
     <Brands />

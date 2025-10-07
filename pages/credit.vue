@@ -21,7 +21,6 @@ const currentBank = computed(() => {
 </script>
 
 <template>
-  <BannerEB4/>
     <Bread />
     
     <BannerB2/>
