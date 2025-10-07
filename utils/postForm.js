@@ -71,7 +71,7 @@ export default function postForm(data, appType, car, category) {
       localStorage.setItem(ipKey, 'duplicate');
       
       const { $ym } = useNuxtApp()
-      $ym('reachGoal', 'success-new-carlab')
+      $ym('reachGoal', 'success-auto-kuzbass')
       
       axios.post(`${apiFormNew}`, {
         phone_number: clearPhone,
@@ -86,7 +86,7 @@ export default function postForm(data, appType, car, category) {
 
         send_form: 1,
         send_page: window.location.origin + window.location.pathname,
-        source: `https://new-carlab.ru/`,
+        source: `https://auto-kuzbass.ru/`,
 
         referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
         entry: appStore.entry ? appStore.entry : null,
@@ -98,7 +98,7 @@ export default function postForm(data, appType, car, category) {
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Domain': `https://new-carlab.ru`,
+          'Domain': `https://auto-kuzbass.ru`,
         },
         withCredentials: true
       })
@@ -124,7 +124,7 @@ export default function postForm(data, appType, car, category) {
       localStorage.setItem(ipKey, 'submitted');
       
       const { $ym } = useNuxtApp()
-      $ym('reachGoal', 'success-new-carlab')
+      $ym('reachGoal', 'success-auto-kuzbass')
       
       axios.post(`${apiFormNew}`, {
         phone_number: clearPhone,
@@ -139,7 +139,7 @@ export default function postForm(data, appType, car, category) {
 
         send_form: 1,
         send_page: window.location.origin + window.location.pathname,
-        source: `https://new-carlab.ru/`,
+        source: `https://auto-kuzbass.ru/`,
 
         referrer: window.location.origin + window.location.pathname + (appStore.reffer ? appStore.reffer : ''),
         entry: appStore.entry ? appStore.entry : null,
@@ -151,7 +151,7 @@ export default function postForm(data, appType, car, category) {
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Domain': `https://new-carlab.ru`,
+          'Domain': `https://auto-kuzbass.ru`,
         },
         withCredentials: true
       })
@@ -162,13 +162,13 @@ export default function postForm(data, appType, car, category) {
             yandexEcommercePurchase(appStore.orderId, car);
           }
           appStore.formLoading = false;
-          navigateTo('/success-new-carlab');
+          navigateTo('/success-auto-kuzbass');
         })
         .catch(err => {
           appStore.formLoading = false
           console.log('неудача')
           console.log(err)
-          navigateTo('/success-new-carlab');
+          navigateTo('/success-auto-kuzbass');
         })
         .finally(() => {
           appStore.formLoading = false
@@ -214,7 +214,7 @@ export default function postForm(data, appType, car, category) {
 //       price: car?.price ? Number(car.price) : null,
 //       send_form: 1,
 //       send_page: window.location.href,
-//       source: 'https://new-carlab.ru/',
+//       source: 'https://auto-kuzbass.ru/',
 //       referrer: document.referrer || window.location.href,
 //       entry: appStore.entry || null,
 //       ip: appStore.ip,
