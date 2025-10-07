@@ -73,12 +73,18 @@ const appStore = useAppStore();
     background-size: cover;
     max-width: 1400px;
     width: 100%;
-    margin: 10px auto;
+    margin:10px auto;
     color: var(--bg-light);
     border-radius: 4px;
+    @media screen and (max-width: 767px){
+        margin: 0 auto;
+        border-radius: 0px;
+        margin-bottom: 10px;
+    }
     @media screen and (max-width: 540px) {
         background: url(/public/images/banner_form.jpg) no-repeat 31% 100%;
         background-size: auto;
+        
     }
 
     .bottom__container {

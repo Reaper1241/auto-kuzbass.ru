@@ -362,6 +362,9 @@ onBeforeUnmount(() => {
       align-items: center;
       justify-content: center;
       opacity: 1;
+      &:hover {
+        background: none;
+      }
     }
 
     .arrow.left {

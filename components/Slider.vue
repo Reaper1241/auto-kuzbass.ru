@@ -195,6 +195,9 @@ onMounted(() => {
         border-radius: var(--border-radius);
         overflow: hidden;
         position: relative;
+        @media screen and (max-width: 767px){
+            border-radius: 0px;
+        }
     }
 
     .carousel__slide {
