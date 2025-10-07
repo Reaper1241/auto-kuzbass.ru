@@ -23,14 +23,14 @@ if (brand) {
     appStore.globalLoader = true
     const { data: car } = await fetchServerWrapper(`${apiNew}cars/car/${$route.params.car}`, {
             headers:{
-            'Domain': 'https://auto-kuzbass.ru' // Add your domain value here
+            'Domain': 'https://new-carlab.ru' // Add your domain value here
             }
             });
 
     const brand = findBrand($route.params.brand, appStore.newBrands)
     const { data: models } = await fetchServerWrapper(`${apiNew}models/${brand}`, {
             headers:{
-            'Domain': 'https://auto-kuzbass.ru' // Add your domain value here
+            'Domain': 'https://new-carlab.ru' // Add your domain value here
             }
             });
     newStore.models = models.value
@@ -43,14 +43,14 @@ if (brand) {
     if (car.value) {
         const { data: images } = await useFetch(`${apiNew}galleries/${car.value.car_model_id}`, {
             headers:{
-            'Domain': 'https://auto-kuzbass.ru' // Add your domain value here
+            'Domain': 'https://new-carlab.ru' // Add your domain value here
             }
         });
         carStore.galleries = images.value
 
         const { data: model } = await fetchServerWrapper(`${apiNew}models/model/${findModel($route.params.model, newStore.models)}`, {
             headers:{
-            'Domain': 'https://auto-kuzbass.ru' // Add your domain value here
+            'Domain': 'https://new-carlab.ru' // Add your domain value here
             }
         });
         newStore.model = model.value

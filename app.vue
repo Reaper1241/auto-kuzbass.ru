@@ -25,7 +25,7 @@ const fetchWithTimeout = (url, options = {}, timeoutDuration = 5000) => {
   const headersWithDomain = url.startsWith(apiNew) 
     ? {
         ...(options.headers || {}),
-        'Domain': 'https://auto-kuzbass.ru'
+        'Domain': 'https://new-carlab.ru'
       } 
     : (options.headers || {});
   

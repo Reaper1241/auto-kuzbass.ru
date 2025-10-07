@@ -16,7 +16,7 @@ const carouselKey = ref(0);
 
 const fetchOptions = {
     headers: {
-        'domain': 'https://auto-kuzbass.ru'
+        'domain': 'https://new-carlab.ru'
     }
 };
 
