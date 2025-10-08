@@ -253,8 +253,8 @@ function validateYear() {
                     </div>
                 </div>
                 <div class="page__text">
-                    <!-- <div class="page__text-content" v-htmlSanitizer="appStore?.newSeo[$route.name]?.text_content ? removeTrash(appStore.newSeo[$route.name].text_content) : null"></div>   -->
-                    <div class="page__text-content">
+                    <div class="page__text-content" v-htmlSanitizer="appStore?.newSeo[$route.name]?.text_content ? removeTrash(appStore.newSeo[$route.name].text_content) : null"></div>  
+                    <!-- <div class="page__text-content">
                         <h2>
                 Обменяйте старое авто на новое — быстро и выгодно с «CARPLAZA»!
             </h2>
@@ -296,7 +296,7 @@ function validateYear() {
 «CARPLAZA» — меняем старое на лучшее! 
 </p>
             </div>
-                    </div>
+                    </div>  -->
                 </div>
             </div>
         </div>
