@@ -42,7 +42,7 @@ const validateForm = () => {
     const car = {
         brand: props.model.brand,
         model: props.model.model,
-        price: currentComplectation.value.price - modelSale.value
+        min_price: currentComplectation.value.price - modelSale.value
     }
 
     if (clearPhone.length == 11) {
