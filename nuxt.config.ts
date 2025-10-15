@@ -57,9 +57,9 @@ export default defineNuxtConfig({
       },
 
       noscript: [
-        { children: `<div><img src="https://mc.yandex.ru/watch/103150430" style="position:absolute; left:-9999px;" alt="" /></div>` },
+        { children: `<div><img src="https://mc.yandex.ru/watch/103150430" style="position:absolute; left:-9999px;" alt="metrick" /></div>` },
         {
-          children: `<img src="https://project-f9fe0809-40a2-4385-8709-4a574a53b51c.bigmethods.ru/track.gif" alt="" width="1" height="1" style="display:none;">`,
+          children: `<img src="https://project-f9fe0809-40a2-4385-8709-4a574a53b51c.bigmethods.ru/track.gif" alt="plex" width="1" height="1" style="display:none;">`,
         },
       ],
 

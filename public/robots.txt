@@ -6,7 +6,7 @@ Disallow: /reviews/
 Disallow: /redemption/
 
 User-agent: Yandex
-Host: https://autosalon-arena.ru/
+Host: https://auto-kuzbass.ru/
 Disallow: /success/
 Disallow: /favorites/
 Disallow: /comparison/

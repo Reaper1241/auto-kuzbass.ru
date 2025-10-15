@@ -267,26 +267,46 @@ getFilterData(true)
                 <div class="filter__body">
                     <div class="filter__body-selects">
                         <div class="filter__body-column fields">
-                            <BaseSelect v-model="brand" :label="'Марка'" :options="brands"
-                                :disabled="$route.name == 'brand' || $route.name == 'model' || paramsLoading"
-                                class='semi-wide' @change="updateFilter('brand')" />
+                            <BaseSelect 
+                            v-model="brand" 
+                            :label="'Марка'" 
+                            :options="brands"
+                            :disabled="$route.name == 'brand' || $route.name == 'model' || paramsLoading"
+                            class="semi-wide" 
+                            @change="updateFilter('brand')" 
+                            />
 
-                            <BaseSelect v-model="model" :label="'Модель'" :options="models"
-                                :disabled="brand == 0 || $route.name == 'model' || paramsLoading"
-                                @change="updateFilter('model')" />
+                            <BaseSelect 
+                            v-model="model" 
+                            :label="'Модель'" 
+                            :options="models"
+                            :disabled="brand == 0 || $route.name == 'model' || paramsLoading"
+                            @change="updateFilter('model')" 
+                            />
 
-                            <BaseSelect v-model="fuel" :label="'Тип двигателя'" :options="fuels"
-                                :disabled="brand == 0 || model == 0 || paramsLoading" 
-                                @change="updateFilter(`fuel`)" />
+                            <BaseSelect 
+                            v-model="fuel" 
+                            :label="'Тип двигателя'" 
+                            :options="fuels"
+                            :disabled="paramsLoading"
+                            @change="updateFilter('fuel')" 
+                            />
 
-                            <BaseSelect v-model="transmission" :label="'Коробка'" :options="transmissions"
-                                :disabled="brand == 0 || model == 0 || paramsLoading" 
-                                @change="updateFilter(`transmission`)" />
+                            <BaseSelect 
+                            v-model="transmission" 
+                            :label="'Коробка'" 
+                            :options="transmissions"
+                            :disabled="paramsLoading"
+                            @change="updateFilter('transmission')" 
+                            />
 
-                            <BaseSelect v-model="drive" :label="'Привод'" 
-                                :disabled="brand == 0 || model == 0 || paramsLoading" 
-                                :options="drives"
-                                @change="updateFilter(`drive`)" />
+                            <BaseSelect 
+                            v-model="drive" 
+                            :label="'Привод'" 
+                            :options="drives"
+                            :disabled="paramsLoading"
+                            @change="updateFilter('drive')" 
+                            />
                         </div>
 
                         <div class="filter__body-column">
@@ -336,17 +356,29 @@ getFilterData(true)
 
                         <div v-show="showMoreFilter" class="filter__body-column more">
                             <Title :title="'Дополнительные параметры'" class="wide" />
-                            <BaseSelect v-model="fuel" :label="'Тип двигателя'" :options="fuels" class="wide"
-                                :disabled="brand == 0 || model == 0 || paramsLoading" 
-                                @change="updateFilter(`fuel`)" />
+                            <BaseSelect 
+                            v-model="fuel" 
+                            :label="'Тип двигателя'" 
+                            :options="fuels"
+                            :disabled="paramsLoading"
+                            @change="updateFilter('fuel')" 
+                            />
 
-                            <BaseSelect v-model="transmission" :label="'Коробка'" :options="transmissions" class="wide"
-                                :disabled="brand == 0 || model == 0 || paramsLoading" 
-                                @change="updateFilter(`transmission`)" />
+                            <BaseSelect 
+                            v-model="transmission" 
+                            :label="'Коробка'" 
+                            :options="transmissions"
+                            :disabled="paramsLoading"
+                            @change="updateFilter('transmission')" 
+                            />
 
-                            <BaseSelect v-model="drive" :label="'Привод'" :options="drives" class="wide"
-                                :disabled="brand == 0 || model == 0 || paramsLoading" 
-                                @change="updateFilter(`drive`)" />
+                            <BaseSelect 
+                            v-model="drive" 
+                            :label="'Привод'" 
+                            :options="drives"
+                            :disabled="paramsLoading"
+                            @change="updateFilter('drive')" 
+                            />
 
                             <label class="filter__body-input wide">
                                 <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
