@@ -16,7 +16,7 @@ const emits = defineEmits(['updateCars'])
             <div class="cars__head-contols">
                 <label class="main-label">
                     <select class="sort main-select" v-model="appStore.newSort" @change="emits('updateCars')">
-                        <!-- <option value="created_at_desc">Последние добавленные</option> -->
+                        <option value="created_at_desc">Последние добавленные</option>
                         <option value="price_asc">Cначала дешевле</option>
                         <option value="price_desc">Сначала дороже</option>
                     </select>

@@ -31,7 +31,7 @@ function resolveCar() {
     return {
       brand: newStore.model.brand,
       model: newStore.model.model,
-      price: newStore.model.min_price,
+      min_price: newStore.model.min_price,
       sale: newStore.model.sale,
       id: newStore.model.id ?? null
     };
