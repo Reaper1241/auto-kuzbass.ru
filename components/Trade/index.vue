@@ -91,7 +91,7 @@ function validateYear() {
                 <div class="page__form">
                     
                     <div class="form__form">
-                        <h1 class="form__steps-title">Данные вашего авто</h1>
+                        <h2 class="form__steps-title">Данные вашего авто</h2>
                         <div class="form__steps">
                             <!-- <h1 class="form__steps-title">Данные вашего авто</h1> -->
                             <ul class="form__steps-list">
