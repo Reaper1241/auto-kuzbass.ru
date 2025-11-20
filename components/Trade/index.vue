@@ -7,7 +7,7 @@ import { useCreditStore } from "/stores/CreditStore.js";
 const creditStore = useCreditStore();
 
 const emits = defineEmits(['showCar']);
-
+const valueApp = ref('')
 import { useAppStore } from '/stores/AppStore.js'
 const appStore = useAppStore()
 
@@ -47,7 +47,8 @@ const validateForm = () => {
         name: nameValue.value,
         brand: brandValue.value,
         model: modelValue.value,
-        year: yearValue.value
+        year: yearValue.value,
+        app: valueApp.value
     }
 
     const appType = 8
@@ -234,7 +235,7 @@ function validateYear() {
                                         <span class="alert" v-show="phoneError"><i
                                                 class="fa-solid fa-triangle-exclamation"></i></span>
                                     </div>
-
+                                    <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
                                     <FormPieceCheck @formChecked="returnEmit" :appType="2" />
 
                                     <BaseFormButton :title="'Оставить заявку'" :label="'Оставить заявку'"

@@ -30,7 +30,7 @@ const carInitialFee = ref(0);
 const carPrice = ref(0);
 const currCar = ref([]);
 const showAuto = ref(false);
-
+const valueApp = ref('')
 function percentListOutput(value) {
     carInitialFee.value = value
 }
@@ -73,7 +73,8 @@ const validateForm = () => {
         name: nameValue.value,
         fee: `${(carPrice.value - carInitialFee.value) * (appStore.selectedBank?.percent ? appStore.selectedBank.percent : appStore.creditPercent) / 100} руб перв. взнос`,
         timeListOutputData: `${timeListOutputData.value} (мес.) срок кредитования`,
-        monthlyPayment: `${monthlyPayment.value} руб/мес платеж`
+        monthlyPayment: `${monthlyPayment.value} руб/мес платеж`,
+    app: valueApp.value
     }
 
     const appType = 2
@@ -185,7 +186,7 @@ watch(() => creditStore.category, (currentData) => {
 
                 <span class="alert" v-show="phoneError"><i class="fa-solid fa-triangle-exclamation"></i></span>
             </div>
-
+            <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
             <FormPieceCheck @formChecked="returnEmit" :appType="2" />
 
             <BaseFormButton :title="'Оставить заявку'" :label="'Оставить заявку'"

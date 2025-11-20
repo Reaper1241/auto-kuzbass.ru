@@ -77,6 +77,7 @@ const formChecked = ref(true);
             v-bind="field.bindings"
             :error="errors[field.name]"
         />
+        <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
         <FormPieceCheck @formChecked="formChecked = $event" :appType="appType" />
         <BaseFormButton
             type="submit"

@@ -1,7 +1,7 @@
 <script setup>
 import { apiNew } from '@/constants';
 
-const selectedTag = ref(3);
+const selectedTag = ref(6);
 const models = ref([]);
 
 function getModels() {

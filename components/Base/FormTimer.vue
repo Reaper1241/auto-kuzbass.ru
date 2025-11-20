@@ -78,6 +78,7 @@ const formChecked = ref(true);
         <div class="row">
             <component v-for="(field, index) in fields" :key="index" :is="field.component" v-model="formValues[field.name]"
                 v-bind="field.bindings" :error="errors[field.name]" />
+            <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
             <FormPieceCheck @formChecked="formChecked = $event" :appType="appType" />
         </div>    
         <BaseFormButtonTrade type="submit" :label="submitText" class="base-submit" :disabled="!formChecked"

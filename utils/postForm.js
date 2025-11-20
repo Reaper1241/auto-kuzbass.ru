@@ -25,7 +25,7 @@ export default function postForm(data, appType, car, category) {
   domain.value = window.location.hostname
 
   const formData = Object.keys(data).reduce((acc, key) => {
-    if (key === 'name' || key === 'phone') {
+    if (key === 'name' || key === 'phone' || key === 'app') {
       acc[key] = data[key];
     } else {
       acc.comment[key] = data[key];
@@ -58,8 +58,9 @@ export default function postForm(data, appType, car, category) {
 
   appStore.formLoading = true
 
-  if (blackList.some(blackListed => clearPhone.startsWith(blackListed))) {
+  if (blackList.some(blackListed => clearPhone.startsWith(blackListed)) || formData.app?.length > 0) {
     navigateTo('/thank');
+    appStore.formLoading = false
   } else {
     // Проверяем, был ли уже сегодня заявка с этого IP
     const today = new Date().toISOString().split('T')[0];

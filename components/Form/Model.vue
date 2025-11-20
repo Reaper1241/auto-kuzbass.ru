@@ -20,7 +20,7 @@ const props = defineProps({
         type: String,
     }
 });
-
+const valueApp = ref('')
 const formChecked = ref(true);
 const nameValue = ref('');
 const phoneValue = ref('');
@@ -35,6 +35,7 @@ const validateForm = () => {
         timeListOutputData: `${timeListOutputData.value} срок кредитования (мес.)`,
         monthlyPayment: `${monthlyPayment.value} мес.платеж`,
         modification: `${props.modification.modification} ${currentComplectation.value.complectation}`,
+        app: valueApp.value
     }
 
     const appType = 2
@@ -154,6 +155,7 @@ function timeListOutput(value) {
                     <input type="tel" name="contactPhone" placeholder="+7 (___) ___-__-__" autocomplete="on"
                         v-maska="options" v-model="phoneValue" class="form-input">
                 </div>
+                <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
                 <FormPieceCheck @formChecked="returnEmit" />
                 <BaseFormButton :title="'Оставить заявку'" :label="'Оставить заявку'" :disabled="!formChecked"
                     :loading="!appStore.formLoading" />
