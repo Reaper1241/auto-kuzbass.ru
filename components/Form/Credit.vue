@@ -186,7 +186,7 @@ watch(() => creditStore.category, (currentData) => {
 
                 <span class="alert" v-show="phoneError"><i class="fa-solid fa-triangle-exclamation"></i></span>
             </div>
-            <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
+            <input type="text" name="app" id="" class="app__input" v-model="valueApp">
             <FormPieceCheck @formChecked="returnEmit" :appType="2" />
 
             <BaseFormButton :title="'Оставить заявку'" :label="'Оставить заявку'"

@@ -155,7 +155,7 @@ function timeListOutput(value) {
                     <input type="tel" name="contactPhone" placeholder="+7 (___) ___-__-__" autocomplete="on"
                         v-maska="options" v-model="phoneValue" class="form-input">
                 </div>
-                <input type="text" name="app" id="" class="app__input" v-model="formValues.app">
+                <input type="text" name="app" id="" class="app__input" v-model="valueApp">
                 <FormPieceCheck @formChecked="returnEmit" />
                 <BaseFormButton :title="'Оставить заявку'" :label="'Оставить заявку'" :disabled="!formChecked"
                     :loading="!appStore.formLoading" />
