@@ -52,14 +52,14 @@ onMounted(() => {
             <div class="footer__contacts"> 
               <p>
                 <i class="fa-solid fa-location-dot"></i>
-                <span class="footer__info-adress">г. Кемерово, ул. Тухачевского 58В</span>
+                <span class="footer__info-adress">{{ appStore.address }}</span>
               </p>
-                <p class="time">9:00–20:00 без выходных</p>
+                <p class="time">{{ appStore.workingHours }}</p>
               <p>
                 <i class="fa-solid fa-phone"></i>
-                <span>+7 (384) 223-25-75</span>
+                <span>{{ appStore.phone }}</span>
               </p>
-              <p class="phone"><a href="#">Заказать обратный звонок</a></p>
+              <p class="phone"><NuxtLink to="/contact">Заказать обратный звонок</NuxtLink></p>
             </div>
           </div>
   

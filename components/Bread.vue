@@ -44,7 +44,7 @@ function getCrumb() {
             }
         } else if ('brand' in $route.params) {
             return {
-                to: '/cars/',
+                to: '/cars',
                 label: `Смотреть все новые авто`
             }
         } else {

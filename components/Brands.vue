@@ -27,7 +27,7 @@ const brands = computed(() => $route.name == 'china' ? appStore?.chinaBrands.bra
                         <ul class="brand__list">
                             <li class="brand__item" v-for="brand in brands" :key="brand.id"
                                 :class="{ 'brand__item--show': brandShow }">
-                                <NuxtLink :to="`/cars/${brand.url_brand}/`" class="brand__link">
+                                <NuxtLink :to="`/cars/${brand.url_brand}`" class="brand__link">
                                     <div class="brand__info">
                                         <img class="brand__logo" :src="`${brand.logo}`" :alt="`${brand.brand}`" />
                                         <div class="brand__span">
