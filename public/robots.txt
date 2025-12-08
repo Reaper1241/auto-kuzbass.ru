@@ -12,7 +12,7 @@ Disallow: /favorites/
 Disallow: /comparison/
 Disallow: /reviews/
 Disallow: /redemption/
-Clean-param: src_pof&amp&_ym_lang&ypppel&yprqee&etext&utm&utm_source&utm_medium&utm_campaign&utm_content&utm_term&placement&adposition&matchtype&device&target&source&campaign_type&region_name&region_id&region&coef_goal_context_id&interest_id&adtarget_name&adtarget_id&source&utm_referrer&from
+Clean-param: src_pof&amp&_ym_lang&ypppel&yprqee&etext&utm&utm_source&utm_medium&utm_campaign&utm_content&utm_term&placement&adposition&matchtype&device&target&source&campaign_type&region_name&region_id&region&coef_goal_context_id&interest_id&adtarget_name&adtarget_id&source&utm_referrer&from&ybaip
 
 User-agent: Googlebot
 Disallow: /success/
