@@ -152,8 +152,8 @@ watch($route, () => showBurger.value = false)
                     <nav class="header__navbar">
                         <ul class="navbar-list">
                             <li class="navbar-item dropdown">
-                                <NuxtLink class="navbar-link dropdown-head-link">Автомобили <i
-                                        class="fa-solid fa-chevron-down"></i></NuxtLink>
+                                <div class="navbar-link dropdown-head-link">Автомобили <i
+                                        class="fa-solid fa-chevron-down"></i></div>
                                 <ul class="dropdown-list">
                                     <li class="dropdown-item">
                                         <NuxtLink to="/cars" class="dropdown-link">Все авто</NuxtLink>

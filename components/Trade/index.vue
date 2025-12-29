@@ -94,7 +94,6 @@ function validateYear() {
                     <div class="form__form">
                         <h2 class="form__steps-title">Данные вашего авто</h2>
                         <div class="form__steps">
-                            <!-- <h1 class="form__steps-title">Данные вашего авто</h1> -->
                             <ul class="form__steps-list">
                                 <li class="form__steps-item"
                                     :class="{ 'form__steps-item--active': activeStep === 0 || activeStep === 1 || activeStep === 2 }">

@@ -69,7 +69,7 @@ const appStore = useAppStore();
     }
 }
 .express__section {
-    background: url(/public/images/banner_form.jpg) no-repeat 50% 1%;
+    background: url(/public/images/banner_form.webp) no-repeat 50% 1%;
     background-size: cover;
     max-width: 1400px;
     width: 100%;
@@ -82,7 +82,7 @@ const appStore = useAppStore();
         margin-bottom: 10px;
     }
     @media screen and (max-width: 540px) {
-        background: url(/public/images/banner_form.jpg) no-repeat 31% 100%;
+        background: url(/public/images/banner_form.webp) no-repeat 31% 100%;
         background-size: auto;
         
     }

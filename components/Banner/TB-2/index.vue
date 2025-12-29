@@ -40,7 +40,7 @@
     }
 
     .banner {
-        background: url(/images/image14.png) no-repeat center;
+        background: url(/images/image14.webp) no-repeat center;
         background-size: cover;
         border-radius: var(--border-radius);
         padding: 20px; // Отступы от краев баннера

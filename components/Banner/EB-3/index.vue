@@ -65,24 +65,24 @@ const appStore = useAppStore();
 }
 .section__body {
     position: relative;
-    background: url(/images/banner.jpg) no-repeat 95% 20%;
+    background: url(/images/banner.webp) no-repeat 95% 20%;
     background-size: 140%;
     width: 100%;
     margin: 30px auto;
     color: var(--bg-light);
     border-radius: var(--border-radius);
     @media screen and (max-width: 1000px) {
-        background: url(/images/banner.jpg) no-repeat 85% 50%;
+        background: url(/images/banner.webp) no-repeat 85% 50%;
         background-size: 200%; /* или используйте конкретный размер, например: */
         /* background-size: 150%; */ /* чтобы отдалить изображение */
     }
     @media screen and (max-width: 768px) {
-        background: url(/images/banner.jpg) no-repeat 95% 50%;
+        background: url(/images/banner.webp) no-repeat 95% 50%;
         background-size: 300%; /* или используйте конкретный размер, например: */
         /* background-size: 150%; */ /* чтобы отдалить изображение */
     }
     @media screen and (max-width: 500px) {
-        background: url(/images/banner.jpg) no-repeat 85% 20%;
+        background: url(/images/banner.webp) no-repeat 85% 20%;
         background-size: 600%; /* или используйте конкретный размер, например: */
         /* background-size: 150%; */ /* чтобы отдалить изображение */
     }

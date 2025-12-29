@@ -9,7 +9,7 @@
                     <h2 class="title"><span class="title-span"> Летняя распродажа! </span> Сезонные скидки до 30%</h2>
                 </div>
                 <NuxtLink to="/trade-in" class="banner__gift">
-                    <!-- <img src="/svg/gift1.svg" class="svg__logo" alt="" /> -->
+                    <!-- <img src="/svg/gift1.svg" class="svg__logo" alt="icon" /> -->
                     <!-- <div class="gift__title"><p>Оценить свой автомобиль 
                     </p>
                     </div>    -->
@@ -19,7 +19,7 @@
                     <h2 class="title-mob"><span class="title-span-mob">Летняя распродажа! </span> Сезонные скидки до 30%</h2>
                 </div>
                 <NuxtLink to="/banks" class="banner__gift-mob">
-                    <!-- <img src="/svg/gift1.svg" class="svg__logo" alt="" /> -->
+                    <!-- <img src="/svg/gift1.svg" class="svg__logo" alt="icon" /> -->
                     <!-- <div class="gift__title-mob"><p>Узнать подробнее 
                     </p>
                     </div>    -->
@@ -57,7 +57,7 @@
     }
 
     .banner {
-        background: url(/images/main.png) no-repeat center;
+        background: url(/images/main.webp) no-repeat center;
         background-size: cover;
 
         padding: 50px; // Отступы от краев баннера
@@ -68,7 +68,7 @@
         background-position: center 75%;
         @media screen and (max-width: 540px) {
             padding: 40px;
-            background: url(/images/main.png) no-repeat center;
+            background: url(/images/main.webp) no-repeat center;
             border-radius: 0px;
             background-position: center 75%;
             background-size: 170%;

@@ -11,7 +11,7 @@ const slides = ref([
     {
         text: "Официальный партнер HAVAL",
         title: "С гарантией от производителя",
-        image: "images/slider/image1.png",
+        image: "images/slider/image1.webp",
         // isSpecial: true // Этот слайд будет открывать модалку
         url: "/cars/haval"
     },
@@ -19,13 +19,13 @@ const slides = ref([
         text: "Автокредит со ставкой от 4,9%",
         title: "Скидка до 50% на платеж",
         url: "/credit",
-        image: "images/slider/image2.png"
+        image: "images/slider/image2.webp"
     },
     {
         text: "Trade-In с выгодой",
         title: "до 150 000 ₽",
         url: "/trade-in",
-        image: "images/slider/image3.png"
+        image: "images/slider/image3.webp"
     },
 ]);
 

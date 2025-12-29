@@ -37,7 +37,7 @@
     }
 
     .banner {
-        background: url(/images/banner33.png) no-repeat 0% 0%;
+        background: url(/images/banner33.webp) no-repeat 0% 0%;
         background-size: 150%;
         border-radius: var(--border-radius);
         padding: 20px; // Отступы от краев баннера
@@ -49,7 +49,7 @@
         }    
         @media screen and (max-width: 740px) {
             background-size: 300%;
-            background: url(/images/banner33.png) no-repeat 15% 5%;
+            background: url(/images/banner33.webp) no-repeat 15% 5%;
             // background-image: none;
         }
         @media screen and (max-width: 540px) {

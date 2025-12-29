@@ -21,10 +21,10 @@ onMounted(() => {
             <div class="page-banner__wrapper">
                 <div class="page-banner__body">
                     <div class="page-banner__text">
-                        <h1 class="page-banner__title">
+                        <h2 class="page-banner__title">
                             Новые автомобили {{ cleanUpTitle($route.params?.brand) }}
                             <br>в наличии у дилера в Москве
-                        </h1>
+                        </h2>
                         <div class="page-banner__subtitle"
                             v-if="newStore.brand.warranty_km || newStore.brand.warranty_year">
                             Гарантия на авто

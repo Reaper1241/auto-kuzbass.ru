@@ -39,7 +39,7 @@ function getCrumb() {
             }
         } else if ('model' in $route.params) {
             return {
-                to: '/cars/' + $route.params.brand + '/',
+                to: '/cars/' + $route.params.brand,
                 label: `Смотреть все ${cleanUpTitle($route.params.brand)}`
             }
         } else if ('brand' in $route.params) {

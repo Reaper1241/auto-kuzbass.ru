@@ -23,7 +23,7 @@ const appStore = useAppStore();
 
 <style scoped lang="scss">
 .express-brand__section {
-    background: url(/public/images/banner41.png) no-repeat 50% 50%;
+    background: url(/public/images/banner41.webp) no-repeat 50% 50%;
     background-size: cover;
     max-width: 1920px;
     width: 100%;
@@ -32,7 +32,7 @@ const appStore = useAppStore();
     color: var(--bg-light);
 
     @media screen and (max-width: 540px) {
-        background: url(/public/images/banner41.png) no-repeat 31% 50%;
+        background: url(/public/images/banner41.webp) no-repeat 31% 50%;
         background-size: cover;
     }
 
