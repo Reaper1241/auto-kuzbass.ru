@@ -40,6 +40,7 @@ const modifications = ref([]);
 const complectations = ref([]);
 const fuels = ref([]);
 const transmissions = ref([]);
+const bodies = ref([]);
 const drives = ref([]);
 
 const priceFrom = ref(0);
@@ -53,7 +54,9 @@ const modification = ref(0);
 const complectation = ref(0);
 const fuel = ref(0);
 const transmission = ref(0);
+const body = ref(0);
 const drive = ref(0);
+
 
 let fullQuary = ``
 const showMoreFilter = ref(true);
@@ -68,6 +71,9 @@ function updateRecentFilter() {
     }
     for (const i in newQueryArr.value) {
         switch (newQueryArr.value[i][0]) {
+            case 'body_type_id':
+                drive.value = Number(newQueryArr.value[i][1]);
+                break;
             case 'fuel_type_id':
                 fuel.value = Number(newQueryArr.value[i][1]);
                 break;
@@ -100,6 +106,7 @@ function updateRecentFilter() {
         .then(() => complectations.value = quary.value.complectations)
         .then(() => fuels.value = quary.value.fuels)
         .then(() => transmissions.value = quary.value.transmissions)
+        .then(() => bodies.value = quary.value.bodies)
         .then(() => drives.value = quary.value.drives)
         .then(() => priceFrom.value = quary.value.priceFrom)
         .then(() => priceTo.value = quary.value.priceTo)
@@ -126,6 +133,7 @@ function getFilterData(recentStatus) {
             .then(() => complectations.value = quary.value.complectations)
             .then(() => fuels.value = quary.value.fuels)
             .then(() => transmissions.value = quary.value.transmissions)
+            .then(() => bodies.value = quary.value.bodies)
             .then(() => drives.value = quary.value.drives)
             .then(() => priceFrom.value = quary.value.priceFrom)
             .then(() => priceTo.value = quary.value.priceTo)
@@ -138,18 +146,7 @@ function getFilterData(recentStatus) {
 }
 
 function updateQuery() {
-    fullQuary = [
-        `${$route?.name == 'china' ? `car_tag_id=2` : ''}`,
-        `${brand.value > 0 ? `brand_id=${brand.value}` : ''}`,
-        `${model.value > 0 ? `car_model_id=${model.value}` : ''}`,
-        `${modification.value > 0 ? `modification_id=${modification.value}` : ''}`,
-        `${complectation.value > 0 ? `complectation_id=${complectation.value}` : ''}`,
-        `${fuel.value > 0 ? `fuel_type_id=${fuel.value}` : ''}`,
-        `${transmission.value > 0 ? `transmission_type_id=${transmission.value}` : ''}`,
-        `${drive.value > 0 ? `drive_type_id=${drive.value}` : ''}`,
-        `${unmaskedPriceFrom.value > 0 ? `price_from=${unmaskedPriceFrom.value}` : ''}`,
-        `${unmaskedPriceTo.value > 0 ? `price_to=${unmaskedPriceTo.value}` : ''}`
-    ].filter(elm => elm).join('&')
+    fullQuary = [`${$route?.name == 'china' ? `car_tag_id=2` : ''}`, `${brand.value > 0 ? `brand_id=${brand.value}` : ''}`, `${model.value > 0 ? `car_model_id=${model.value}` : ''}`, `${modification.value > 0 ? `modification_id=${modification.value}` : ''}`, `${complectation.value > 0 ? `complectation_id=${complectation.value}` : ''}`, `${fuel.value > 0 ? `fuel_type_id=${fuel.value}` : ''}`, `${transmission.value > 0 ? `transmission_type_id=${transmission.value}` : ''}`, `${drive.value > 0 ? `drive_type_id=${drive.value}` : ''}`, `${body.value > 0 ? `body_type_id=${body.value}` : ''}`, `${unmaskedPriceFrom.value > 0 ? `price_from=${unmaskedPriceFrom.value}` : ''}`, `${unmaskedPriceTo.value > 0 ? `price_to=${unmaskedPriceTo.value}` : ''}`].filter(elm => elm).join('&')
 }
 
 function getBrand(brandName) {
@@ -172,13 +169,13 @@ if ($route.name != 'car') {
 }
 
 async function reset() {
-    // Сбрасываем все значения, включая марку, независимо от текущего роута
     brand.value = 0;
     model.value = 0;
     modification.value = 0;
     complectation.value = 0;
     fuel.value = 0;
     transmission.value = 0;
+    body.value = 0;
     drive.value = 0;
 
     selectedPriceFrom.value = null;
@@ -189,12 +186,10 @@ async function reset() {
 
     fullQuary = ``;
 
-    // Если мы на странице бренда/модели, перенаправляем на главную
     if (['brand', 'model'].includes($route.name)) {
         await navigateTo('/new');
     }
 
-    // Сбрасываем состояние и загружаем базовые фильтры
     await resetFilterData();
     emit('showCars', fullQuary);
 }
@@ -210,6 +205,7 @@ function updateFilter(from) {
         complectation.value = 0
         fuel.value = 0
         transmission.value = 0
+        body.value = 0
         drive.value = 0
         priceFrom.value = 0
         priceTo.value = 0
@@ -228,6 +224,7 @@ function updateFilter(from) {
         .then(() => from == 'complectation' && complectation.value != 0 ? null : complectations.value = quary.value.complectations)
         .then(() => from == 'fuel' && fuel.value != 0 ? null : fuels.value = quary.value.fuels)
         .then(() => from == 'transmission' && transmission.value != 0 ? null : transmissions.value = quary.value.transmissions)
+        .then(() => from == 'body' && body.value != 0 ? null : bodies.value = quary.value.bodies)
         .then(() => from == 'drive' && drive.value != 0 ? null : drives.value = quary.value.drives)
         .then(() => priceFrom.value = quary.value.priceFrom)
         .then(() => priceTo.value = quary.value.priceTo)
@@ -268,63 +265,78 @@ getFilterData(true)
                     <div class="filter__body-selects">
                         <div class="filter__body-column fields">
                             <BaseSelect 
-                            v-model="brand" 
-                            :label="'Марка'" 
-                            :options="brands"
-                            :disabled="$route.name == 'brand' || $route.name == 'model' || paramsLoading"
-                            class="semi-wide" 
-                            @change="updateFilter('brand')" 
+                                v-model="brand" 
+                                :label="'Марка'" 
+                                :options="brands"
+                                :disabled="$route.name == 'brand' || $route.name == 'model' || paramsLoading"
+                                class="semi-wide" 
+                                @change="updateFilter('brand')" 
                             />
 
                             <BaseSelect 
-                            v-model="model" 
-                            :label="'Модель'" 
-                            :options="models"
-                            :disabled="brand == 0 || $route.name == 'model' || paramsLoading"
-                            @change="updateFilter('model')" 
+                                v-model="model" 
+                                :label="'Модель'" 
+                                :options="models"
+                                :disabled="brand == 0 || $route.name == 'model' || paramsLoading"
+                                @change="updateFilter('model')" 
                             />
 
                             <BaseSelect 
-                            v-model="fuel" 
-                            :label="'Тип двигателя'" 
-                            :options="fuels"
-                            :disabled="paramsLoading"
-                            @change="updateFilter('fuel')" 
+                                v-model="fuel" 
+                                :label="'Тип двигателя'" 
+                                :options="fuels"
+                                :disabled="paramsLoading"
+                                @change="updateFilter('fuel')" 
                             />
 
                             <BaseSelect 
-                            v-model="transmission" 
-                            :label="'Коробка'" 
-                            :options="transmissions"
-                            :disabled="paramsLoading"
-                            @change="updateFilter('transmission')" 
+                                v-model="transmission" 
+                                :label="'Коробка'" 
+                                :options="transmissions"
+                                :disabled="paramsLoading"
+                                @change="updateFilter('transmission')" 
                             />
-
+                            
                             <BaseSelect 
-                            v-model="drive" 
-                            :label="'Привод'" 
-                            :options="drives"
-                            :disabled="paramsLoading"
-                            @change="updateFilter('drive')" 
+                                v-model="drive" 
+                                :label="'Привод'" 
+                                :options="drives"
+                                :disabled="paramsLoading"
+                                @change="updateFilter('drive')" 
                             />
                         </div>
 
                         <div class="filter__body-column">
-                            <label class="filter__body-input wide">
-                                <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
-                                    :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" autocomplete="off"
-                                    :disabled="paramsLoading" 
-                                    @maska="unPriceFrom" @change="updateFilter()"
-                                    maxlength="10">
-                                <span class="separator">|</span>
-                                <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
-                                    :placeholder="`до ${makeSpaces(priceTo)} руб`" autocomplete="off"
-                                    inputmode="numeric" 
-                                    :disabled="paramsLoading" 
-                                    @maska="unPriceTo"
-                                    @change="updateFilter()" maxlength="10">
-                            </label>
-
+                            <!-- Блок с приводом и ценой, занимает всю строку (3 колонки) -->
+                            <div class="drive-price-combo">
+                                
+                                <BaseSelect v-model="body"
+                                    :label="'Тип кузова'" 
+                                    :disabled="paramsLoading"
+                                    :options="bodies"
+                                    @change="updateFilter(`body`)" 
+                                     class="drive-select"
+                                />
+                                <label class="filter__body-input price-input">
+                                    <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
+                                        :placeholder="`Цена, от ${makeSpaces(priceFrom)}`" 
+                                        autocomplete="off"
+                                        :disabled="paramsLoading" 
+                                        @maska="unPriceFrom" 
+                                        @change="updateFilter()"
+                                        maxlength="10">
+                                    <span class="separator">-</span>
+                                    <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
+                                        :placeholder="`до ${makeSpaces(priceTo)}`" 
+                                        autocomplete="off"
+                                        inputmode="numeric" 
+                                        :disabled="paramsLoading" 
+                                        @maska="unPriceTo"
+                                        @change="updateFilter()" 
+                                        maxlength="10">
+                                </label>
+                            </div>
+                            
                             <BaseButton :disabled="!countCars || filterLoading"
                                 class="filter__body-button black-button semi-wide"
                                 :label="countCars > 0 ? `Показать ${countCars} объявлений` : 'Авто не найдено'"
@@ -357,43 +369,54 @@ getFilterData(true)
                         <div v-show="showMoreFilter" class="filter__body-column more">
                             <Title :title="'Дополнительные параметры'" class="wide" />
                             <BaseSelect 
-                            v-model="fuel" 
-                            :label="'Тип двигателя'" 
-                            :options="fuels"
-                            :disabled="paramsLoading"
-                            @change="updateFilter('fuel')" 
+                                v-model="fuel" 
+                                :label="'Тип двигателя'" 
+                                :options="fuels"
+                                :disabled="paramsLoading"
+                                @change="updateFilter('fuel')" 
                             />
 
                             <BaseSelect 
-                            v-model="transmission" 
-                            :label="'Коробка'" 
-                            :options="transmissions"
-                            :disabled="paramsLoading"
-                            @change="updateFilter('transmission')" 
+                                v-model="transmission" 
+                                :label="'Коробка'" 
+                                :options="transmissions"
+                                :disabled="paramsLoading"
+                                @change="updateFilter('transmission')" 
                             />
-
+                            
+                            <BaseSelect v-model="body"
+                             :label="'Тип кузова'" 
+                             :disabled="paramsLoading"
+                             :options="bodies"
+                             @change="updateFilter(`body`)" 
+                             />
+                            
                             <BaseSelect 
-                            v-model="drive" 
-                            :label="'Привод'" 
-                            :options="drives"
-                            :disabled="paramsLoading"
-                            @change="updateFilter('drive')" 
+                                v-model="drive" 
+                                :label="'Привод'" 
+                                :options="drives"
+                                :disabled="paramsLoading"
+                                @change="updateFilter('drive')" 
                             />
-
+                            
                             <label class="filter__body-input wide">
                                 <input v-model="selectedPriceFrom" v-maska="options" type="text" name="selectPriceFrom"
-                                    :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" autocomplete="off"
+                                    :placeholder="`Цена, от ${makeSpaces(priceFrom)} руб`" 
+                                    autocomplete="off"
                                     inputmode="numeric" 
                                     :disabled="paramsLoading" 
                                     @maska="unPriceFrom"
-                                    @change="updateFilter()" maxlength="10">
+                                    @change="updateFilter()" 
+                                    maxlength="10">
                                 <span class="separator">|</span>
                                 <input v-model="selectedPriceTo" v-maska="options" type="text" name="selectPriceTp"
-                                    :placeholder="`до ${makeSpaces(priceTo)} руб`" autocomplete="off"
+                                    :placeholder="`до ${makeSpaces(priceTo)} руб`" 
+                                    autocomplete="off"
                                     inputmode="numeric" 
                                     :disabled="paramsLoading" 
                                     @maska="unPriceTo"
-                                    @change="updateFilter()" maxlength="10">
+                                    @change="updateFilter()" 
+                                    maxlength="10">
                             </label>
                         </div>
 
@@ -409,7 +432,6 @@ getFilterData(true)
         </div>
     </section>
 </template>
-
 
 <style scoped lang="scss">
 .filter {
@@ -484,9 +506,9 @@ getFilterData(true)
                 grid-template-columns: 1fr 1fr;
             }
 
-            @media screen and (max-width: 1000px) {
+            @media screen and (max-width: 1200px) {
                 grid-template-columns: 1fr;
-                gap: 35px;
+                gap: 10px;
             }
 
             @media screen and (max-width: 768px) {
@@ -499,10 +521,107 @@ getFilterData(true)
                 grid-template-columns: repeat(3, 1fr);
                 gap: 10px;
 
-                @media screen and (max-width: 500px) {
+                // Блок drive-price-combo занимает всю строку (3 колонки)
+                .drive-price-combo {
+                    grid-column: 1 / span 3; // Занимает все 3 колонки
+                    display: flex;
+                    gap: 10px;
+                    width: 100%;
+                    
+                    .drive-select {
+                        flex: 1; // 1/3 ширины
+                        min-width: 0;
+                        
+                        :deep(.select) {
+                            height: 100%;
+                            min-height: 48px;
+                            width: 100%;
+                        }
+                    }
+                    
+                    .price-input {
+                        flex: 2; // 2/3 ширины
+                        min-width: 0;
+                        margin: 0;
+                        padding: 12px 15px;
+                        display: flex;
+                        height: 49px;
+                        align-items: center;
+                        
+                        max-width: 450px;
+                        @media screen and (max-width: 1380px){
+                            max-width: 400px;
+                        }
+                        @media screen and (max-width: 1330px){
+                            max-width: 350px;
+                        }
+                        @media screen and (max-width: 1290px){
+                            max-width: 320px;
+                        }
+                        @media screen and (max-width: 1250px){
+                            max-width: 300px;
+                        }
+                        @media screen and (max-width: 1230px){
+                            max-width: 250px;
+                        }
+                        @media screen and (max-width: 1200px){
+                            max-width: 450px;
+                        }
+                        input {
+                            width: 48%;
+                            border: none;
+                            outline: none;
+                            background: transparent;
+                            
+                            &:first-child {
+                                // text-align: right;
+                            }
+                            
+                            &:last-child {
+                                // text-align: left;
+                            }
+                            
+                            &::placeholder {
+                                color: #767676;
+                                font-size: 14px;
+                            }
+                        }
+                        
+                        .separator {
+                            padding: 0 5px;
+                            color: #9F9F9F;
+                        }
+                    }
+                }
+                
+                .semi-wide {
+                    grid-column: 1 / span 2;
+                }
+                
+                .filter__header-reset {
+                    grid-column: 3;
+                    margin-top: 0;
+                }
+
+                @media screen and (max-width: 660px) {
                     grid-template-columns: 1fr;
                     column-gap: 0;
                     row-gap: 10px;
+                    
+                    .drive-price-combo {
+                        grid-column: 1;
+                        flex-direction: column;
+                        
+                        .drive-select,
+                        .price-input {
+                            width: 100%;
+                        }
+                    }
+                    
+                    .semi-wide,
+                    .filter__header-reset {
+                        grid-column: 1;
+                    }
                 }
             }
 
@@ -529,7 +648,7 @@ getFilterData(true)
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    color: #9F9F9F; /* Серый цвет по умолчанию */
+                    color: #9F9F9F;
                     transition: color 0.3s;
                 }
 
@@ -541,7 +660,7 @@ getFilterData(true)
                     opacity: 0.5;
                 }
 
-                @media screen and (max-width: 500px) {
+                @media screen and (max-width: 660px) {
                     grid-column-start: 1;
                 }
 
@@ -588,7 +707,7 @@ getFilterData(true)
                 width: 100%;
                 padding: 15px 15px;
                 color: #767676;
-                border-radius: 20px;
+                border-radius: 4px !important;
                 display: flex;
                 border: var(--border);
                 border-radius: var(--border-input-radius);
@@ -625,7 +744,6 @@ getFilterData(true)
                 display: grid;
             }
         }
-
 
         .filter__body-bodies {
             display: grid;
@@ -670,8 +788,6 @@ getFilterData(true)
                     width: 100%;
                 }
             }
-
-
         }
 
         .filter__body-controls {

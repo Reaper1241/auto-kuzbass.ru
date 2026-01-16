@@ -84,10 +84,12 @@ const show = ref(0);
                                     <p class="absolute"><span class="model__card-span">Гарантия:</span> 
                                     5 лет /<br> 100 000 км</p>
                                 </li>
+                                <li class="centered-item"><p class="absolute"><span class="model__card-span"> {{ currentMod.body }}     </span></p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">От 4,9%</span>без 1-го взноса</p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">Trade-In</span>выгода до 150 000 ₽</p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">Срок</span>до 7 лет</p></li>
                                 <li class="centered-item"><p class="absolute"><span class="model__card-span">Рассрочка</span>0%</p></li>
+                                
                             </ul>
                         </div>
 
@@ -265,6 +267,11 @@ const show = ref(0);
                         <!-- <li>Процентная ставка от 4,9%</li> -->
                         <li>Срок до 7 лет</li>
                         <li>Рассрочка 0%</li>
+                        <li>
+                                    <p>
+                                        {{ currentMod.body }}        
+                                    </p>
+                                </li>
                     </ul>
                     
                 </div>
@@ -306,7 +313,7 @@ const show = ref(0);
   text-align: center;
 }
 .absolute{
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     position: absolute;
     width: 70px;
     display: flex;
@@ -378,7 +385,7 @@ const show = ref(0);
                         border: 1px solid var(--main-color);
                         border-radius: 4px;
                         flex-wrap: wrap;
-                        width: 100px;
+                        width: 110px;
                         height: 90px;
                         &::before {
                             content: "";
@@ -975,8 +982,8 @@ const show = ref(0);
     @media screen and (max-width: 1025px){
         margin: 10px 0px;
         display: grid;
-        gap: 80px;
-        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 20px;
+        grid-template-columns: repeat(4, 1fr) !important;
     }
     @media screen and (max-width: 1000px) {
         margin: 10px 0px;
