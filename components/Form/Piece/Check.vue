@@ -21,11 +21,11 @@ function handleFormCheck() {
             <input class="radio__hidden" type="checkbox" v-model="checkedP"
                 @click="checkedP = !checkedP, handleFormCheck()">
             <!-- <span class="radio__img" :class="checkedP ? 'checked' : ''"></span> -->
-            <p class="wrap">Нажимая на кнопку «оставить заявку», вы даете согласие&nbsp; <span><NuxtLink to="/politics" target="_blank" class="check-link">
-                на обработку персональных данных</NuxtLink></span>
+            <p class="wrap">Нажимая на кнопку «оставить заявку», вы соглашаетесь на&nbsp; <span><NuxtLink to="/politics" target="_blank" class="check-link">
+                обработку персональных данных</NuxtLink></span>
             </p>
-            <p class="wrap-mob">Нажимая на кнопку «оставить заявку», вы даете согласие&nbsp; <span><NuxtLink to="/politics" target="_blank" class="check-link">
-                на обработку персональных данных</NuxtLink></span>
+            <p class="wrap-mob">Нажимая на кнопку «оставить заявку», вы соглашаетесь на&nbsp; <span><NuxtLink to="/politics" target="_blank" class="check-link">
+                обработку персональных данных</NuxtLink></span>
             </p>
         </label>
 

@@ -3,6 +3,7 @@ import { options, name } from "@/constants/";
 
 import { vMaska } from "maska/vue"
 
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { useAppStore } from '/stores/AppStore.js'
 const appStore = useAppStore()
 
@@ -16,14 +17,16 @@ const emits = defineEmits(['showCar']);
 const props = defineProps({
     minPercent: Number,
 });
-
+const phonePasteAttempts = ref(0)
+const phoneInputRef = ref(null)
 /* Form Check */
 const formChecked = ref(true);
 function returnEmit(value) {
     formChecked.value = value
 }
 /* Form Check */
-
+const namePasteAttempts = ref(0)
+const nameInputRef = ref(null)
 /* Time List */
 const timeListOutputData = ref(0);
 const carInitialFee = ref(0);
@@ -31,6 +34,182 @@ const carPrice = ref(0);
 const currCar = ref([]);
 const showAuto = ref(false);
 const valueApp = ref('')
+const phoneFieldName = ref(`phone-${Math.random().toString(36).substr(2, 9)}`)
+const nameFieldName = ref(`name-${Math.random().toString(36).substr(2, 9)}`)
+
+// Вычисляемые свойства для показа предупреждений
+const showPhonePasteWarning = computed(() => {
+    return phonePasteAttempts.value > 0;
+});
+
+const showNamePasteWarning = computed(() => {
+    return namePasteAttempts.value > 0;
+});
+
+// Обработчики вставки для телефона
+function handlePhonePaste(e) {
+  e.preventDefault();
+  phonePasteAttempts.value++;
+  
+  console.log(`Phone paste blocked! Attempts: ${phonePasteAttempts.value}`);
+  
+  // Показываем визуальную обратную связь
+  if (phoneInputRef.value) {
+    phoneInputRef.value.classList.add('paste-blocked');
+    setTimeout(() => {
+      phoneInputRef.value?.classList.remove('paste-blocked');
+    }, 500);
+  }
+  
+  // После 3 попыток показываем уведомление
+  if (phonePasteAttempts.value >= 3) {
+    phoneError.value = true;
+    setTimeout(() => {
+      phoneError.value = false;
+    }, 3000);
+  }
+  
+  return false;
+}
+
+function handlePhoneCopy(e) {
+  e.preventDefault();
+  return false;
+}
+
+function handlePhoneCut(e) {
+  e.preventDefault();
+  return false;
+}
+
+// Обработчики вставки для имени
+function handleNamePaste(e) {
+  e.preventDefault();
+  namePasteAttempts.value++;
+  
+  console.log(`Name paste blocked! Attempts: ${namePasteAttempts.value}`);
+  
+  // Показываем визуальную обратную связь
+  if (nameInputRef.value) {
+    nameInputRef.value.classList.add('paste-blocked');
+    setTimeout(() => {
+      nameInputRef.value?.classList.remove('paste-blocked');
+    }, 500);
+  }
+  
+  return false;
+}
+
+function handleNameCopy(e) {
+  e.preventDefault();
+  return false;
+}
+
+function handleNameCut(e) {
+  e.preventDefault();
+  return false;
+}
+
+// Обработчики клавиш
+function handlePhoneKeyDown(e) {
+  const isPasteCombo = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v';
+  const isCopyCombo = (e.ctrlKey || e.metaKey) && ['c', 'x'].includes(e.key.toLowerCase());
+  
+  if (isPasteCombo || isCopyCombo) {
+    e.preventDefault();
+    if (phoneInputRef.value) {
+      phoneInputRef.value.classList.add('shortcut-blocked');
+      setTimeout(() => {
+        phoneInputRef.value?.classList.remove('shortcut-blocked');
+      }, 300);
+    }
+  }
+}
+
+function handleNameKeyDown(e) {
+  const isPasteCombo = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v';
+  const isCopyCombo = (e.ctrlKey || e.metaKey) && ['c', 'x'].includes(e.key.toLowerCase());
+  
+  if (isPasteCombo || isCopyCombo) {
+    e.preventDefault();
+    if (nameInputRef.value) {
+      nameInputRef.value.classList.add('shortcut-blocked');
+      setTimeout(() => {
+        nameInputRef.value?.classList.remove('shortcut-blocked');
+      }, 300);
+    }
+  }
+}
+
+// Глобальные обработчики
+function setupGlobalProtection() {
+  document.addEventListener('keydown', handleGlobalKeyDown);
+  document.addEventListener('contextmenu', handleGlobalContextMenu);
+}
+
+function handleGlobalKeyDown(e) {
+  const activeElement = document.activeElement;
+  const isPasteCombo = (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v';
+  
+  if (isPasteCombo && 
+      (activeElement === phoneInputRef.value || activeElement === nameInputRef.value)) {
+    e.stopImmediatePropagation();
+    e.preventDefault();
+  }
+}
+
+function handleGlobalContextMenu(e) {
+  // Блокируем контекстное меню на наших полях
+  if (e.target === phoneInputRef.value || e.target === nameInputRef.value) {
+    e.preventDefault();
+    return false;
+  }
+}
+
+// Автоматическое скрытие предупреждений через 3 секунды
+watch(phonePasteAttempts, (newVal) => {
+  if (newVal > 0) {
+    setTimeout(() => {
+      phonePasteAttempts.value = 0;
+    }, 3000);
+  }
+});
+
+watch(namePasteAttempts, (newVal) => {
+  if (newVal > 0) {
+    setTimeout(() => {
+      namePasteAttempts.value = 0;
+    }, 3000);
+  }
+});
+
+onMounted(() => {
+  setupGlobalProtection();
+  
+  // Настройка полей для отключения автозаполнения
+  if (phoneInputRef.value) {
+    phoneInputRef.value.setAttribute('autocomplete', 'new-tel');
+    phoneInputRef.value.setAttribute('autocorrect', 'off');
+    phoneInputRef.value.setAttribute('autocapitalize', 'off');
+    phoneInputRef.value.setAttribute('spellcheck', 'false');
+    phoneInputRef.value.setAttribute('data-lpignore', 'true');
+    phoneInputRef.value.setAttribute('data-form-type', 'other');
+  }
+  
+  if (nameInputRef.value) {
+    nameInputRef.value.setAttribute('autocomplete', 'new-name');
+    nameInputRef.value.setAttribute('autocorrect', 'off');
+    nameInputRef.value.setAttribute('autocapitalize', 'off');
+    nameInputRef.value.setAttribute('spellcheck', 'false');
+    nameInputRef.value.setAttribute('data-lpignore', 'true');
+    nameInputRef.value.setAttribute('data-form-type', 'other');
+  }
+});
+
+onUnmounted(() => {
+  document.removeEventListener('keydown', handleGlobalKeyDown);
+  document.removeEventListener('contextmenu', handleGlobalContextMenu);
+});
 function percentListOutput(value) {
     carInitialFee.value = value
 }
@@ -174,17 +353,90 @@ watch(() => creditStore.category, (currentData) => {
         </div>
 
         <div class="form__form-block">
-            <div class="base-input">
-                <input :class="{ 'is-invalid': nameError }" type="text" name="name" placeholder="Ваше имя"
-                    v-model="nameValue" autocomplete="on" v-maska="name" class="form-input">
+            <input type="text" name="fake-username" autocomplete="username" style="display: none;" />
+            <input type="password" name="fake-password" autocomplete="new-password" style="display: none;" />
+            
+            <div class="base-input name-input">
+                <div class="input-wrapper">
+                    <input 
+                    ref="nameInputRef"
+                    :id="nameFieldName"
+                    :name="nameFieldName"
+                    :class="{ 'is-invalid': nameError, 'paste-blocked': showNamePasteWarning }" 
+                    type="text" 
+                    placeholder="Имя" 
+                    v-model="nameValue"
+                    autocomplete="off"
+                    v-maska="name" 
+                    class="form-input"
+                    @paste="handleNamePaste"
+                    @copy="handleNameCopy"
+                    @cut="handleNameCut"
+                    @keydown="handleNameKeyDown"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    data-lpignore="true"
+                    />
+                    
+                    <!-- Индикатор блокировки вставки для имени -->
+                    <transition name="fade">
+                        <div 
+                            v-if="showNamePasteWarning" 
+                            class="paste-warning" 
+                            :class="{ 'show': showNamePasteWarning }"
+                        >
+                            <i class="fa-solid fa-ban"></i>
+                            <span class="warning-text">
+                                {{ namePasteAttempts > 1 ? 'Вставка отключена' : '' }}
+                            </span>
+                        </div>
+                    </transition>
+                </div>
             </div>
 
-            <div class="base-input">
-                <input :class="{ 'is-invalid': phoneError }" type="tel" name="contactPhone"
-                    placeholder="+7 (___) ___-__-__" autocomplete="on" v-maska="options" v-model="phoneValue"
-                    class="form-input">
-
-                <span class="alert" v-show="phoneError"><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <div class="base-input phone-input">
+                <div class="input-wrapper">
+                    <input 
+                    ref="phoneInputRef"
+                    :id="phoneFieldName"
+                    :name="phoneFieldName"
+                    :class="{ 'is-invalid': phoneError, 'paste-blocked': showPhonePasteWarning }" 
+                    type="tel" 
+                    placeholder="+7 (___) ___-__-__"
+                    autocomplete="off" 
+                    v-maska="options" 
+                    v-model="phoneValue" 
+                    class="form-input"
+                    @paste="handlePhonePaste"
+                    @copy="handlePhoneCopy"
+                    @cut="handlePhoneCut"
+                    @keydown="handlePhoneKeyDown"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    data-lpignore="true"
+                    />
+                    
+                    <!-- Индикатор ошибки телефона -->
+                    <span class="error-icon" v-show="phoneError">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </span>
+                    
+                    <!-- Индикатор блокировки вставки для телефона -->
+                    <transition name="fade">
+                        <div 
+                            v-if="showPhonePasteWarning" 
+                            class="paste-warning" 
+                            :class="{ 'show': showPhonePasteWarning }"
+                        >
+                            <i class="fa-solid fa-ban"></i>
+                            <span class="warning-text">
+                                {{ phonePasteAttempts > 1 ? 'Вставка отключена' : '' }}
+                            </span>
+                        </div>
+                    </transition>
+                </div>
             </div>
             <input type="text" name="app" id="" class="app__input" v-model="valueApp">
             <FormPieceCheck @formChecked="returnEmit" :appType="2" />
@@ -197,7 +449,147 @@ watch(() => creditStore.category, (currentData) => {
 </template>
 
 <style scoped lang="scss">
+.base-input {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    
+    .input-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .form-input {
+        width: 100%;
+        height: 100%;
+        padding: 15px 15px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        font-size: 16px;
+        box-sizing: border-box;
+        
+        &.paste-blocked {
+            animation: shake 0.5s ease;
+            border-color: #ff6b6b !important;
+            padding-right: 130px; /* Место для иконки предупреждения */
+        }
+        
+        &.shortcut-blocked {
+            animation: pulse 0.3s ease;
+            border-color: #ffa94d !important;
+        }
+        
+        &.is-invalid {
+            border-color: #ff4444 !important;
+            background-color: rgba(255, 68, 68, 0.05) !important;
+            
+            &:focus {
+                box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.2) !important;
+            }
+        }
+        
+        &:focus {
+            outline: none;
+            border-color: var(--main-color);
+        }
+    }
+    
+    .error-icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: #ff4444;
+        z-index: 11;
+    }
+    
+    .paste-warning {
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #ff6b6b;
+        background: rgba(255, 107, 107, 0.1);
+        padding: 4px 8px;
+        border-radius: 4px;
+        pointer-events: none;
+        z-index: 10;
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        
+        &.show {
+            opacity: 1;
+            transform: translateY(-50%) translateX(0);
+        }
+        
+        i {
+            font-size: 14px;
+        }
+        
+        .warning-text {
+            white-space: nowrap;
+            font-weight: 500;
+        }
+    }
+    
+    &.phone-input .form-input.paste-blocked,
+    &.name-input .form-input.paste-blocked {
+        padding-right: 130px;
+    }
+}
 
+/* Анимации */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+    20%, 40%, 60%, 80% { transform: translateX(3px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+    100% { transform: scale(1); }
+}
+
+/* Анимация появления для transition */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s;
+}
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .base-input {
+        .paste-warning {
+            .warning-text {
+                display: none;
+            }
+            
+            &.show {
+                padding: 4px;
+            }
+        }
+        
+        .form-input.paste-blocked {
+            padding-right: 40px;
+        }
+    }
+}
+
+@media (max-width: 540px) {
+    .form__form-content .form__form-block {
+        gap: 8px;
+    }
+}
 
 
 .form__form-content {

@@ -351,14 +351,19 @@ function setSeo() {
             title.value = replaceSEO(appStore.newSeo[$route.name]?.title)
             description.value = replaceSEO(appStore.newSeo[$route.name]?.description)
         }
-
+        
         useHead({
             title: cleanUpTitle(title.value),
             meta: [
                 { name: 'description', content: cleanUpTitle(description.value) },
+
+                { property: 'og:type', content: 'website' },
                 { property: 'og:title', content: cleanUpTitle(title.value) },
                 { property: 'og:description', content: cleanUpTitle(description.value) },
                 { property: 'og:url', content: `${appStore.siteUrl}${$route.path}` },
+                { property: 'og:image', content: `${appStore.siteUrl}/og.png` },
+                { property: 'og:locale', content: 'ru_RU' },
+                { property: 'og:site_name', content: appStore.siteName },
             ],
             link: [
                 {
