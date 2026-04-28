@@ -24,13 +24,13 @@ onMounted(() => {
                 <div class="brand__form-wrapper">
                     <h2 class="">
                         <span>Получить индивидуальное предложение на покупку {{ newStore?.brand?.brand.toUpperCase() }} в кредит от 4,9%</span></h2>
-                    <FormBanner class="brand__form" />
+                    <FormBannerBrand class="brand__form" />
                 </div>
 
                 <div class="brand__img">
                     <h2 class="brand__img-h2">Только до {{ getNextMonday() }} 2025</h2>
                     <h3 class="brand__img-h3">Скидка до 1 000 000 ₽ на
-<br>автомобили {{ $route.params.brand.toUpperCase() }}</h3>
+<br>автомобили {{ $route.params.brand?.toUpperCase() || '' }}</h3>
                     <NuxtImg
                         :src="`${newStore?.brand?.banner ? newStore?.brand?.banner : '/images/bottom__form-bg.webp'}`"
                         :alt="newStore?.brand?.brand + 'banner'"     

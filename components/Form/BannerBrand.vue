@@ -35,27 +35,15 @@ const formFields = shallowRef([
     },
 ]);
 
-// Создаем упрощенный объект car только с нужными полями
 const car = computed(() => {
-  // Сначала пробуем взять из текущей модели
-  if (newStore.model) {
+    const brandName = newStore?.brand?.brand || '';
     return {
-      brand: newStore.model.brand,
-      model: newStore.model.name || newStore.model.model,
-      price: newStore.model.min_price
+        brand: brandName,
+        id: null,        // или конкретный id, если есть
+        price: null,     // или 0, если бэкенд требует число
+        sale: null,
+        min_price: null
     };
-  }
-  
-  // Если нет текущей модели, берем из первой модели в списке
-  if (newStore.models && newStore.models.length > 0) {
-    return {
-      brand: newStore.brand?.brand,
-      model: newStore.models[0].name || newStore.models[0].model,
-      price: newStore.models[0].min_price
-    };
-  }
-  
-  return null;
 });
 
 const handleFormSubmit = (formData) => {
@@ -69,6 +57,7 @@ const handleFormSubmit = (formData) => {
         @submit="handleFormSubmit" 
         :submit-text="`Оставить заявку`" 
         :appType="9"
+        :car="car" 
     />
 </template>
 <style scoped lang="scss">
