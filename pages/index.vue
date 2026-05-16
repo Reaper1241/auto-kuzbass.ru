@@ -16,6 +16,7 @@ function callback(n) {
     <BannerEB2/>
     <Brands />
     <CarsPopular/>
+    <CarsList/>
     <FilterNew @showCars="callback" />
     <CarsListNew :currentQuary="currentCarsData" />
     <BannerEB3 />

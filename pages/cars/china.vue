@@ -8,10 +8,22 @@ definePageMeta({
     name: 'china',
 })
 
-if (appStore.chinaBrands.length == 0) {
-    fetchClientWrapper(`${apiNew}filters/brands?brand_tag_id=2`).
-        then(res => res.json())
-        .then(data => appStore.chinaBrands = data)
+// Добавляем отладку загрузки брендов
+console.log('Before loading china brands:', appStore.chinaBrands);
+
+if (!appStore.chinaBrands || appStore.chinaBrands.length == 0) {
+    console.log('Loading china brands from API...');
+    fetchClientWrapper(`${apiNew}filters/brands?brand_tag_id=3`)
+        .then(res => res.json())
+        .then(data => {
+            console.log('China brands loaded:', data);
+            appStore.chinaBrands = data;
+        })
+        .catch(error => {
+            console.error('Error loading china brands:', error);
+        });
+} else {
+    console.log('China brands already loaded:', appStore.chinaBrands);
 }
 
 let currentQuary = ref([])
@@ -22,26 +34,31 @@ function callback(n) {
 </script>
 
 <template>
-    <div class="title">
-        <BasePageTitle />
-    </div>
-    <ChinaBanner />
+    
+    <!-- <ChinaBanner /> -->
     <Brands />
-    <FilterNew @showCars="callback" />
-    <CarsListNew :currentQuary="currentQuary" />
+    <!-- <ChinaModels /> -->
+    
+    <FilterChina @showCars="callback" />
+    <CarsListChina :currentQuary="currentQuary" />
+
     <BannerEB3 />
     <ChinaModels />
-
-    <!-- <ModalAFK /> -->
+    <ModalAFK />
     <BasePageContent />
     <SEO />
 </template>
 
 <style lang="scss" scoped>
 .title{
-    max-width: 1430px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 30px 15px;
+    padding: 20px 0px ;
     font-size: 24px;
+    padding-bottom: 0px;
+    // padding-top: 0px;
+    @media screen and (max-width: 1000px){
+        padding: 10px;
+    }
 }
 </style>

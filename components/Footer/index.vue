@@ -70,7 +70,22 @@ onMounted(() => {
                     <NuxtLink to="/cars" class="dropdown-link">Каталог авто</NuxtLink>
                 </li>
                 <li class="dropdown-item">
+                    <NuxtLink to="/cars/china" class="dropdown-link">Китайские авто</NuxtLink>
+                </li>
+                <li class="dropdown-item">
                     <NuxtLink to="/cars/taxi" class="dropdown-link">Авто для такси</NuxtLink>
+                </li>
+                <li class="dropdown-item">
+                    <NuxtLink to="/cars/jeep" class="dropdown-link">Внедорожники</NuxtLink>
+                </li>
+                <li class="dropdown-item">
+                    <NuxtLink to="/cars/sedan" class="dropdown-link">Седаны</NuxtLink>
+                </li>
+                <li class="dropdown-item">
+                    <NuxtLink to="/cars/popular" class="dropdown-link">Популярные авто</NuxtLink>
+                </li>
+                <li class="dropdown-item">
+                    <NuxtLink to="/cars/family" class="dropdown-link">Семейные авто</NuxtLink>
                 </li>
                 <li class="navbar-item">
                     <NuxtLink to="/credit" class="navbar-link">Автокредит</NuxtLink>
@@ -212,9 +227,18 @@ onMounted(() => {
             list-style: none;
             padding: 0;
             margin-bottom: 20px;
-            display: flex;
-            text-wrap: nowrap;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            // text-wrap: nowrap;
             gap: 15px;
+            @media screen and (max-width: 800px) {
+                flex-direction: column;
+                grid-template-columns: repeat(3,1fr);
+            }
+            @media screen and (max-width: 500px) {
+                flex-direction: column;
+                grid-template-columns: repeat(2,1fr);
+            }
             @media screen and (max-width: 800px) {
                 flex-direction: column;
             }
