@@ -4,7 +4,7 @@ import { apiNew } from '@/constants';
 const models = ref([]);
 
 function getModels() {
-    fetchClientWrapper(`${apiNew}filters/models?model_tag_id=2`)
+    fetchClientWrapper(`${apiNew}filters/models?model_tag_id=4`)
         .then(res => res.json())
         .then(data => models.value = data.models)
 }

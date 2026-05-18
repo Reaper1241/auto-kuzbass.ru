@@ -239,9 +239,6 @@ onMounted(() => {
                 flex-direction: column;
                 grid-template-columns: repeat(2,1fr);
             }
-            @media screen and (max-width: 800px) {
-                flex-direction: column;
-            }
             li {
                 margin-bottom: 8px;
 
