@@ -26,10 +26,15 @@ export const apiFormNew = "https://send-app.ru/new/plex";
 //   ]
 
 /* Маска для телефона */
+const firstNumber = { pattern: /[7-7]/ };
+const secondNumber = { pattern: /[9-9]/ };
 export const options = {
-    mask: "+7 (9##) ###-##-##",
-    ager: true,
-    eager: true,
+  mask: "+7 (S##) ###-##-##",
+  ager: true,
+  tokens: {
+    F: firstNumber,
+    S: secondNumber
+  },
 };
 /* Маска для телефона */
 
