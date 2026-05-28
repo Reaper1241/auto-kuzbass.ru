@@ -20,6 +20,12 @@ export default defineNuxtConfig({
     '~/plugins/directives.js'
   ],
 
+  runtimeConfig: {
+    feedsBase: process.env.FEEDS_BASE || "https://api-admin.ru/feeds/",
+    feedsDomain: process.env.FEEDS_DOMAIN || "https://auto-kuzbass.ru",
+    sitemapBase: process.env.SITEMAP_BASE || "https://api-admin.ru/sitemaps",
+  },
+
   css: [
     '@fancyapps/ui/dist/fancybox/fancybox.css',
     '~/assets/style.scss',
