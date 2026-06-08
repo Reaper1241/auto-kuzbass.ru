@@ -5,6 +5,7 @@
 export const apiNew = "https://api-stat.ru/";
 
 export const apiFormNew = "https://send-app.ru/new/plex";
+export const apiFormUsed = "https://send-app.ru/new/application";
 /* Api URL для фетчей */
 
 // [

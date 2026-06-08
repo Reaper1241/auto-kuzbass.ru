@@ -66,15 +66,21 @@ export default function postForm(data, appType, car, category) {
     const today = new Date().toISOString().split('T')[0];
     const ipKey = `submission_${appStore.ip}_${today}`;
     
-    const hasSubmittedToday = localStorage.getItem(ipKey);
+    const submissionCount = parseInt(localStorage.getItem(ipKey) || '0');
+    const hasSubmittedToday = submissionCount > 0;
     
     if (hasSubmittedToday) {
-      localStorage.setItem(ipKey, 'duplicate');
+      const newCount = submissionCount + 1;
+      localStorage.setItem(ipKey, newCount.toString());
+      
+      // Определяем, какой API использовать
+      const apiUrl = newCount <= 3 ? apiFormNew : apiFormUsed;
+      const isLimitExceeded = newCount > 3;
       
       const { $ym } = useNuxtApp()
       $ym('reachGoal', 'success-auto-kuzbass')
       
-      axios.post(`${apiFormNew}`, {
+      axios.post(apiUrl, {
         phone_number: clearPhone,
         full_name: formData.name ? formData.name : null,
         comment: comment.value ? comment.value : null,
@@ -96,6 +102,7 @@ export default function postForm(data, appType, car, category) {
 
         application_type_id: appType,
         is_duplicate: true,
+        is_limit_exceeded: isLimitExceeded,
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -122,12 +129,12 @@ export default function postForm(data, appType, car, category) {
           appStore.formLoading = false
         })
     } else {
-      localStorage.setItem(ipKey, 'submitted');
+      localStorage.setItem(ipKey, '1');
       
       const { $ym } = useNuxtApp()
       $ym('reachGoal', 'success-auto-kuzbass')
       
-      axios.post(`${apiFormNew}`, {
+      axios.post(apiFormNew, {
         phone_number: clearPhone,
         full_name: formData.name ? formData.name : null,
         comment: comment.value ? comment.value : null,
@@ -149,6 +156,7 @@ export default function postForm(data, appType, car, category) {
 
         application_type_id: appType,
         is_duplicate: false,
+        is_limit_exceeded: false,
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
