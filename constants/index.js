@@ -2,7 +2,8 @@
 // export const apiNew = "https://api.autosalon-arena.ru/api/site/";
 // export const apiNew = "https://new-api.autosalon-arena.ru/index.php/";
 // export const apiNew = "http://new-api.autogaga.ru/index.php/";
-export const apiNew = "https://api-stat.ru/";
+// export const apiNew = "https://api-stat.ru/";
+export const apiNew = "http://localhost:3009/";
 
 export const apiFormNew = "https://send-app.ru/new/plex";
 export const apiFormUsed = "https://send-app.ru/new/application";

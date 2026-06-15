@@ -16,29 +16,36 @@ const $route = useRoute();
 const brand = findBrand($route.params.brand, appStore.newBrands)
 const loading = ref(true);
 
-if (brand) {
-    try {
-        loading.value = true;
-        appStore.globalLoader = true
-
-        // Use Promise.all to wait for both requests to complete
-        const [brandResponse, modelsResponse] = await Promise.all([
-            fetchServerWrapper(`${apiNew}brands/brand/${brand}`),
-            fetchServerWrapper(`${apiNew}filters/models?brand_id=${brand}`)
-        ]);
-
-        newStore.brand = brandResponse.data.value;
-        newStore.models = modelsResponse.data.value.models;
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        throw createError({ statusCode: 500, statusMessage: 'Failed to load data', fatal: true });
-    } finally {
-        loading.value = false;
-        appStore.globalLoader = false
-    }
-} else {
+if (!brand) {
     throw createError({ statusCode: 404, statusMessage: 'Brand not found!', fatal: true })
 }
+
+// Один useAsyncData => корректный перенос SSR-payload на клиент
+// (без hydration mismatch и без повторного fetch/AbortError при гидрации).
+const { data, error } = await useAsyncData(`brand-${brand}`, async () => {
+    const [brandResponse, modelsResponse] = await Promise.all([
+        fetchServerWrapper(`${apiNew}brands/brand/${brand}`),
+        fetchServerWrapper(`${apiNew}filters/models?brand_id=${brand}`)
+    ]);
+
+    return {
+        brand: brandResponse ?? null,
+        models: modelsResponse?.models ?? [],
+    };
+});
+
+if (error.value) {
+    console.error('Error fetching data:', error.value);
+    throw createError({ statusCode: 500, statusMessage: 'Failed to load data', fatal: true });
+}
+
+// Выполняется и на сервере, и на клиенте (data.value берётся из payload) —
+// стор заполнен с первого захода.
+newStore.brand = data.value?.brand ?? null;
+newStore.models = data.value?.models ?? [];
+
+loading.value = false;
+appStore.globalLoader = false;
 </script>
 
 <template>
