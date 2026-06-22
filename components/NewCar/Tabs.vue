@@ -91,7 +91,7 @@ const complectationSections = computed(() => {
           
           <!-- Вторая колонка -->
           <div class="options-column">
-            <div v-for="section in complectationSections.firstColumn" :key="section.key" class="option-block">
+            <div v-for="section in complectationSections.secondColumn" :key="section.key" class="option-block">
               <h3 class="option-title">{{ section.title }}</h3>
               <ul class="option-list" v-htmlSanitizer="car.complectation[section.key]"></ul>
             </div>
