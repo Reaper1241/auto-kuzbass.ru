@@ -13,7 +13,9 @@ const loading = ref(true);
 onMounted(() => {
     loading.value = false
 })
-
+const getCurrentYear = () => {
+    return new Date().getFullYear()
+}
 // :style="{ backgroundImage: `url(${newStore?.brand?.banner ? newStore?.brand?.banner : '/images/bottom__form-bg.webp'})` }"
 </script>
 
@@ -28,7 +30,7 @@ onMounted(() => {
                 </div>
 
                 <div class="brand__img">
-                    <h2 class="brand__img-h2">Только до {{ getNextMonday() }} 2025</h2>
+                    <h2 class="brand__img-h2">Только до {{ getNextMonday() }} {{ getCurrentYear() }}</h2>
                     <h3 class="brand__img-h3">Скидка до 1 000 000 ₽ на
 <br>автомобили {{ $route.params.brand?.toUpperCase() || '' }}</h3>
                     <NuxtImg
