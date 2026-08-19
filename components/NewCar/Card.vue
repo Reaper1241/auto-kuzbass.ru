@@ -1,21 +1,16 @@
 <script setup>
 import { useNewCarStore } from '/stores/NewCarStore.js'
 import { useAppStore } from '/stores/AppStore.js';
-import { useNewStore } from '/stores/NewStore.js'; // Добавляем импорт NewStore
+import { useNewStore } from '/stores/NewStore.js';
 
 const appStore = useAppStore();
 const carStore = useNewCarStore();
-const newStore = useNewStore(); // Добавляем использование NewStore
+const newStore = useNewStore();
 
 const car = ref([]);
 car.value = carStore.car;
 
 const sale = ref(car.value.sale);
-
-// Добавляем переключатели и вычисляемые свойства
-const tradeSwitch = ref(true);
-const creditSwitch = ref(true);
-const salonSwitch = ref(true);
 
 const tradeSale = computed(() => car.value.sale * appStore.tradeCalcPercent);
 const creditSale = computed(() => car.value.sale * appStore.creditCalcPercent);
@@ -23,11 +18,12 @@ const salonSale = computed(() => car.value.sale * appStore.salonCalcPercent);
 
 const totalSale = computed(() => {
   let total = 0;
-  if (tradeSwitch.value) total += tradeSale.value;
-  if (creditSwitch.value) total += creditSale.value;
-  if (salonSwitch.value) total += salonSale.value;
+  if (newStore.tradeSwitch) total += tradeSale.value;
+  if (newStore.creditSwitch) total += creditSale.value;
+  if (newStore.salonSwitch) total += salonSale.value;
   return total;
 });
+
 const scrollToFinance = () => {
   const element = document.getElementById('model-finance');
   if (element) {
@@ -37,7 +33,7 @@ const scrollToFinance = () => {
     });
   }
 };
-// Обновляем функцию для обновления скидки
+
 function updateSale(value) {
   sale.value = value;
 }
@@ -63,15 +59,6 @@ onMounted(() => {
       <div class="car-card__wrapper">
         <div class="car-card__header section__header">
           <BasePageTitle />
-            <!-- <div class="car-card__stickers">
-                    <div class="car-card__credit">
-                    <span>В кредит от {{
-                        makeSpaces(appStore.calcMonthPrice(car))
-                    }} ₽/мес.</span>
-                    </div>
-                    <span class="sticker discount" v-if="car.sale">Скидка до {{ makeSpaces(car.sale) }} ₽</span>
-                    <img class="calculator" src="/public/images/calculator.png" @click="scrollToFinance"/>
-                </div>   -->
         </div>
         
         <ClientOnly v-if="!loading">
@@ -131,15 +118,15 @@ onMounted(() => {
                 <div class="card-card__prices-content">
                   <div class="price_month"> 
                     <h2 class="card-card__title">Цена автомобиля:</h2>
-                    <p>Платеж в месяц от <span>{{ makeSpaces(appStore.calcMonthPriceModel(0, (newStore.model.min_price + newStore.model.sale) - newStore.totalSale)) }} руб/мес.</span>
+                    <p>Платеж в месяц от <span>{{ makeSpaces(appStore.calcMonthPriceModel(0, car.price - totalSale)) }} руб/мес.</span>
                     </p>
                   </div>              
                   <div class="car-card__price">
-                    <span class="old" v-if="car.sale && sale > 0">
-                      от {{ makeSpaces(newStore.model.min_price + newStore.model.sale) }} руб.
+                    <span class="old" v-if="car.sale && totalSale > 0">
+                      от {{ makeSpaces(car.price) }} руб.
                     </span>
                     <span class="current">
-                      от {{ makeSpaces((newStore.model.min_price + newStore.model.sale) - newStore.totalSale) }} руб.
+                      от {{ makeSpaces(car.price - totalSale) }} руб.
                     </span>
                   </div>
                 </div>
@@ -163,7 +150,7 @@ onMounted(() => {
                 
                 <!-- Плашка Кредит -->
                 <div class="complectations-calculator__item credit" :class="{ 'active': newStore.creditSwitch }">
-                                        <div class="complectations-calculator__text" :class="{ 'active': newStore.creditSwitch }">
+                    <div class="complectations-calculator__text" :class="{ 'active': newStore.creditSwitch }">
                     <span class="text">Кредит</span>
                     <span class="money">{{ makeSpaces(creditSale) }} ₽</span>
                     </div>
@@ -190,24 +177,9 @@ onMounted(() => {
                         <label for="salon"></label>
                     </div>
                     </div>
-                    
-                    
                 </div>
-                
-                
-                <!-- Итоговая выгода -->
-                <!-- <div class="complectations-calculator__total"
-                    :class="{ 'activeTotal': tradeSwitch || creditSwitch || salonSwitch }">
-                    <div class="complectations-calculator__text-max">
-                    <span class="text">Максимальная выгода при покупке до {{ getNextMonday() }}</span>
-                    <span class="complectations-calculator__money">
-                        {{ makeSpaces(totalSale) }} ₽
-                    </span>
-                    </div>
-                </div> -->
               </div>
               <div class="car-card__buttons">
-                <!-- <img class="calculator" src="/public/images/calculator.png"/> -->
                 <BaseButtonModal :car="car" :btn-label="'Купить в кредит'" :app-type="2"
                   :modal-title="`Купить в кредит ${car.brand} ${car.model}`" :btn-class="`credit`"
                   category="new" />
@@ -226,7 +198,6 @@ onMounted(() => {
                     }} ₽/мес.</span>
                     </div>
                     <span class="sticker discount" v-if="car.sale">Скидка до {{ makeSpaces(car.sale) }} ₽</span>
-                    <!-- <img class="calculator" src="/public/images/calculator.png" @click="scrollToFinance"/> -->
                 </div>      
                 
               <NewCarSlider :images="car.images.length ? car.images : carStore.galleries"
