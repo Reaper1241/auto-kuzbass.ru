@@ -21,6 +21,7 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
+    llmsBase: process.env.LLMS_BASE || "https://api-admin.ru",
     feedsBase: process.env.FEEDS_BASE || "https://api-admin.ru/feeds/",
     feedsDomain: process.env.FEEDS_DOMAIN || "https://auto-kuzbass.ru",
     sitemapBase: process.env.SITEMAP_BASE || "https://api-admin.ru/sitemaps",

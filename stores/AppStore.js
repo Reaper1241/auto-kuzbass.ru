@@ -1,4 +1,3 @@
-
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import axios from 'axios';
@@ -193,7 +192,7 @@ export const useAppStore = defineStore("appStore", () => {
   const phone = ref('+7 (384)223-25-75')
   const siteCity = ref('Кемерово')
   const address = ref(' г. Кемерово, ул. Тухачевского 58В')
-  // const yandexMap = ref('')
+  const llmsContent = ref('')
 
   const clearPhone = computed(() => {
     if (!phone.value) return '';
@@ -236,6 +235,7 @@ export const useAppStore = defineStore("appStore", () => {
     app.value.atr.credit_months ? creditTime.value = parseFloat(app.value.atr.credit_months) : ''
     app.value.atr.yandex_map ? yandexMap.value = app.value.atr.yandex_map : ''
     app.value.atr.name ? siteName.value = app.value.atr.name : ''
+    app.value.atr.llms_txt ? llmsContent.value = app.value.atr.llms_txt : ''
 
     creditCalcPercent.value = app.value.atr.credit ? app.value.atr.credit / 100 : 0.5
     tradeCalcPercent.value = app.value.atr.trade ? app.value.atr.trade / 100 : 0.3
@@ -353,15 +353,15 @@ export const useAppStore = defineStore("appStore", () => {
   const selectedBankId = ref(false);
 
   const selectedBank = computed(() => {
-    return banks.value.find(bank => bank.id === selectedBankId.value) || null;
+    return banks.value.find(bank => bank.id === selectedBankId) || null;
   });
 
   const lastCar = ref(0)
   const modelsList = ref('')
 
-  return { siteCity, globalLoader, chinaBrands, banks, selectedBankId, selectedBank, modelsList, lastCar, formLoading, recentQueryNew, recentCarsNew, siteUrl,  newSort, time, creditCalcPercent, tradeCalcPercent, salonCalcPercent, calcMonthPriceModel, newBrands, isOpen, onceShown, creditTime, calcMonthPrice, siteName, setAttributes, workingHours, creditPercent, getComparison, comparisonRemove, outputСomparison, outputFavorites, getFavorites, newSeo, yandexMap, politics, clearPhone, phone, address, firstCar, modalShown, viewedCars, viewedCarsLength, addViewed, removeViewed, checkViewed, recentPage, recentCars, recentQuery, recentCar, orderId, getGenerationsByModel, getModelsByBrand, entry, ip, reffer, generations, newCatalog, catalog, comparisonCarsLength, comparisonCars, appComparison, addComparison, removeComparison, checkComparison, perPage, app, brands, appData, showOnce, cut, currentPerPage, sort, favoriteCars, appFavorite, addFavorite, removeFavorite, checkFavorite, favotireCarsLength }
+  return { siteCity, globalLoader, chinaBrands, banks, selectedBankId, selectedBank, modelsList, lastCar, formLoading, recentQueryNew, recentCarsNew, siteUrl,  newSort, time, creditCalcPercent, tradeCalcPercent, salonCalcPercent, calcMonthPriceModel, newBrands, isOpen, onceShown, creditTime, calcMonthPrice, siteName, setAttributes, workingHours, creditPercent, getComparison, comparisonRemove, outputСomparison, outputFavorites, getFavorites, newSeo, yandexMap, politics, clearPhone, phone, address, firstCar, modalShown, viewedCars, viewedCarsLength, addViewed, removeViewed, checkViewed, recentPage, recentCars, recentQuery, recentCar, orderId, getGenerationsByModel, getModelsByBrand, entry, ip, reffer, generations, newCatalog, catalog, comparisonCarsLength, comparisonCars, appComparison, addComparison, removeComparison, checkComparison, perPage, app, brands, appData, showOnce, cut, currentPerPage, sort, favoriteCars, appFavorite, addFavorite, removeFavorite, checkFavorite, favotireCarsLength, llmsContent }
 }, {
   persist: {
-    pick: ['clearPhone', 'phone', 'address', 'politics', 'workingHours', 'siteName'],
+    pick: ['clearPhone', 'phone', 'address', 'politics', 'workingHours', 'siteName', 'llmsContent'],
   },
 });
