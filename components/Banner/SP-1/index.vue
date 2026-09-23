@@ -32,21 +32,6 @@ const items = ref([
     },
     {
         id: 3,
-        title: `Льготный кредит от Кредит Европа Банк`,
-        image: '/images/banner/sp1/sp1-4.png',
-        description: `
-            <p>Спецпрограмма Кредит Европа Банк</p>
-            <ul>
-                <li>ставки от 5,9% годовых</li>
-                <li>срок до 7 лет</li>
-                <li>первоначальный взнос от 0%</li>
-                <li>до 7 000 000 без подтверждения дохода</li>
-                <li>рассмотрение за 30 минут</li>
-            </ul>
-        `
-    },
-    {
-        id: 4,
         title: `Выгодные условия от Росбанка`,
         image: '/images/banner/sp1/sp1-3.png',
         description: `
@@ -60,7 +45,7 @@ const items = ref([
         `
     },
     {
-        id: 5,
+        id: 4,
         title: `Заявка на автокредит во все банки`,
         image: '/images/banner/sp1/sp1-5.png',
         description: `
@@ -75,7 +60,7 @@ const items = ref([
         `
     },
     {
-        id: 6,
+        id: 5,
         title: `Приезжай в ближайший автосалон`,
         image: '/images/banner/sp1/sp1-6.png',
         link: '/contact'

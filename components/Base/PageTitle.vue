@@ -42,6 +42,7 @@ function setSeo() {
                 .replaceAll('%brand_name_eng%', brand_name_eng.value ? brand_name_eng.value : brand_name_rus.value)
                 .replaceAll('%model_name_rus%', model_name_rus.value ? model_name_rus.value : model_name_eng.value)
                 .replaceAll('%car_id%', car_id.value)
+                .replaceAll('%model_minprice%', makeSpaces(model_minprice.value))
                 .replaceAll('%generation_minprice%', makeSpaces(generation_minprice.value))
                 .replaceAll('%car_minprice%', makeSpaces(car_minprice.value))
                 .replaceAll(`%site_name_eng%`, appStore.siteName)

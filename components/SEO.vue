@@ -310,6 +310,7 @@ function setSeo() {
         function replaceSEO(string) {
             if (string == null) { return '' }
             return string
+                .replaceAll('%model_minprice%', makeSpaces(model_minprice.value))
                 .replaceAll('%brand_name_rus%', brand_name_rus.value ? brand_name_rus.value : brand_name_eng.value)
                 .replaceAll('%model_name_eng%', model_name_eng.value ? model_name_eng.value : model_name_rus.value)
                 .replaceAll('%generation_name_rus%', generation_name.value ? generation_name.value : '')
